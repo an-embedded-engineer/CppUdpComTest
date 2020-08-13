@@ -5,11 +5,11 @@
 #define COM_UNKNONW         (-1)
 
 #if defined(_MSC_VER)
-#define COM_TYPE            COM_WINSOCK
+#define COM_TYPE            COM_WINSOCK         /* Visual Studio : WinSock */
 #elif defined(__MACH__)
-#define COM_TYPE            COM_MACSOCK
+#define COM_TYPE            COM_MACSOCK         /* Mac : Mac Socket */
 #elif defined(__linux__)
-#define COM_TYPE            COM_SOCKET
+#define COM_TYPE            COM_SOCKET          /* Linux : Socket */
 #else
-#define COM_TYPE            COM_UNKNONW
+#define COM_TYPE            COM_UNKNONW         /* Other : Not Support */
 #endif

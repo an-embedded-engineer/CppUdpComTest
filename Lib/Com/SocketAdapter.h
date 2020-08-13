@@ -30,11 +30,11 @@ public:
     SocketResult OpenUdpRxSocket(const uint16_t local_port);
     SocketResult CloseUdpSocket();
 
-    SocketResult Transmit(const any_ptr data_ptr, size_t tx_size);
-    SocketResult ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
-
     bool IsSocketOpened();
 
+    SocketResult Transmit(const any_ptr data_ptr, size_t tx_size);
+    SocketResult ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
+    
 private:
     std::unique_ptr<SocketAdapterImpl> m_Impl;
 };

@@ -3,18 +3,13 @@
 
 #if COM_TYPE == COM_WINSOCK
 #include "SocketAdapterImpl_WinSock.h"
-
 #elif COM_TYPE == COM_MACSOCK
 #include "SocketAdapterImpl_MacSock.h"
-
 #elif COM_TYPE == COM_SOCKET
 #include "SocketAdapterImpl_Socket.h"
-
 #else
 #include "SocketAdapterImpl_Unknown.h"
-
 #endif
-
 
 void SocketAdapter::Initialize()
 {
