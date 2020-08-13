@@ -1,2 +1,0 @@
-/usr/bin/ar qc libComLib.a CMakeFiles/ComLib.dir/Com/SocketAdapter.cpp.o
-/usr/bin/ranlib libComLib.a

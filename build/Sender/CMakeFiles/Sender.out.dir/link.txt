@@ -1,1 +1,0 @@
-/usr/bin/clang++ -Wall -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/Sender.out.dir/Sender.cpp.o -o Sender.out  ../Lib/libComLib.a 

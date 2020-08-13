@@ -1,1 +1,0 @@
-/usr/bin/clang++ -Wall -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/Receiver.out.dir/Receiver.cpp.o -o Receiver.out  ../Lib/libComLib.a 
