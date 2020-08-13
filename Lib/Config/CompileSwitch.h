@@ -8,7 +8,7 @@
 #define COM_TYPE            COM_WINSOCK
 #elif defined(__MACH__)
 #define COM_TYPE            COM_MACSOCK
-#elif defined(__linux__) || 
+#elif defined(__linux__)
 #define COM_TYPE            COM_SOCKET
 #else
 #define COM_TYPE            COM_UNKNONW
