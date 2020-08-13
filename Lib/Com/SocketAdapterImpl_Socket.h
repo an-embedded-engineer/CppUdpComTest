@@ -84,7 +84,6 @@ public:
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(local_port);
         this->m_Address.sin_addr.s_addr = INADDR_ANY;
-        this->m_Address.sin_len = sizeof(this->m_Address);
 
         int sock_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
 
