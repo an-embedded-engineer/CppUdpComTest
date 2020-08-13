@@ -1,6 +1,7 @@
 ﻿#include "SocketAdapter.h"
 
 #include <iostream>
+#include <cstring>
 #include <thread>
 #include <chrono>
 
