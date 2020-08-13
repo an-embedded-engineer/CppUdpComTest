@@ -1,11 +1,11 @@
 #include "SocketAdapter.h"
 #include "CompileSwitch.h"
 
-#if TARGET_TYPE == TARGET_MSVC
-#include "SocketAdapterImpl_WinMSVC.h"
+#if COM_TYPE == COM_WINSOCK
+#include "SocketAdapterImpl_WinSock.h"
 
-#elif TARGET_TYPE == TARGET_MACOS
-#include "SocketAdapterImpl_MacClang.h"
+#elif COM_TYPE == COM_SOCKET
+#include "SocketAdapterImpl_Socket.h"
 
 #else
 #include "SocketAdapterImpl_Unknown.h"

@@ -1,7 +1,7 @@
 #pragma once
 #include "CompileSwitch.h"
 
-#if TARGET_TYPE == TARGET_MACOS
+#if COM_TYPE == COM_SOCKET
 #include "SocketAdapter.h"
 
 #include <stdio.h>

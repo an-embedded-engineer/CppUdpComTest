@@ -1,7 +1,7 @@
 #pragma once
 #include "CompileSwitch.h"
 
-#if TARGET_TYPE == TARGET_MSVC
+#if COM_TYPE == COM_WINSOCK
 #include "SocketAdapter.h"
 
 #include <WinSock2.h>

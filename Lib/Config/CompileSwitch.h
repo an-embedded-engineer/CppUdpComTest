@@ -1,7 +1,12 @@
 #pragma once
-#define TARGET_MSVC         (1)
-#define TARGET_UBUNTU       (2)
-#define TARGET_MACOS        (3)
-#define TARGET_UNKNOWN      (-1)
+#define COM_SOCKET          (0)
+#define COM_WINSOCK         (1)
+#define COM_UNKNONW         (-1)
 
-#define TARGET_TYPE         TARGET_MACOS
+#if defined(_MSC_VER)
+#define COM_TYPE            COM_WINSOCK
+#elif defined(__unix__) || defined(__linux__) || defined(__MACH__)
+#define COM_TYPE            COM_SOCKET
+#else
+#define COM_TYPE            COM_UNKNONW
+#endif
