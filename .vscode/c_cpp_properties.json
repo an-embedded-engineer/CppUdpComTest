@@ -1,23 +1,21 @@
 {
-    "configurations": [
-        {
-            "name": "Mac",
-            "includePath": [
-                "${workspaceFolder}/Lib/Com",
-                "${workspaceFolder}/Lib/Config",
-                "${workspaceFolder}/Receiver",
-                "${workspaceFolder}/Sender"
-            ],
-            "defines": [],
-            "macFrameworkPath": [
-                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-            ],
-            "compilerPath": "/usr/bin/clang",
-            "intelliSenseMode": "clang-x64",
-            "configurationProvider": "ms-vscode.cmake-tools",
-            "cStandard": "c11",
-            "cppStandard": "c++14"
-        }
-    ],
+    "configurations": [{
+        "name": "Mac",
+        "includePath": [
+            "${workspaceFolder}/Lib/Config",
+            "${workspaceFolder}/Lib/Com",
+            "${workspaceFolder}/Receiver",
+            "${workspaceFolder}/Sender"
+        ],
+        "defines": [],
+        "macFrameworkPath": [
+            "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        ],
+        "compilerPath": "/usr/bin/clang",
+        "intelliSenseMode": "clang-x64",
+        "configurationProvider": "ms-vscode.cmake-tools",
+        "cStandard": "c11",
+        "cppStandard": "c++14"
+    }],
     "version": 4
 }
