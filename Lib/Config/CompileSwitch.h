@@ -4,5 +4,4 @@
 #define TARGET_MACOS        (3)
 #define TARGET_UNKNOWN      (-1)
 
-#define TARGET_TYPE         TARGET_MSVC
-
+#define TARGET_TYPE         TARGET_MACOS

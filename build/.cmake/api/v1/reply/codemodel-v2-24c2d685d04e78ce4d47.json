@@ -1,0 +1,122 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "Lib",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Lib",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "Receiver",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Receiver",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "Sender",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Sender",
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					],
+					"name" : "CppUdpComTest",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "ComLib::@0515e3c8624b6e9d0288",
+					"jsonFile" : "target-ComLib-Debug-b63da1a4a5454684ec24.json",
+					"name" : "ComLib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Receiver.out::@6e07215eccb3600c3357",
+					"jsonFile" : "target-Receiver.out-Debug-1398f9669e9122be653d.json",
+					"name" : "Receiver.out",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "Sender.out::@8aa274d3b88f371fe978",
+					"jsonFile" : "target-Sender.out-Debug-771edfc99aaa830343c2.json",
+					"name" : "Sender.out",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/build",
+		"source" : "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}

@@ -2,7 +2,10 @@
 #include "CompileSwitch.h"
 
 #if TARGET_TYPE == TARGET_MSVC
-#include "SocketAdapterImpl_MSVC.h"
+#include "SocketAdapterImpl_WinMSVC.h"
+
+#elif TARGET_TYPE == TARGET_MACOS
+#include "SocketAdapterImpl_MacClang.h"
 
 #else
 #include "SocketAdapterImpl_Unknown.h"

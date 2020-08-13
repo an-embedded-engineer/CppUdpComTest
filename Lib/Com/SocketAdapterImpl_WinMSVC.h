@@ -1,13 +1,14 @@
 #pragma once
-#include "SocketAdapter.h"
 #include "CompileSwitch.h"
 
-#include <stdexcept>
-#include <map>
-
 #if TARGET_TYPE == TARGET_MSVC
+#include "SocketAdapter.h"
+
 #include <WinSock2.h>
 #include <ws2tcpip.h>
+
+#include <map>
+#include <stdexcept>
 
 #pragma comment(lib, "ws2_32.lib")
 

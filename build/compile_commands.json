@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/build/Lib",
+  "command": "/usr/bin/clang++  -I/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Com -I/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Config -Wall -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++14 -o CMakeFiles/ComLib.dir/Com/SocketAdapter.cpp.o -c /Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Com/SocketAdapter.cpp",
+  "file": "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Com/SocketAdapter.cpp"
+},
+{
+  "directory": "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/build/Receiver",
+  "command": "/usr/bin/clang++  -I/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Com -I/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Config -Wall -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++14 -o CMakeFiles/Receiver.out.dir/Receiver.cpp.o -c /Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Receiver/Receiver.cpp",
+  "file": "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Receiver/Receiver.cpp"
+},
+{
+  "directory": "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/build/Sender",
+  "command": "/usr/bin/clang++  -I/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Com -I/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Lib/Config -Wall -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -std=c++14 -o CMakeFiles/Sender.out.dir/Sender.cpp.o -c /Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Sender/Sender.cpp",
+  "file": "/Users/shin/Projects/Cmake/CppUdpComTest/CppUdpComTest/Sender/Sender.cpp"
+}
+]
