@@ -10,16 +10,16 @@ public:
     SocketException(const char* message, int error_code)
         : runtime_error(message)
         , m_ErrorCode(error_code)
-        {
-            /* Nothing to do */
-        }
-    
+    {
+        /* Nothing to do */
+    }
+
     SocketException(const std::string& message, int error_code)
         : runtime_error(message)
         , m_ErrorCode(error_code)
-        {
-            /* Nothing to do */
-        }
+    {
+        /* Nothing to do */
+    }
 
     int GetErrorCode()
     {

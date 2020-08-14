@@ -36,8 +36,6 @@ int main()
         std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
 #endif
 
-        
-
         while (true)
         {
             /* 受信バッファ */
@@ -64,7 +62,7 @@ int main()
                     break;
                 }
             }
-            catch(const std::exception& ex)
+            catch (const std::exception& ex)
             {
                 std::cerr << "[ERROR] " << ex.what() << std::endl;
 
@@ -85,7 +83,7 @@ int main()
 
         return 0;
     }
-    catch(const std::exception& ex)
+    catch (const std::exception& ex)
     {
         std::cerr << "[ERROR] " << ex.what() << std::endl;
 

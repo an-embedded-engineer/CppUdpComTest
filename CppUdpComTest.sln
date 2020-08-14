@@ -9,6 +9,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sender", "Sender\Sender.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Receiver", "Receiver\Receiver.vcxproj", "{4DC54F3F-9921-4FDF-93F6-FAEE2FA5CB0B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A4962784-CE7B-41DD-8108-8EC24F024ACB}"
+	ProjectSection(SolutionItems) = preProject
+		_.clang-format = _.clang-format
+		CMakeLists.txt = CMakeLists.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

@@ -1,10 +1,10 @@
-﻿#include "SocketAdapter.h"
-#include "CompileSwitch.h"
+﻿#include "CompileSwitch.h"
+#include "SocketAdapter.h"
 
-#include <iostream>
-#include <cstring>
-#include <thread>
 #include <chrono>
+#include <cstring>
+#include <iostream>
+#include <thread>
 
 /* 受信メッセージのエンコード */
 static void EncodeTxMessage(const std::string& message, byte_ptr& buffer_ptr, size_t& buffer_size);
@@ -38,7 +38,7 @@ int main()
         while (true)
         {
             /* 送信メッセージ */
-            std::string tx_msg =  "";
+            std::string tx_msg = "";
             /* 送信データバッファ */
             byte_ptr buffer_ptr = nullptr;
             /* 送信データバッファサイズ */
@@ -67,7 +67,7 @@ int main()
                     break;
                 }
             }
-            catch(const std::exception& ex)
+            catch (const std::exception& ex)
             {
                 std::cerr << "[ERROR] " << ex.what() << std::endl;
 
@@ -88,7 +88,7 @@ int main()
 
         return 0;
     }
-    catch(const std::exception& ex)
+    catch (const std::exception& ex)
     {
         std::cerr << "[ERROR] " << ex.what() << std::endl;
 
