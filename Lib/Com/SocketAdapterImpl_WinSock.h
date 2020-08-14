@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CompileSwitch.h"
 
 #if COM_TYPE == COM_WINSOCK
@@ -169,13 +169,19 @@ public:
             int close_result = closesocket(this->m_Socket);
 
             /* ソケットクローズ失敗時のエラー処理 */
-            if (wsa_result == SOCKET_ERROR)
+            if (close_result == SOCKET_ERROR)
             {
                 /* エラーコードセット */
                 SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
                 /* ソケット例外送出 */
                 throw SocketException(SocketAdapterImpl::GetErrorMessage("Socket Close Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            }
+            /* ソケットクローズ成功時 */
+            else
+            {
+                /* ソケットオープン状態をクリア */
+                this->m_IsSocketOpened = false;
             }
         }
         else
@@ -226,7 +232,7 @@ public:
         else
         {
              /* 受信データサイズをセット */
-            rx_size = (size_t)wsa_result;
+            rx_size = (size_t)receive_result;
         }
     }
 
@@ -261,5 +267,5 @@ WSADATA SocketAdapterImpl::s_WsaData;
 int SocketAdapterImpl::s_ErrorCode = 0;
 
 #else
-#error Invalid Target Type : TARGET_TYPE
+
 #endif

@@ -19,8 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Com\SocketAdapterImpl_MSVC.h" />
+    <ClInclude Include="Com\SocketAdapterImpl_Socket.h" />
     <ClInclude Include="Com\SocketAdapterImpl_Unknown.h" />
+    <ClInclude Include="Com\SocketAdapterImpl_WinSock.h" />
+    <ClInclude Include="Com\SocketDataTypes.h" />
+    <ClInclude Include="Com\SocketException.h" />
     <ClInclude Include="Config\CompileSwitch.h" />
     <ClInclude Include="Com\SocketAdapter.h" />
   </ItemGroup>

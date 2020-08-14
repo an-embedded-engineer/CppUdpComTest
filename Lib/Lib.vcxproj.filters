@@ -21,10 +21,19 @@
     <ClInclude Include="Com\SocketAdapter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Com\SocketAdapterImpl_MSVC.h">
+    <ClInclude Include="Com\SocketAdapterImpl_Unknown.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Com\SocketAdapterImpl_Unknown.h">
+    <ClInclude Include="Com\SocketAdapterImpl_Socket.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Com\SocketAdapterImpl_WinSock.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Com\SocketDataTypes.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Com\SocketException.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

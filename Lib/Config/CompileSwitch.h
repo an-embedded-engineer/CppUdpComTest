@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define COM_SOCKET          (0)
 #define COM_WINSOCK         (1)
 #define COM_MACSOCK         (2)
@@ -13,3 +13,4 @@
 #else
 #define COM_TYPE            COM_UNKNONW         /* Other : Not Support */
 #endif
+

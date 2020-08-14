@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CompileSwitch.h"
 
 #if COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
@@ -227,5 +227,5 @@ private:
 int SocketAdapterImpl::s_ErrorCode = 0;
 
 #else
-#error Invalid Target Type : TARGET_TYPE
+
 #endif

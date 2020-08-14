@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CompileSwitch.h"
 
 #if COM_TYPE != COM_WINSOCK && COM_TYPE != COM_SOCKET && COM_TYPE != COM_MACSOCK

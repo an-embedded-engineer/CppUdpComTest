@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "SocketDataTypes.h"
+
 #include <memory>
 
 /* Socket Adapter Implクラス前方宣言 */
