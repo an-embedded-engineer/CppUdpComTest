@@ -50,6 +50,18 @@ public:
         throw std::runtime_error("Invalid Target Type : " + std::to_string(TARGET_TYPE));
     }
 
+    /* UDPマルチキャスト送信用ソケットオープン */
+    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port)
+    {
+        throw std::runtime_error("Invalid Target Type : " + std::to_string(TARGET_TYPE));
+    }
+
+    /* UDPマルチキャスト受信用ソケットオープン */
+    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+    {
+        throw std::runtime_error("Invalid Target Type : " + std::to_string(TARGET_TYPE));
+    }
+
     /* ソケットクローズ */
     void CloseSocket()
     {

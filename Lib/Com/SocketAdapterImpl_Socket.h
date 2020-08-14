@@ -122,6 +122,112 @@ public:
             /* ソケット例外送出 */
             throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
+    }
+
+    /* UDPマルチキャスト送信用ソケットオープン */
+    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port)
+    {
+        /* UDP用ソケットをオープン */
+        this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* ソケットオープン失敗時のエラー処理 */
+        if (this->m_Socket < 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPユニキャスト送信用アドレス情報セット */
+        this->m_Address.sin_family = AF_INET;
+        this->m_Address.sin_port = htons(multicast_port);
+        this->m_Address.sin_addr.s_addr = inet_addr(multicast_ip.c_str());
+#if COM_TYPE == COM_MACSOCK
+        this->m_Address.sin_len = sizeof(this->m_Address);
+#endif
+
+        /* ローカルIPアドレスセット */
+        this->m_LocalIpAddress = inet_addr(local_ip.c_str());
+
+        /* UDPマルチキャストソケットオプションセット */
+        int set_opt_result = setsockopt(this->m_Socket, IPPROTO_IP, IP_MULTICAST_IF, (char*)&this->m_LocalIpAddress, sizeof(this->m_LocalIpAddress));
+
+        /* ソケットオプションセット失敗時のエラー処理 */
+        if (set_opt_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
+    }
+
+    /* UDPマルチキャスト受信用ソケットオープン */
+    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+    {
+        /* UDP用ソケットをオープン */
+        this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* ソケットオープン失敗時のエラー処理 */
+        if (this->m_Socket < 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPユニキャスト受信用アドレス情報セット */
+        this->m_Address.sin_family = AF_INET;
+        this->m_Address.sin_port = htons(multicast_port);
+        this->m_Address.sin_addr.s_addr = INADDR_ANY;
+#if COM_TYPE == COM_MACSOCK
+        this->m_Address.sin_len = sizeof(this->m_Address);
+#endif
+
+        /* ソケットにアドレス情報をバインド */
+        int bind_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+
+        /* ソケットバインド失敗時のエラー処理 */
+        if (bind_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* マルチキャストリクエストのセット */
+        memset(&this->m_MulticastRequest, 0, sizeof(this->m_MulticastRequest));
+        this->m_MulticastRequest.imr_interface.s_addr = INADDR_ANY;
+        this->m_MulticastRequest.imr_multiaddr.s_addr = inet_addr(multicast_ip.c_str());
+
+        /* UDPマルチキャストソケットオプションセット */
+        int set_opt_result = setsockopt(this->m_Socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&this->m_MulticastRequest, sizeof(this->m_MulticastRequest));
+
+        /* ソケットオプションセット失敗時のエラー処理 */
+        if (set_opt_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
     }
 
     /* ソケットクローズ */
@@ -219,6 +325,10 @@ private:
     int m_Socket;
     /* ソケットアドレス情報 */
     struct sockaddr_in m_Address;
+    /* ローカルIPアドレス */
+    in_addr_t m_LocalIpAddress;
+    /* マルチキャストリクエスト */
+    ip_mreq m_MulticastRequest;
     /* ソケットオープン状態 */
     bool m_IsSocketOpened;
 };

@@ -1,4 +1,5 @@
 ﻿#include "SocketAdapter.h"
+#include "CompileSwitch.h"
 
 #include <iostream>
 #include <sstream>
@@ -23,10 +24,19 @@ int main()
 
         std::cout << "Socket Adapter Instance Creation Success" << std::endl;
 
+#if TEST_MODE == TEST_MODE_UNICAST
         /* UDPユニキャスト受信用ソケットオープン */
         adapter.OpenUdpUniRxSocket(5000);
 
         std::cout << "UDP Unicast Rx Socket Open Success" << std::endl;
+#elif TEST_MODE == TEST_MODE_MULTICAST
+        /* UDPマルチキャスト受信用ソケットオープン */
+        adapter.OpenUdpMultiRxSocket("239.192.1.2", 5000);
+
+        std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
+#endif
+
+        
 
         while (true)
         {

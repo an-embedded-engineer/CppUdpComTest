@@ -14,3 +14,9 @@
 #define COM_TYPE            COM_UNKNONW         /* Other : Not Support */
 #endif
 
+#define TEST_MODE_UNICAST       (0)
+#define TEST_MODE_MULTICAST     (1)
+#define TEST_MODE_BROADCAST     (2)
+
+#define TEST_MODE               TEST_MODE_MULTICAST
+

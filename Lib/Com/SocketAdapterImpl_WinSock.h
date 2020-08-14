@@ -97,31 +97,10 @@ public:
         /* UDPユニキャスト送信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(remote_port);
-        int pton_result = inet_pton(this->m_Address.sin_family, remote_ip.c_str(), &this->m_Address.sin_addr.S_un.S_addr);
+        this->m_Address.sin_addr.S_un.S_addr = this->ConvertIpStrToNum(this->m_Address.sin_family, remote_ip);
 
-        /* IPアドレス変換成功時 */
-        if (pton_result == 1)
-        {
-            /* ソケットオープン状態更新 */
-            this->m_IsSocketOpened = true;
-        }
-        /* IPアドレス変換失敗時のエラー処理 */
-        else if (pton_result == 0)
-        {
-            /* エラーコードセット */
-            SocketAdapterImpl::s_ErrorCode = -1;
-
-            /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
-        }
-        else
-        {
-            /* エラーコードセット */
-            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
-
-            /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
-        }
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
     }
 
     /* UDPユニキャスト受信用ソケットオープン */
@@ -146,10 +125,10 @@ public:
         this->m_Address.sin_addr.S_un.S_addr = INADDR_ANY;
 
         /* ソケットにアドレス情報をバインド */
-        int wsa_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+        int bind_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
 
         /* ソケットバインド失敗時のエラー処理 */
-        if (wsa_result != 0)
+        if (bind_result != 0)
         {
             /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
@@ -157,6 +136,106 @@ public:
             /* ソケット例外送出 */
             throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
+    }
+
+    /* UDPマルチキャスト送信用ソケットオープン */
+    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port)
+    {
+        /* UDP用ソケットをオープン */
+        this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* ソケットオープン失敗時のエラー処理 */
+        if (this->m_Socket == INVALID_SOCKET)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPユニキャスト送信用アドレス情報セット */
+        this->m_Address.sin_family = AF_INET;
+        this->m_Address.sin_port = htons(multicast_port);
+        this->m_Address.sin_addr.S_un.S_addr = this->ConvertIpStrToNum(this->m_Address.sin_family, multicast_ip);
+
+        /* ローカルIPアドレスセット */
+        this->m_LocalIpAddress = this->ConvertIpStrToNum(this->m_Address.sin_family, local_ip);
+
+        /* UDPマルチキャストソケットオプションセット */
+        int set_opt_result = setsockopt(this->m_Socket, IPPROTO_IP, IP_MULTICAST_IF, (char*)&this->m_LocalIpAddress, sizeof(this->m_LocalIpAddress));
+
+        /* ソケットオプションセット失敗時のエラー処理 */
+        if (set_opt_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
+    }
+
+    /* UDPマルチキャスト受信用ソケットオープン */
+    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+    {
+        /* UDP用ソケットをオープン */
+        this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* ソケットオープン失敗時のエラー処理 */
+        if (this->m_Socket == INVALID_SOCKET)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPユニキャスト受信用アドレス情報セット */
+        this->m_Address.sin_family = AF_INET;
+        this->m_Address.sin_port = htons(multicast_port);
+        this->m_Address.sin_addr.S_un.S_addr = INADDR_ANY;
+
+        /* ソケットにアドレス情報をバインド */
+        int bind_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+
+        /* ソケットバインド失敗時のエラー処理 */
+        if (bind_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* マルチキャストリクエストのセット */
+        memset(&this->m_MulticastRequest, 0, sizeof(this->m_MulticastRequest));
+        this->m_MulticastRequest.imr_interface.S_un.S_addr = INADDR_ANY;
+        this->m_MulticastRequest.imr_multiaddr.S_un.S_addr = this->ConvertIpStrToNum(this->m_Address.sin_family, multicast_ip.);
+
+        /* UDPマルチキャストソケットオプションセット */
+        int set_opt_result = setsockopt(this->m_Socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&this->m_MulticastRequest, sizeof(this->m_MulticastRequest));
+
+        /* ソケットオプションセット失敗時のエラー処理 */
+        if (set_opt_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
     }
 
     /* ソケットクローズ */
@@ -245,6 +324,38 @@ private:
         return ss.str();
     }
 
+    static in_addr_t ConvertIpStrToNum(const sa_family_t family const std::string& ip)
+    {
+        /* 変換後IPアドレス */
+        in_addr_t ip_num = 0;
+
+        /* IPアドレスを文字列から数値に変換 */
+        int pton_result = inet_pton(family, ip.c_str(), &ip_num);
+
+        /* IPアドレス変換成功時 */
+        if (pton_result == 1)
+        {
+            return ip_num;
+        }
+        /* IPアドレス変換失敗時のエラー処理 */
+        else if (pton_result == 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = -1;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+        else
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+    }
+
 private:
     /* WinSockサービス情報 */
     static WSADATA s_WsaData;
@@ -256,6 +367,10 @@ private:
     SOCKET m_Socket;
     /* ソケットアドレス情報 */
     struct sockaddr_in m_Address;
+    /* ローカルIPアドレス */
+    in_addr_t m_LocalIpAddress;
+    /* マルチキャストリクエスト */
+    ip_mreq m_MulticastRequest;
     /* ソケットオープン状態 */
     bool m_IsSocketOpened;
 };
