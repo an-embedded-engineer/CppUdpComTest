@@ -1,8 +1,9 @@
 #pragma once
 #include "CompileSwitch.h"
 
-#if COM_TYPE == COM_SOCKET
-#include "SocketAdapter.h"
+#if COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
+#include "SocketDataTypes.h"
+#include "SocketException.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -12,165 +13,217 @@
 #include <arpa/inet.h>
 #include <errno.h>
 
-#include <map>
-#include <stdexcept>
+#include <sstream>
 
-
+/* Socket Adapter Implクラス定義 */
 class SocketAdapterImpl final
 {
 public:
+    /* Socket全体の初期化 */
     static void Initialize()
     {
+        /* エラーコードクリア */
         SocketAdapterImpl::s_ErrorCode = 0;
     }
 
+    /* Socket全体の後始末 */
     static void Finalize()
     {
         /* Nothing to do */
     }
 
+    /* エラーコード取得 */
     static int GetErrorCode()
     {
         return SocketAdapterImpl::s_ErrorCode;
     }
 
+    /* コンストラクタ */
     SocketAdapterImpl()
         : m_Socket(0)
         , m_Address()
         , m_IsSocketOpened(false)
     {
-
+        /* Nothing to do */
     }
 
+    /* デストラクタ */
     ~SocketAdapterImpl()
     {
+        /* ソケットオープン確認 */
         if (this->IsSocketOpened() == true)
         {
-            this->CloseUdpSocket();
+            /* ソケットがオープンしていたらクローズする */
+            this->CloseSocket();
         }
     }
 
-    SocketResult OpenUdpTxSocket(const std::string& remote_ip, const uint16_t remote_port)
+    /* UDPユニキャスト送信用ソケットオープン */
+    void OpenUdpUniTxSocket(const std::string& remote_ip, const uint16_t remote_port)
     {
+        /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
 
+        /* ソケットオープン失敗時のエラー処理 */
         if (this->m_Socket < 0)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = errno;
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
+        /* UDPユニキャスト送信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(remote_port);
         this->m_Address.sin_addr.s_addr = inet_addr(remote_ip.c_str());
+#if COM_TYPE == COM_MACSOCK
+        this->m_Address.sin_len = sizeof(this->m_Address);
+#endif
 
+        /* ソケットオープン状態更新 */
         this->m_IsSocketOpened = true;
-
-        return SocketResult::Success;
     }
 
-    SocketResult OpenUdpRxSocket(const uint16_t local_port)
+    /* UDPユニキャスト受信用ソケットオープン */
+    void OpenUdpUniRxSocket(const uint16_t local_port)
     {
+        /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
 
+        /* ソケットオープン失敗時のエラー処理 */
         if (this->m_Socket < 0)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = errno;
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
+        /* UDPユニキャスト受信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(local_port);
         this->m_Address.sin_addr.s_addr = INADDR_ANY;
+#if COM_TYPE == COM_MACSOCK
+        this->m_Address.sin_len = sizeof(this->m_Address);
+#endif
 
-        int sock_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+        /* ソケットにアドレス情報をバインド */
+        int bind_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
 
-        if (sock_result == 0)
+        /* ソケットバインド失敗時のエラー処理 */
+        if (bind_result != 0)
         {
-            return SocketResult::Success;
-        }
-        else
-        {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = errno;
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
-    SocketResult CloseUdpSocket()
+    /* ソケットクローズ */
+    void CloseSocket()
     {
-        if (this->m_IsSocketOpened == true)
+        /* ソケットオープン確認 */
+        if (this->IsSocketOpened() == true)
         {
-            int sock_result = close(this->m_Socket);
+            /* ソケットがオープンしていたらクローズ */
+            int close_result = close(this->m_Socket);
 
-            if (sock_result == 0)
+            /* ソケットクローズ成功時 */
+            if (close_result == 0)
             {
-                return SocketResult::Success;
+                /* ソケットオープン状態をクリア */
+                this->m_IsSocketOpened = false;
             }
+            /* ソケットクローズ失敗時のエラー処理 */
             else
             {
+                /* エラーコードセット */
                 SocketAdapterImpl::s_ErrorCode = errno;
 
-                return SocketResult::Fail;
+                /* ソケット例外送出 */
+                throw SocketException(SocketAdapterImpl::GetErrorMessage("Socket Close Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
             }
         }
         else
         {
-
-            return SocketResult::Success;
+            /* Nothing to do */
         }
     }
 
+    /* ソケットオープン確認 */
     bool IsSocketOpened()
     {
         return this->m_IsSocketOpened;
     }
 
-    SocketResult Transmit(const any_ptr data_ptr, size_t tx_size)
+    /* パケット送信 */
+    void Transmit(const any_ptr data_ptr, size_t tx_size)
     {
-        int sock_result = sendto(this->m_Socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+        /* ソケットにパケット送信 */
+        int send_result = sendto(this->m_Socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
 
-        if (sock_result >= 0)
+        /* パケット送信失敗時のエラー処理 */
+        if (send_result < 0)
         {
-            return SocketResult::Success;
-        }
-        else
-        {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = errno;
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("Packet Transmit Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
-    SocketResult ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+    /* パケット同期受信 */
+    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
     {
-        int sock_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
+        /* ソケットからパケット受信(ブロッキング) */
+        int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-        if (sock_result >= 0)
+        /* パケット受信成功時 */
+        if (receive_result >= 0)
         {
-            rx_size = (size_t)sock_result;
-
-            return SocketResult::Success;
+            /* 受信データサイズをセット */
+            rx_size = (size_t)receive_result;
         }
+        /* パケット受信失敗時のエラー処理 */
         else
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = errno;
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
 private:
+    /* エラーメッセージ生成 */
+    static inline std::string GetErrorMessage(const char* message, int error_code)
+    {
+        std::stringstream ss;
+        ss << "[Socket Error] " << message << " : ErrorCode = " << error_code;
+        return ss.str();
+    }
+
+private:
+    /* エラーコード */
     static int s_ErrorCode;
 
 private:
+    /* ソケット */
     int m_Socket;
+    /* ソケットアドレス情報 */
     struct sockaddr_in m_Address;
+    /* ソケットオープン状態 */
     bool m_IsSocketOpened;
 };
 
+/* エラーコード */
 int SocketAdapterImpl::s_ErrorCode = 0;
 
 #else

@@ -2,216 +2,263 @@
 #include "CompileSwitch.h"
 
 #if COM_TYPE == COM_WINSOCK
-#include "SocketAdapter.h"
+#include "SocketDataTypes.h"
+#include "SocketException.h"
 
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 
-#include <map>
-#include <stdexcept>
+#include <sstream>
 
 #pragma comment(lib, "ws2_32.lib")
 
-
+/* Socket Adapter Implクラス定義 */
 class SocketAdapterImpl final
 {
 public:
+    /* Socket全体の初期化 */
     static void Initialize()
     {
+        /* エラーコードクリア */
         SocketAdapterImpl::s_ErrorCode = 0;
 
-        int wsa_result = WSAStartup(MAKEWORD(2, 0), &SocketAdapterImpl::s_WsaData);
+        /* WinSockサービススタートアップ */
+        int startup_result = WSAStartup(MAKEWORD(2, 0), &SocketAdapterImpl::s_WsaData);
 
-        if (wsa_result != 0)
+        /* WinSockサービスススタートアップ失敗時のエラー処理 */
+        if (startup_result != 0)
         {
-            SocketAdapterImpl::s_ErrorCode = wsa_result;
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = startup_result;
 
-            throw std::runtime_error("Socket Adapter Initialize Failed : ErrorCode = " + std::to_string(SocketAdapterImpl::s_ErrorCode));
-        }
-        else
-        {
-            /* Nothing to do */
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("WSA Startup Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
+    /* Socket全体の後始末 */
     static void Finalize()
     {
-        int wsa_result = WSACleanup();
+        /* WinSockサービスクリーンアップ */
+        int cleanup_result = WSACleanup();
 
-        if (wsa_result == SOCKET_ERROR)
+        /* WinSockサービスクリーンアップ失敗時のエラー処理 */
+        if (cleanup_result == SOCKET_ERROR)
         {
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            throw std::runtime_error("Socket Adapter Finalize Failed : ErrorCode = " + std::to_string(SocketAdapterImpl::s_ErrorCode));
-        }
-        else
-        {
-            /* Nothing to do */
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("WSA Cleanup Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
+    /* エラーコード取得 */
     static int GetErrorCode()
     {
         return SocketAdapterImpl::s_ErrorCode;
     }
 
+    /* コンストラクタ */
     SocketAdapterImpl()
         : m_Socket(0)
         , m_Address()
         , m_IsSocketOpened(false)
     {
-
+        /* Nothing to do */
     }
 
+    /* デストラクタ */
     ~SocketAdapterImpl()
     {
+        /* ソケットオープン確認 */
         if (this->IsSocketOpened() == true)
         {
-            this->CloseUdpSocket();
+            /* ソケットがオープンしていたらクローズする */
+            this->CloseSocket();
         }
     }
 
-    SocketResult OpenUdpTxSocket(const std::string& remote_ip, const uint16_t remote_port)
+    /* UDPユニキャスト送信用ソケットオープン */
+    void OpenUdpUniTxSocket(const std::string& remote_ip, const uint16_t remote_port)
     {
+        /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
 
+        /* ソケットオープン失敗時のエラー処理 */
         if (this->m_Socket == INVALID_SOCKET)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
+        /* UDPユニキャスト送信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(remote_port);
-        int wsa_result = inet_pton(this->m_Address.sin_family, remote_ip.c_str(), &this->m_Address.sin_addr.S_un.S_addr);
+        int pton_result = inet_pton(this->m_Address.sin_family, remote_ip.c_str(), &this->m_Address.sin_addr.S_un.S_addr);
 
-        if (wsa_result == 1)
+        /* IPアドレス変換成功時 */
+        if (pton_result == 1)
         {
+            /* ソケットオープン状態更新 */
             this->m_IsSocketOpened = true;
-
-            return SocketResult::Success;
         }
-        else if (wsa_result == 0)
+        /* IPアドレス変換失敗時のエラー処理 */
+        else if (pton_result == 0)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = -1;
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
         else
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
-    SocketResult OpenUdpRxSocket(const uint16_t local_port)
+    /* UDPユニキャスト受信用ソケットオープン */
+    void OpenUdpUniRxSocket(const uint16_t local_port)
     {
+        /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
 
+        /* ソケットオープン失敗時のエラー処理 */
         if (this->m_Socket == INVALID_SOCKET)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
+        /* UDPユニキャスト受信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(local_port);
         this->m_Address.sin_addr.S_un.S_addr = INADDR_ANY;
 
+        /* ソケットにアドレス情報をバインド */
         int wsa_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
 
-        if (wsa_result == 0)
+        /* ソケットバインド失敗時のエラー処理 */
+        if (wsa_result != 0)
         {
-            return SocketResult::Success;
-        }
-        else
-        {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
-    SocketResult CloseUdpSocket()
+    /* ソケットクローズ */
+    void CloseSocket()
     {
-        if (this->m_IsSocketOpened == true)
+        /* ソケットオープン確認 */
+        if (this->IsSocketOpened() == true)
         {
-            int wsa_result = closesocket(this->m_Socket);
+            /* ソケットがオープンしていたらクローズ */
+            int close_result = closesocket(this->m_Socket);
 
+            /* ソケットクローズ失敗時のエラー処理 */
             if (wsa_result == SOCKET_ERROR)
             {
+                /* エラーコードセット */
                 SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-                return SocketResult::Fail;
-            }
-            else
-            {
-                return SocketResult::Success;
+                /* ソケット例外送出 */
+                throw SocketException(SocketAdapterImpl::GetErrorMessage("Socket Close Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
             }
         }
         else
         {
-
-            return SocketResult::Success;
+            /* Nothing to do */
         }
     }
 
+    /* ソケットオープン確認 */
     bool IsSocketOpened()
     {
         return this->m_IsSocketOpened;
     }
 
-    SocketResult Transmit(const any_ptr data_ptr, size_t tx_size)
+    /* パケット送信 */
+    void Transmit(const any_ptr data_ptr, size_t tx_size)
     {
-        int wsa_result = sendto(this->m_Socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+        /* ソケットにパケット送信 */
+        int send_result = sendto(this->m_Socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
 
-        if (wsa_result == SOCKET_ERROR)
+        /* パケット送信失敗時のエラー処理 */
+        if (send_result == SOCKET_ERROR)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            return SocketResult::Fail;
-        }
-        else
-        {
-            return SocketResult::Success;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("Packet Transmit Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
     }
 
-    SocketResult ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+    /* パケット同期受信 */
+    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
     {
-        int wsa_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
+        /* ソケットからパケット受信(ブロッキング) */
+        int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-        if (wsa_result == SOCKET_ERROR)
+        /* パケット受信失敗時のエラー処理 */
+        if (receive_result == SOCKET_ERROR)
         {
+            /* エラーコードセット */
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
-            return SocketResult::Fail;
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
+        /* パケット受信成功時 */
         else
         {
+             /* 受信データサイズをセット */
             rx_size = (size_t)wsa_result;
-
-            return SocketResult::Success;
         }
     }
 
 private:
+    /* エラーメッセージ生成 */
+    static inline std::string GetErrorMessage(const char* message, int error_code)
+    {
+        std::stringstream ss;
+        ss << "[Socket Error] " << message << " : ErrorCode = " << error_code;
+        return ss.str();
+    }
+
+private:
+    /* WinSockサービス情報 */
     static WSADATA s_WsaData;
+    /* エラーコード */
     static int s_ErrorCode;
 
 private:
+    /* ソケット */
     SOCKET m_Socket;
+    /* ソケットアドレス情報 */
     struct sockaddr_in m_Address;
+    /* ソケットオープン状態 */
     bool m_IsSocketOpened;
 };
 
+/* WinSockサービス情報 */
 WSADATA SocketAdapterImpl::s_WsaData;
 
+/* エラーコード */
 int SocketAdapterImpl::s_ErrorCode = 0;
-
 
 #else
 #error Invalid Target Type : TARGET_TYPE
