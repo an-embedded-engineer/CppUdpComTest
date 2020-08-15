@@ -27,7 +27,7 @@ public:
     /* UDPユニキャスト受信用ソケットオープン */
     void OpenUdpUniRxSocket(const uint16_t local_port);
     /* UDPマルチキャスト送信用ソケットオープン */
-    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port);
+    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl);
     /* UDPマルチキャスト受信用ソケットオープン */
     void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port);
     /* ソケットクローズ */

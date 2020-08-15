@@ -128,7 +128,7 @@ public:
     }
 
     /* UDPマルチキャスト送信用ソケットオープン */
-    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port)
+    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl)
     {
         /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -165,6 +165,22 @@ public:
 
             /* ソケット例外送出 */
             throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPマルチキャストTTLセット */
+        this->m_TTL = (int)ttl;
+
+        /* UDPマルチキャストTTLソケットオプションセット */
+        int set_ttl_result = setsockopt(this->m_Socket, IPPROTO_IP, IP_MULTICAST_TTL, (char*)&this->m_TTL, sizeof(this->m_TTL));
+
+        /* ソケットオプションセット失敗時のエラー処理 */
+        if (set_ttl_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = errno;
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx TTL Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */
@@ -327,6 +343,8 @@ private:
     struct sockaddr_in m_Address;
     /* ローカルIPアドレス */
     in_addr_t m_LocalIpAddress;
+    /* マルチキャストTTL */
+    int m_TTL;
     /* マルチキャストリクエスト */
     ip_mreq m_MulticastRequest;
     /* ソケットオープン状態 */

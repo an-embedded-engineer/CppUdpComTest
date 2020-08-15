@@ -54,9 +54,9 @@ void SocketAdapter::OpenUdpUniRxSocket(const uint16_t local_port)
 }
 
 /* UDPマルチキャスト送信用ソケットオープン */
-void SocketAdapter::OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port)
+void SocketAdapter::OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl)
 {
-    this->m_Impl->OpenUdpMultiTxSocket(multicast_ip, local_ip, multicast_port);
+    this->m_Impl->OpenUdpMultiTxSocket(multicast_ip, local_ip, multicast_port, ttl);
 }
 
 /* UDPマルチキャスト受信用ソケットオープン */

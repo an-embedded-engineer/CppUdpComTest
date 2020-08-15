@@ -51,7 +51,7 @@ public:
     }
 
     /* UDPマルチキャスト送信用ソケットオープン */
-    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port)
+    void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl)
     {
         throw std::runtime_error("Invalid Target Type : " + std::to_string(TARGET_TYPE));
     }
