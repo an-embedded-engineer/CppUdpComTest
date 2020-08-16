@@ -62,6 +62,9 @@ public:
     SocketAdapterImpl()
         : m_Socket(0)
         , m_Address()
+        , m_LocalIpAddress(0)
+        , m_TTL(0)
+        , m_MulticastRequest()
         , m_IsSocketOpened(false)
     {
         /* Nothing to do */
@@ -294,7 +297,7 @@ public:
     }
 
     /* UDPブロードキャスト受信用ソケットオープン */
-    void OpenUdpUniRxSocket(const uint16_t local_port)
+    void OpenUdpBroadRxSocket(const uint16_t local_port)
     {
         /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);

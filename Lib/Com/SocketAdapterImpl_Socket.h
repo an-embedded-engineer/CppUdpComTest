@@ -42,6 +42,9 @@ public:
     SocketAdapterImpl()
         : m_Socket(0)
         , m_Address()
+        , m_LocalIpAddress(0)
+        , m_TTL(0)
+        , m_MulticastRequest()
         , m_IsSocketOpened(false)
     {
         /* Nothing to do */
