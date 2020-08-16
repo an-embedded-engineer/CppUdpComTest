@@ -14,6 +14,7 @@
 #include <errno.h>
 
 #include <sstream>
+#include <cstring>
 
 /* Socket Adapter Implクラス定義 */
 class SocketAdapterImpl final

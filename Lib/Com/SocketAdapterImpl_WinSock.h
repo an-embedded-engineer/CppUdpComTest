@@ -9,6 +9,7 @@
 #include <ws2tcpip.h>
 
 #include <sstream>
+#include <cstring>
 
 #pragma comment(lib, "ws2_32.lib")
 
