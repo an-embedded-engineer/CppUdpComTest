@@ -423,6 +423,7 @@ private:
         return ss.str();
     }
 
+    /* IPアドレスの変換(文字列 -> 数値) */
     static ULONG ConvertIpStrToNum(const ADDRESS_FAMILY family, const std::string& ip)
     {
         /* 変換後IPアドレス */
