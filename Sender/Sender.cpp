@@ -30,7 +30,7 @@ int main()
         std::cout << "UDP Unicast Tx Socket Open Success" << std::endl;
 #elif TEST_MODE == TEST_MODE_MULTICAST
         /* UDPマルチキャスト送信用ソケットオープン */
-        adapter.OpenUdpMultiTxSocket("224.0.0.32", "192.168.1.11", 50000, 1);
+        adapter.OpenUdpMultiTxSocket("224.0.0.32", "127.0.0.1", 50000, 1);
 
         std::cout << "UDP Multicast Tx Socket Open Success" << std::endl;
 #elif TEST_MODE == TEST_MODE_BROADCAST
