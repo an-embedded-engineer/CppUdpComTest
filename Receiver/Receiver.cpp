@@ -59,7 +59,7 @@ int main()
                 /* 受信メッセージをデコード */
                 std::string rx_msg = DecodeRxMessage(buffer_ptr, rx_size);
 
-                std::cout << "UDP Unicast Message Received : [" << rx_msg << "]" << std::endl;
+                std::cout << "UDP Message Received : [" << rx_msg << "]" << std::endl;
 
                 /* 受信終了判定 */
                 if (rx_msg == "exit")

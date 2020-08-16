@@ -61,7 +61,7 @@ int main()
                 /* パケット送信 */
                 adapter.Transmit((any_ptr)buffer_ptr, buffer_size);
 
-                std::cout << "Transmit UDP Unicast Message : [" << tx_msg << "]" << std::endl;
+                std::cout << "Transmit UDP Message : [" << tx_msg << "]" << std::endl;
 
                 /* 送信データバッファ解放 */
                 free(buffer_ptr);
