@@ -18,5 +18,5 @@
 #define TEST_MODE_MULTICAST     (1)
 #define TEST_MODE_BROADCAST     (2)
 
-#define TEST_MODE               TEST_MODE_MULTICAST
+#define TEST_MODE               TEST_MODE_BROADCAST
 

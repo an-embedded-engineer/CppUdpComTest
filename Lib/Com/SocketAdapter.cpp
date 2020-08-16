@@ -65,6 +65,18 @@ void SocketAdapter::OpenUdpMultiRxSocket(const std::string& multicast_ip, const 
     this->m_Impl->OpenUdpMultiRxSocket(multicast_ip, multicast_port);
 }
 
+/* UDPブロードキャスト送信用ソケットオープン */
+void SocketAdapter::OpenUdpBroadTxSocket(const std::string& remote_ip, const uint16_t remote_port)
+{
+    this->m_Impl->OpenUdpBroadTxSocket(remote_ip, remote_port);
+}
+
+/* UDPブロードキャスト受信用ソケットオープン */
+void SocketAdapter::OpenUdpBroadRxSocket(const uint16_t local_port)
+{
+    this->m_Impl->OpenUdpBroadRxSocket(local_port);
+}
+
 /* ソケットクローズ */
 void SocketAdapter::CloseSocket()
 {

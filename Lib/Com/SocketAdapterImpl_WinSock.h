@@ -157,7 +157,7 @@ public:
             throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
-        /* UDPユニキャスト送信用アドレス情報セット */
+        /* UDPマルチキャスト送信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(multicast_port);
         this->m_Address.sin_addr.S_un.S_addr = this->ConvertIpStrToNum(this->m_Address.sin_family, multicast_ip);
@@ -211,10 +211,10 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
-        /* UDPユニキャスト受信用アドレス情報セット */
+        /* UDPマルチキャスト受信用アドレス情報セット */
         this->m_Address.sin_family = AF_INET;
         this->m_Address.sin_port = htons(multicast_port);
         this->m_Address.sin_addr.S_un.S_addr = INADDR_ANY;
@@ -229,7 +229,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
         /* マルチキャストリクエストのセット */
@@ -248,6 +248,83 @@ public:
 
             /* ソケット例外送出 */
             throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
+    }
+
+    /* UDPブロードキャスト送信用ソケットオープン */
+    void OpenUdpBroadTxSocket(const std::string& remote_ip, const uint16_t remote_port)
+    {
+        /* UDP用ソケットをオープン */
+        this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* ソケットオープン失敗時のエラー処理 */
+        if (this->m_Socket == INVALID_SOCKET)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPブロードキャスト送信用アドレス情報セット */
+        this->m_Address.sin_family = AF_INET;
+        this->m_Address.sin_port = htons(remote_port);
+        this->m_Address.sin_addr.S_un.S_addr = this->ConvertIpStrToNum(this->m_Address.sin_family, remote_ip);
+
+        /* UDPブロードキャスト送信用ソケットオプションセット */
+        BOOL yes = 1;
+        int set_opt_result = setsockopt(this->m_Socket, SOL_SOCKET, SO_BROADCAST, (char*)&yes, sizeof(yes));
+
+        /* ソケットオプションセット失敗時のエラー処理 */
+        if (set_opt_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* ソケットオープン状態更新 */
+        this->m_IsSocketOpened = true;
+    }
+
+    /* UDPブロードキャスト受信用ソケットオープン */
+    void OpenUdpUniRxSocket(const uint16_t local_port)
+    {
+        /* UDP用ソケットをオープン */
+        this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* ソケットオープン失敗時のエラー処理 */
+        if (this->m_Socket == INVALID_SOCKET)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* UDPブロードキャスト受信用アドレス情報セット */
+        this->m_Address.sin_family = AF_INET;
+        this->m_Address.sin_port = htons(local_port);
+        this->m_Address.sin_addr.S_un.S_addr = INADDR_ANY;
+
+        /* ソケットにアドレス情報をバインド */
+        int bind_result = bind(this->m_Socket, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));
+
+        /* ソケットバインド失敗時のエラー処理 */
+        if (bind_result != 0)
+        {
+            /* エラーコードセット */
+            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+            /* ソケット例外送出 */
+            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */

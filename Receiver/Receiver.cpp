@@ -26,14 +26,19 @@ int main()
 
 #if TEST_MODE == TEST_MODE_UNICAST
         /* UDPユニキャスト受信用ソケットオープン */
-        adapter.OpenUdpUniRxSocket(5000);
+        adapter.OpenUdpUniRxSocket(50000);
 
         std::cout << "UDP Unicast Rx Socket Open Success" << std::endl;
 #elif TEST_MODE == TEST_MODE_MULTICAST
         /* UDPマルチキャスト受信用ソケットオープン */
-        adapter.OpenUdpMultiRxSocket("239.192.1.2", 5000);
+        adapter.OpenUdpMultiRxSocket("224.0.0.32", 50000);
 
         std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
+#elif TEST_MODE == TEST_MODE_BROADCAST
+        /* UDPブロードキャスト受信用ソケットオープン */
+        adapter.OpenUdpBroadRxSocket(50000);
+
+        std::cout << "UDP Broadcast Rx Socket Open Success" << std::endl;
 #endif
 
         while (true)

@@ -30,6 +30,10 @@ public:
     void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl);
     /* UDPマルチキャスト受信用ソケットオープン */
     void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port);
+    /* UDPブロードキャスト送信用ソケットオープン */
+    void OpenUdpBroadTxSocket(const std::string& remote_ip, const uint16_t remote_port);
+    /* UDPブロードキャスト受信用ソケットオープン */
+    void OpenUdpBroadRxSocket(const uint16_t local_port);
     /* ソケットクローズ */
     void CloseSocket();
 
