@@ -1,5 +1,5 @@
-﻿#include "CompileSwitch.h"
-#include "SocketAdapter.h"
+﻿#include "SocketAdapter.h"
+#include "CompileSwitch.h"
 
 #include <chrono>
 #include <cstring>
