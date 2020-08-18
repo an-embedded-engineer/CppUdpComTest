@@ -373,7 +373,7 @@ public:
     }
 
     /* パケット送信 */
-    void Transmit(const any_ptr data_ptr, size_t tx_size)
+    void Transmit(const any_ptr data_ptr, const size_t tx_size)
     {
         /* ソケットにパケット送信 */
         int send_result = sendto(this->m_Socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&this->m_Address, sizeof(this->m_Address));

@@ -41,7 +41,7 @@ public:
     bool IsSocketOpened();
 
     /* パケット送信 */
-    void Transmit(const any_ptr data_ptr, size_t tx_size);
+    void Transmit(const any_ptr data_ptr, const size_t tx_size);
     /* パケット同期受信 */
     void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
 

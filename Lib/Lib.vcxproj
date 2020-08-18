@@ -19,16 +19,39 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Com\SocketAdapterImpl_Socket.h" />
-    <ClInclude Include="Com\SocketAdapterImpl_Unknown.h" />
-    <ClInclude Include="Com\SocketAdapterImpl_WinSock.h" />
-    <ClInclude Include="Com\SocketDataTypes.h" />
-    <ClInclude Include="Com\SocketException.h" />
+    <ClInclude Include="Com\Socket\SocketAdapter.h" />
+    <ClInclude Include="Com\Socket\SocketAdapterImpl_Socket.h" />
+    <ClInclude Include="Com\Socket\SocketAdapterImpl_Unknown.h" />
+    <ClInclude Include="Com\Socket\SocketAdapterImpl_WinSock.h" />
+    <ClInclude Include="Com\Socket\SocketDataTypes.h" />
+    <ClInclude Include="Com\Socket\SocketException.h" />
+    <ClInclude Include="Com\Udp\UdpPacketTypes.h" />
     <ClInclude Include="Config\CompileSwitch.h" />
-    <ClInclude Include="Com\SocketAdapter.h" />
+    <ClInclude Include="Com\Udp\UdpSocketSender.h" />
+    <ClInclude Include="Com\Udp\UdpSocketReceiver.h" />
+    <ClInclude Include="Com\Udp\UdpPacketSender.h" />
+    <ClInclude Include="Com\Udp\UdpPacketReceiver.h" />
+    <ClInclude Include="Com\Udp\UdpPacketEncoder.h" />
+    <ClInclude Include="Com\Udp\UdpSender.h" />
+    <ClInclude Include="Com\Udp\UdpPacketRxBuffer.h" />
+    <ClInclude Include="Com\Udp\UdpPacketRxBufferMap.h" />
+    <ClInclude Include="Com\Udp\UdpReceiver.h" />
+    <ClInclude Include="Utility\Endian.h" />
+    <ClInclude Include="Utility\FloatIntConverter.h" />
+    <ClInclude Include="Utility\Singleton.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Com\SocketAdapter.cpp" />
+    <ClCompile Include="Com\Socket\SocketAdapter.cpp" />
+    <ClCompile Include="Com\Udp\UdpSocketSender.cpp" />
+    <ClCompile Include="Com\Udp\UdpSocketReceiver.cpp" />
+    <ClCompile Include="Com\Udp\UdpPacketSender.cpp" />
+    <ClCompile Include="Com\Udp\UdpPacketReceiver.cpp" />
+    <ClCompile Include="Com\Udp\UdpPacketEncoder.cpp" />
+    <ClCompile Include="Com\Udp\UdpSender.cpp" />
+    <ClCompile Include="Com\Udp\UdpPacketRxBuffer.cpp" />
+    <ClCompile Include="Com\Udp\UdpPacketRxBufferMap.cpp" />
+    <ClCompile Include="Com\Udp\UdpReceiver.cpp" />
+    <ClCompile Include="Utility\Singleton.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -111,7 +134,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Config</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -130,7 +153,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Config</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -149,7 +172,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Config</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,7 +191,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Config</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

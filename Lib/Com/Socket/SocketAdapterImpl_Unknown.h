@@ -87,7 +87,7 @@ public:
     }
 
     /* パケット送信 */
-    void Transmit(const any_ptr data_ptr, size_t tx_size)
+    void Transmit(const any_ptr data_ptr, const size_t tx_size)
     {
         throw std::runtime_error("Invalid Com Type : " + std::to_string(COM_TYPE));
     }

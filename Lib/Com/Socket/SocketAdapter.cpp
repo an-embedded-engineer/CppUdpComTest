@@ -90,7 +90,7 @@ bool SocketAdapter::IsSocketOpened()
 }
 
 /* パケット送信 */
-void SocketAdapter::Transmit(const any_ptr data_ptr, size_t tx_size)
+void SocketAdapter::Transmit(const any_ptr data_ptr, const size_t tx_size)
 {
     this->m_Impl->Transmit(data_ptr, tx_size);
 }

@@ -11,5 +11,6 @@ target_include_directories(Sender.out
   ${PROJECT_SOURCE_DIR}/Lib/Com/Socket
   ${PROJECT_SOURCE_DIR}/Lib/Com/Udp
   ${PROJECT_SOURCE_DIR}/Lib/Config
+  ${PROJECT_SOURCE_DIR}/Lib/Utility
   ${PROJECT_SOURCE_DIR}/Receiver
 )
