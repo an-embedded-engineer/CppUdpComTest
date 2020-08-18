@@ -9,17 +9,21 @@
 #include <chrono>
 #include <exception>
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER
 /* Socket Adapterによる通信テスト */
 static void SocketAdapterTest();
-
+#elif TEST_MODE == TEST_MODE_UDP_SINGLE
 /* UDP Socket Receiverによる通信テスト */
 static void UdpSocketReceiverTest();
-
+#elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Receiverによる通信テスト */
 static void UdpReceiverTest();
+#endif
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER || TEST_MODE == TEST_MODE_UDP_SINGLE
 /* 受信メッセージのデコード */
 static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size);
+#endif
 
 int main()
 {
@@ -44,6 +48,7 @@ int main()
     }
 }
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER
 /* Socket Adapterによる通信テスト */
 static void SocketAdapterTest()
 {
@@ -120,6 +125,7 @@ static void SocketAdapterTest()
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
 
+#elif TEST_MODE == TEST_MODE_UDP_SINGLE
 /* UDP Socket Receiverによる通信テスト */
 static void UdpSocketReceiverTest()
 {
@@ -196,6 +202,7 @@ static void UdpSocketReceiverTest()
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
 
+#elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Receiverによる通信テスト */
 static void UdpReceiverTest()
 {
@@ -264,7 +271,9 @@ static void UdpReceiverTest()
 
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
+#endif
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER || TEST_MODE == TEST_MODE_UDP_SINGLE
 /* 受信メッセージのデコード */
 static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size)
 {
@@ -277,3 +286,4 @@ static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size)
 
     return rx_msg;
 }
+#endif

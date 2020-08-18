@@ -8,20 +8,26 @@
 #include <iostream>
 #include <thread>
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER
 /* Socket Adapterによる通信テスト */
 static void SocketAdapterTest();
-
+#elif TEST_MODE == TEST_MODE_UDP_SINGLE
 /* UDP Socket Senderによる通信テスト */
 static void UdpSocketSenderTest();
-
+#elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Senderによる通信テスト */
 static void UdpSenderTest();
+#endif
 
-
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER || TEST_MODE == TEST_MODE_UDP_SINGLE || TEST_MODE == TEST_MODE_UDP_MULTI
 /* 送信メッセージのエンコード */
 static void EncodeTxMessage(const std::string& message, byte_ptr& buffer_ptr, size_t& buffer_size);
+#endif
+
+#if TEST_MODE == TEST_MODE_UDP_MULTI
 /* 巨大送信メッセージのエンコード */
 static void EncodeBigTxMessage(const size_t tx_msg_size, byte_ptr& buffer_ptr, size_t& buffer_size);
+#endif
 
 int main()
 {
@@ -46,6 +52,7 @@ int main()
     }
 }
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER
 /* Socket Adapterによる通信テスト */
 static void SocketAdapterTest()
 {
@@ -128,6 +135,7 @@ static void SocketAdapterTest()
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
 
+#elif TEST_MODE == TEST_MODE_UDP_SINGLE
 /* UDP Socket Senderによる通信テスト */
 static void UdpSocketSenderTest()
 {
@@ -203,6 +211,7 @@ static void UdpSocketSenderTest()
     sender.CloseSocket();
 }
 
+#elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Senderによる通信テスト */
 static void UdpSenderTest()
 {
@@ -300,7 +309,9 @@ static void UdpSenderTest()
     /* ソケットクローズ */
     sender.CloseSocket();
 }
+#endif
 
+#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER || TEST_MODE == TEST_MODE_UDP_SINGLE || TEST_MODE == TEST_MODE_UDP_MULTI
 /* 送信メッセージのエンコード */
 static void EncodeTxMessage(const std::string& message, byte_ptr& buffer_ptr, size_t& buffer_size)
 {
@@ -336,7 +347,9 @@ static void EncodeTxMessage(const std::string& message, byte_ptr& buffer_ptr, si
         throw std::bad_alloc();
     }
 }
+#endif
 
+#if TEST_MODE == TEST_MODE_UDP_MULTI
 static void EncodeBigTxMessage(const size_t tx_msg_size, byte_ptr& buffer_ptr, size_t& buffer_size)
 {
     /* 文字列の長さ(null文字を含まない)を取得 */
@@ -373,3 +386,4 @@ static void EncodeBigTxMessage(const size_t tx_msg_size, byte_ptr& buffer_ptr, s
         throw std::bad_alloc();
     }
 }
+#endif
