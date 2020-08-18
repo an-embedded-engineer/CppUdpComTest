@@ -17,7 +17,6 @@ UdpReceiver::UdpReceiver()
     this->m_SocketReceiver = std::make_unique<UdpSocketReceiver>();
 
     /* 受信コールバックセット */
-    //UdpPacketRxBufferMap::CallbackType callback = [this](const uint16_t message_id, const byte_ptr data_ptr, const size_t data_size) { this->ReceiveCallback(message_id, data_ptr, data_size); };
     UdpPacketRxBufferMap::CallbackType callback = std::bind(&UdpReceiver::ReceiveCallback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
     /* 受信コールバックを登録 */
