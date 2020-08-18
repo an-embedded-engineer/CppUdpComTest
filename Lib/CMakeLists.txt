@@ -2,6 +2,15 @@
 add_library(ComLib
   STATIC
     Com/Socket/SocketAdapter.cpp
+    Com/Udp/UdpPacketEncoder.cpp
+    Com/Udp/UdpPacketReceiver.cpp
+    Com/Udp/UdpPacketRxBuffer.cpp
+    Com/Udp/UdpPacketRxBufferMap.cpp
+    Com/Udp/UdpPacketSender.cpp
+    Com/Udp/UdpReceiver.cpp
+    Com/Udp/UdpSender.cpp
+    Com/Udp/UdpSocketReceiver.cpp
+    Com/Udp/UdpSocketSender.cpp
 )
 
 # Set Include Directories
