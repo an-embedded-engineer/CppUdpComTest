@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "ExceptionBase.h"
 
+#include <vector>
+
 namespace exception
 {
     /* Application Exceptionクラス宣言 */

@@ -355,6 +355,9 @@ static void EncodeTxMessage(const std::string& message, byte_ptr& buffer_ptr, si
 #if TEST_MODE == TEST_MODE_UDP_MULTI
 static void EncodeBigTxMessage(const size_t tx_msg_size, byte_ptr& buffer_ptr, size_t& buffer_size)
 {
+    std::string message = "Test Message";
+    THROW_APP_EXCEPTION(StringFormat("%s : %d", message, 10));
+
     /* 文字列の長さ(null文字を含まない)を取得 */
     size_t tx_msg_len = tx_msg_size;
 

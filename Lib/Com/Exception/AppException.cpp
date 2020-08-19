@@ -1,5 +1,11 @@
 ﻿#include "AppException.h"
 #include "StringFormat.h"
+#include "StackTracer.h"
+
+#include <sstream>
+#include <string>
+#include <iomanip>
+#include <iostream>
 
 namespace exception
 {
@@ -44,14 +50,38 @@ namespace exception
     /* エラーメッセージ生成 */
     const std::string AppException::GenerateErrorMessage()
     {
+        /* スタックトレース情報を取得 */
+        StackTrace stack_trace = StackTracer::GetStackTrace();
+
+        std::stringstream ss;
+
         /* エラー情報がある場合は、エラー情報付きメッセージを生成 */
         if (this->m_IsErrorInfoExists == true)
         {
-            return StringFormat("[Application Error] %s @ %s[%s:L.%d]", this->m_Message, this->m_FunctionName, this->m_FilePath, this->m_LineNumber);
+            ss << StringFormat("[Application Error] %s @ %s[%s:L.%d]", this->m_Message, this->m_FunctionName, this->m_FilePath, this->m_LineNumber);
         }
         else
         {
-            return StringFormat("[Application Error] %s", this->m_Message);
+            ss << StringFormat("[Application Error] %s", this->m_Message);
         }
+        ss << std::endl;
+
+        /* スタックトレースをダンプ */
+        ss << "[Stack Traces] : " << std::endl;
+        for (uint32_t i = 0; i < stack_trace.trace_size; i++)
+        {
+            if (i != 0)
+            {
+                ss << std::endl;
+            }
+
+            ss << "  ";
+            ss << std::setw(16) << std::setfill('0') << std::hex << std::showbase << stack_trace.traces[i];
+            ss << " | ";
+            ss << stack_trace.symbols[i];
+        }
+        ss << std::endl;
+
+        return ss.str();
     }
 }

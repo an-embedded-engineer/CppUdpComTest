@@ -14,6 +14,7 @@ add_library(ComLib
     Com/Udp/UdpSender.cpp
     Com/Udp/UdpSocketReceiver.cpp
     Com/Udp/UdpSocketSender.cpp
+    Utility/StackTracer.cpp
 )
 
 # Set Include Directories
