@@ -1,34 +1,34 @@
-#pragma once
+ï»¿#pragma once
 #include "UdpSocketSender.h"
 #include "UdpPacketSender.h"
 
 class UdpSender
 {
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpSender();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpSender();
 
-    /* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     void OpenUniSocket(const std::string& remote_ip, const uint16_t remote_port);
-    /* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     void OpenMultiSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl);
-    /* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     void OpenBroadSocket(const std::string& remote_ip, const uint16_t remote_port);
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     void CloseSocket();
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     bool IsSocketOpened();
 
-    /* ƒf[ƒ^‘—M */
+    /* ãƒ‡ãƒ¼ã‚¿é€ä¿¡ */
     void Transmit(const uint16_t message_id, const byte_ptr data_ptr, const size_t tx_size);
 
 private:
-    /* UDP Socket SenderƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX */
+    /* UDP Socket Senderã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ */
     std::unique_ptr<UdpSocketSender> m_SocketSender;
 
-    /* UDP Packet SenderƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX */
+    /* UDP Packet Senderã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ */
     UdpPacketSender& m_PacketSender;
 };
 

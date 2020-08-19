@@ -1,17 +1,17 @@
-#include "UdpPacketSender.h"
+ï»¿#include "UdpPacketSender.h"
 #include "UdpPacketEncoder.h"
 #include "UdpSocketSender.h"
 
 #include <iostream>
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 UdpPacketSender& UdpPacketSender::GetInstance()
 {
     static UdpPacketSender instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketSender::UdpPacketSender()
     : m_Encoder(UdpPacketEncoder::GetInstance())
     , m_SequenceNum(0)
@@ -19,47 +19,47 @@ UdpPacketSender::UdpPacketSender()
     /* Nothing to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketSender::~UdpPacketSender()
 {
     /* Nothing to do */
 }
 
-/* ƒf[ƒ^‘—M */
+/* ãƒ‡ãƒ¼ã‚¿é€ä¿¡ */
 void UdpPacketSender::Transmit(UdpSocketSender& udp_sockeet_sender, uint16_t message_id, byte_ptr data_ptr, size_t data_size)
 {
-    /* ‡Œvƒf[ƒ^ƒTƒCƒY */
+    /* åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
     size_t total_data_size = data_size;
 
-    /* ƒf[ƒ^ƒTƒCƒYƒ`ƒFƒbƒN */
+    /* ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯ */
     if (total_data_size > 0)
     {
-        /* ƒuƒƒbƒN” = ‡Œvƒf[ƒ^ƒTƒCƒY / UDPƒpƒPƒbƒgƒf[ƒ^ƒTƒCƒY */
+        /* ãƒ–ãƒ­ãƒƒã‚¯æ•° = åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º / UDPãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
         size_t div_block_num = data_size / UDP_PACKET_DATA_SIZE;
 
-        /* —]‚èƒuƒƒbƒNƒTƒCƒY = ‡Œvƒf[ƒ^ƒTƒCƒY / UDPƒpƒPƒbƒgƒf[ƒ^ƒTƒCƒY‚Ìè—] */
+        /* ä½™ã‚Šãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚º = åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º / UDPãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã®å‰°ä½™ */
         size_t mod_block_size = data_size % UDP_PACKET_DATA_SIZE;
 
-        /* ‡ŒvƒuƒƒbƒNƒTƒCƒY‚ðŽZo(—]‚èƒuƒƒbƒNƒTƒCƒY‚ª‚ ‚éê‡‚ÍAƒuƒƒbƒN” + 1) */
+        /* åˆè¨ˆãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºã‚’ç®—å‡º(ä½™ã‚Šãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºãŒã‚ã‚‹å ´åˆã¯ã€ãƒ–ãƒ­ãƒƒã‚¯æ•° + 1) */
         size_t total_block_num = (mod_block_size > 0) ? div_block_num + 1 : div_block_num;
 
         std::cout << "Start Transmit UDP Packet : Size = " << total_data_size << " Blocks = " << total_block_num << std::endl;
 
-        /* ‘—Mƒf[ƒ^‚ðƒuƒƒbƒN‚É•ªŠ„‚µ‚ÄUDPƒpƒPƒbƒg‚Æ‚µ‚Ä‘—M */
+        /* é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ–ãƒ­ãƒƒã‚¯ã«åˆ†å‰²ã—ã¦UDPãƒ‘ã‚±ãƒƒãƒˆã¨ã—ã¦é€ä¿¡ */
         for (size_t i = 0; i < total_block_num; i++)
         {
-            /* Œ»Ý‚ÌƒuƒƒbƒN”Ô† */
+            /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ç•ªå· */
             size_t current_block_num = i + 1;
 
-            /* Œ»Ý‚ÌƒuƒƒbƒN‚ÌŠJŽnƒCƒ“ƒfƒbƒNƒX */
+            /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã®é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ */
             size_t start_index = i * UDP_PACKET_DATA_SIZE;
 
-            /* Œ»Ý‚ÌƒuƒƒbƒN‚Ìƒf[ƒ^ƒTƒCƒY */
+            /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
             size_t packet_data_size = (current_block_num == total_block_num) ? mod_block_size : UDP_PACKET_DATA_SIZE;
 
             std::cout << "Transmit UDP Packet : Block = " << current_block_num << "/" << total_block_num << " Packet Size = " << packet_data_size << " Start Index = " << start_index << std::endl;
 
-            /* ƒf[ƒ^‚ðUDPƒpƒPƒbƒg‚É•ªŠ„‚µ‚Ä‘—M */
+            /* ãƒ‡ãƒ¼ã‚¿ã‚’UDPãƒ‘ã‚±ãƒƒãƒˆã«åˆ†å‰²ã—ã¦é€ä¿¡ */
             this->TransmitPacket(udp_sockeet_sender, message_id, data_ptr, total_data_size, total_block_num, current_block_num, start_index, packet_data_size);
         }
     }
@@ -67,34 +67,34 @@ void UdpPacketSender::Transmit(UdpSocketSender& udp_sockeet_sender, uint16_t mes
     {
         std::cerr << "[WARN] Transmit Data Size = 0" << std::endl;
 
-        /* ‡ŒvƒuƒƒbƒNƒTƒCƒY */
+        /* åˆè¨ˆãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚º */
         size_t total_block_num = 1;
 
         std::cout << "Start UDP Packet Transmit : Size = " << total_data_size << " Blocks = " << total_block_num << std::endl;
 
-        /* Œ»Ý‚ÌƒuƒƒbƒN”Ô† */
+        /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ç•ªå· */
         size_t current_block_num = 1;
 
-        /* Œ»Ý‚ÌƒuƒƒbƒN‚ÌŠJŽnƒCƒ“ƒfƒbƒNƒX */
+        /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã®é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ */
         size_t start_index = 0;
 
-        /* Œ»Ý‚ÌƒuƒƒbƒN‚Ìƒf[ƒ^ƒTƒCƒY */
+        /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
         size_t packet_data_size = total_data_size;
 
         std::cout << "Transmit UDP Packet : Block = " << current_block_num << "/" << total_block_num << " Packet Size = " << packet_data_size << " Start Index = " << start_index << std::endl;
 
-        /* ƒf[ƒ^‚ðUDPƒpƒPƒbƒg‚É•ªŠ„‚µ‚Ä‘—M */
+        /* ãƒ‡ãƒ¼ã‚¿ã‚’UDPãƒ‘ã‚±ãƒƒãƒˆã«åˆ†å‰²ã—ã¦é€ä¿¡ */
         this->TransmitPacket(udp_sockeet_sender, message_id, data_ptr, total_data_size, total_block_num, current_block_num, start_index, packet_data_size);
     }
 }
 
-/* ƒf[ƒ^‚ðUDPƒpƒPƒbƒg‚É•ªŠ„‚µ‚Ä‘—M */
+/* ãƒ‡ãƒ¼ã‚¿ã‚’UDPãƒ‘ã‚±ãƒƒãƒˆã«åˆ†å‰²ã—ã¦é€ä¿¡ */
 void UdpPacketSender::TransmitPacket(UdpSocketSender& udp_sockeet_sender, uint16_t message_id, byte_ptr data_ptr, size_t total_data_size, size_t total_block_num, size_t current_block_num, size_t start_index, size_t packet_data_size)
 {
-    /* Œ»Ý‚ÌƒuƒƒbƒN‚ÌƒpƒPƒbƒgƒTƒCƒY */
+    /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ãƒ‘ã‚±ãƒƒãƒˆã‚µã‚¤ã‚º */
     size_t packet_size = UDP_PACKET_HEADER_SIZE + packet_data_size;
 
-    /* ƒpƒPƒbƒgƒwƒbƒ_‚ðì¬ */
+    /* ãƒ‘ã‚±ãƒƒãƒˆãƒ˜ãƒƒãƒ€ã‚’ä½œæˆ */
     UdpPacketHeader src_header;
     src_header.PacketSize = (uint16_t)(packet_size);
     src_header.SequenceNum = this->m_SequenceNum;
@@ -104,15 +104,15 @@ void UdpPacketSender::TransmitPacket(UdpSocketSender& udp_sockeet_sender, uint16
     src_header.MessageID = message_id;
     src_header.Reserved = 0;
 
-    /* UDP PacketƒCƒ“ƒXƒ^ƒ“ƒX‚ð¶¬ */
+    /* UDP Packetã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ */
     UdpPacket dst_packet;
 
-    /* UDP Packet‚ðƒlƒbƒgƒ[ƒNƒoƒCƒgƒI[ƒ_[‚ÉƒGƒ“ƒR[ƒh */
+    /* UDP Packetã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã«ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ */
     this->m_Encoder.Encode(src_header, data_ptr, start_index, packet_data_size, dst_packet);
 
-    /* UDP Packet‚ð‘—M */
+    /* UDP Packetã‚’é€ä¿¡ */
     udp_sockeet_sender.Transmit((any_ptr)&dst_packet, packet_size);
 
-    /* ƒV[ƒPƒ“ƒX”Ô†‚ðƒCƒ“ƒNƒŠƒƒ“ƒg */
+    /* ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ç•ªå·ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ */
     this->m_SequenceNum = (this->m_SequenceNum == UINT16_MAX) ? 0 : this->m_SequenceNum + 1;
 }

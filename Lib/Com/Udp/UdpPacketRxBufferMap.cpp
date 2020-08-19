@@ -1,16 +1,16 @@
-#include "UdpPacketRxBufferMap.h"
+ï»¿#include "UdpPacketRxBufferMap.h"
 #include "AppException.h"
 
 #include <iostream>
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 UdpPacketRxBufferMap& UdpPacketRxBufferMap::GetInstance()
 {
     static UdpPacketRxBufferMap instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketRxBufferMap::UdpPacketRxBufferMap()
     : m_Map()
     , m_Callback(nullptr)
@@ -18,19 +18,19 @@ UdpPacketRxBufferMap::UdpPacketRxBufferMap()
     /* Nothing to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketRxBufferMap::~UdpPacketRxBufferMap()
 {
     /* Nothing to do */
 }
 
-/* ŽóMƒR[ƒ‹ƒoƒbƒN‚ð“o˜^ */
+/* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
 void UdpPacketRxBufferMap::RegisterCallback(CallbackType& callback)
 {
-    /* ŽóMƒR[ƒ‹ƒoƒbƒN–¢“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯æœªç™»éŒ² */
     if (this->m_Callback == nullptr)
     {
-        /* ŽóMƒR[ƒ‹ƒoƒbƒN‚ð“o˜^ */
+        /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
         this->m_Callback = callback;
     }
     else
@@ -39,72 +39,72 @@ void UdpPacketRxBufferMap::RegisterCallback(CallbackType& callback)
     }
 }
 
-/* ƒƒbƒZ[ƒWID‚²‚Æ‚ÌŽóMƒR[ƒ‹ƒoƒbƒN‚ð“o˜^ */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã”ã¨ã®å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
 void UdpPacketRxBufferMap::RegisterCallback(uint16_t message_id, UdpPacketRxBuffer::CallbackType& callback)
 {
-    /* UDP PacketŽóMƒoƒbƒtƒ@–¢“o˜^ */
+    /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡æœªç™»éŒ² */
     if (this->m_Map.count(message_id) == 0)
     {
-        /* UDP PacketŽóMƒoƒbƒtƒ@“o˜^ */
+        /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡ç™»éŒ² */
         this->m_Map.emplace(std::piecewise_construct, std::forward_as_tuple(message_id), std::forward_as_tuple());
     }
 
-    /* ŽóMƒR[ƒ‹ƒoƒbƒN“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç™»éŒ² */
     this->m_Map[message_id].RegisterCallback(callback);
 }
 
-/* UDP Packet‚Ì’Ç‰Á */
+/* UDP Packetã®è¿½åŠ  */
 void UdpPacketRxBufferMap::Add(const UdpPacket& udp_packet)
 {
-    /* ƒƒbƒZ[ƒWIDŽæ“¾ */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDå–å¾— */
     uint16_t message_id = udp_packet.Header.MessageID;
 
-    /* UDP PacketŽóMƒoƒbƒtƒ@–¢“o˜^ */
+    /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡æœªç™»éŒ² */
     if (this->m_Map.count(message_id) == 0)
     {
-        /* UDP PacketŽóMƒoƒbƒtƒ@“o˜^ */
+        /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡ç™»éŒ² */
         this->m_Map.emplace(std::piecewise_construct, std::forward_as_tuple(message_id), std::forward_as_tuple());
     }
 
-    /* UDP PacketŽóMƒoƒbƒtƒ@Žæ“¾ */
+    /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡å–å¾— */
     auto& item = this->m_Map[message_id];
 
-    /* ŽóMƒoƒbƒtƒ@‚ÉUDP Packet’Ç‰Á */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã«UDP Packetè¿½åŠ  */
     item.Add(udp_packet);
 
-    /* ŽóMŠ®—¹Šm”F */
+    /* å—ä¿¡å®Œäº†ç¢ºèª */
     if (item.IsCompleted())
     {
-        /* ŽóMƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ðƒŠƒNƒGƒXƒg */
+        /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
         item.RequestCallback();
 
-        /* ŽóMƒf[ƒ^ƒoƒbƒtƒ@‚ð‰Šú‰» */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ– */
         byte_ptr data_ptr = nullptr;
 
-        /* ŽóMƒf[ƒ^ƒTƒCƒY‚ð‰Šú‰» */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’åˆæœŸåŒ– */
         size_t data_size = 0;
 
-        /* ŽóMƒf[ƒ^Žæ“¾ */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿å–å¾— */
         item.GetBuffer(data_ptr, data_size);
 
-        /* ƒƒbƒZ[ƒWID‚²‚Æ‚ÌŽóMƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ðƒŠƒNƒGƒXƒg */
+        /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã”ã¨ã®å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
         this->RequestCallback(message_id, data_ptr, data_size);
 
-        /* ŽóMƒoƒbƒtƒ@‚ð‰ð•ú */
+        /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’è§£æ”¾ */
         item.Release();
     }
 }
 
-/* ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ÌƒŠƒNƒGƒXƒg */
+/* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã®ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
 void UdpPacketRxBufferMap::RequestCallback(uint16_t message_id, const byte_ptr data_ptr, const size_t data_size)
 {
-    /* ƒR[ƒ‹ƒoƒbƒN“o˜^Šm”F */
+    /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç™»éŒ²ç¢ºèª */
     if (this->m_Callback != nullptr)
     {
-        /* ŽóMƒf[ƒ^&ƒTƒCƒYŠm”F */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿&ã‚µã‚¤ã‚ºç¢ºèª */
         if (data_ptr != nullptr && data_size > 0)
         {
-            /* ŽóMƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ðƒŠƒNƒGƒXƒg */
+            /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
             this->m_Callback(message_id, data_ptr, data_size);
         }
         else

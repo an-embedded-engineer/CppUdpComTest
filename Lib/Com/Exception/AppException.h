@@ -1,30 +1,30 @@
-#pragma once
+ï»¿#pragma once
 #include "ExceptionBase.h"
 
 namespace exception
 {
-    /* Application ExceptionƒNƒ‰ƒXéŒ¾ */
+    /* Application Exceptionã‚¯ãƒ©ã‚¹å®£è¨€ */
     class AppException : public ExceptionBase
     {
     public:
-        /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+        /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
         AppException(const std::string& message);
 
-        /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+        /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
         AppException(const std::string& message, const std::string& file, const std::string& func, const int line);
 
-        /* ƒfƒXƒgƒ‰ƒNƒ^ */
+        /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
         virtual ~AppException();
 
-        /* ƒGƒ‰[—vˆö‚ğæ“¾ */
+        /* ã‚¨ãƒ©ãƒ¼è¦å› ã‚’å–å¾— */
         virtual char const* what() const override;
 
     private:
-        /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
         const std::string GenerateErrorMessage();
 
     private:
-        /* ƒGƒ‰[ƒƒbƒZ[ƒW */
+        /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
         std::string m_ErrorMessage;
     };
 }

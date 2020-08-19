@@ -1,15 +1,15 @@
-#include "UdpPacketReceiver.h"
+ï»¿#include "UdpPacketReceiver.h"
 #include "UdpSocketReceiver.h"
 #include "UdpPacketEncoder.h"
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 UdpPacketReceiver& UdpPacketReceiver::GetInstance()
 {
     static UdpPacketReceiver instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketReceiver::UdpPacketReceiver()
     : m_Encoder(UdpPacketEncoder::GetInstance())
     , m_RxBufferMap(UdpPacketRxBufferMap::GetInstance())
@@ -17,44 +17,44 @@ UdpPacketReceiver::UdpPacketReceiver()
     /* Nothing to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketReceiver::~UdpPacketReceiver()
 {
     /* Nothing to do */
 }
 
-/* ƒf[ƒ^“¯ŠúŽóM */
+/* ãƒ‡ãƒ¼ã‚¿åŒæœŸå—ä¿¡ */
 void UdpPacketReceiver::ReceiveSync(UdpSocketReceiver& udp_socket_receiver)
 {
-    /* UDP PacketŽóMƒoƒbƒtƒ@‚ð¶¬ */
+    /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’ç”Ÿæˆ */
     UdpPacketBuffer udp_packet_buffer;
 
-    /* UDP PacketŽóMƒoƒbƒtƒ@ƒ|ƒCƒ“ƒ^‚ðŽæ“¾ */
+    /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾— */
     byte_ptr buffer_ptr = udp_packet_buffer.Binary;
 
-    /* ŽóMƒTƒCƒY‚ð‰Šú‰» */
+    /* å—ä¿¡ã‚µã‚¤ã‚ºã‚’åˆæœŸåŒ– */
     size_t rx_size = 0;
 
-    /* UDP Packet‚ð“¯ŠúŽóM */
+    /* UDP Packetã‚’åŒæœŸå—ä¿¡ */
     udp_socket_receiver.ReceiveSync(buffer_ptr, UDP_PACKET_SIZE, rx_size);
 
-    /* UDP Packet‚ð¶¬ */
+    /* UDP Packetã‚’ç”Ÿæˆ */
     UdpPacket udp_packet;
 
-    /* ŽóMUDP Packet‚ðƒfƒR[ƒh */
+    /* å—ä¿¡UDP Packetã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰ */
     this->m_Encoder.Decode(udp_packet_buffer.Packet, rx_size, udp_packet);
 
-    /* ŽóMUDP Packet‚ðŽóMƒoƒbƒtƒ@‚É’Ç‰Á */
+    /* å—ä¿¡UDP Packetã‚’å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã«è¿½åŠ  */
     this->m_RxBufferMap.Add(udp_packet);
 }
 
-/* ŽóMƒR[ƒ‹ƒoƒbƒN‚ð“o˜^ */
+/* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
 void UdpPacketReceiver::RegisterCallback(UdpPacketRxBufferMap::CallbackType& callback)
 {
     this->m_RxBufferMap.RegisterCallback(callback);
 }
 
-/* ƒƒbƒZ[ƒWID‚²‚Æ‚ÌŽóMƒR[ƒ‹ƒoƒbƒN‚ð“o˜^ */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã”ã¨ã®å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
 void UdpPacketReceiver::RegisterCallback(uint16_t message_id, UdpPacketRxBuffer::CallbackType& callback)
 {
     this->m_RxBufferMap.RegisterCallback(message_id, callback);

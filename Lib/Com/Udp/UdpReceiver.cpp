@@ -1,11 +1,11 @@
-#include "UdpReceiver.h"
+ï»¿#include "UdpReceiver.h"
 #include "UdpSocketReceiver.h"
 #include "UdpPacketReceiver.h"
 
 #include <functional>
 #include <sstream>
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpReceiver::UdpReceiver()
     : m_SocketReceiver(nullptr)
     , m_PacketReceiver(UdpPacketReceiver::GetInstance())
@@ -13,96 +13,96 @@ UdpReceiver::UdpReceiver()
     , m_Message()
     , m_IsReceived(false)
 {
-    /* UDP Socket ReceiverƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX¶¬ */
+    /* UDP Socket Receiverã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ */
     this->m_SocketReceiver = std::make_unique<UdpSocketReceiver>();
 
-    /* óMƒR[ƒ‹ƒoƒbƒNƒZƒbƒg */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚»ãƒƒãƒˆ */
     UdpPacketRxBufferMap::CallbackType callback = std::bind(&UdpReceiver::ReceiveCallback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-    /* óMƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
     this->m_PacketReceiver.RegisterCallback(callback);
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpReceiver::~UdpReceiver()
 {
     /* Nothing to do */
 }
 
-/* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpReceiver::OpenUniSocket(const uint16_t local_port)
 {
-    /* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_SocketReceiver->OpenUniSocket(local_port);
 }
 
-/* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpReceiver::OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port)
 {
-    /* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_SocketReceiver->OpenMultiSocket(multicast_ip, multicast_port);
 }
 
-/* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpReceiver::OpenBroadSocket(const uint16_t local_port)
 {
-    /* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_SocketReceiver->OpenBroadSocket(local_port);
 }
 
-/* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+/* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
 void UdpReceiver::CloseSocket()
 {
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     this->m_SocketReceiver->CloseSocket();
 }
 
-/* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+/* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
 bool UdpReceiver::IsSocketOpened()
 {
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     return this->m_SocketReceiver->IsSocketOpened();
 }
 
-/* ƒf[ƒ^“¯ŠúóM */
+/* ãƒ‡ãƒ¼ã‚¿åŒæœŸå—ä¿¡ */
 void UdpReceiver::ReceiveSync(uint16_t& message_id, std::string& message)
 {
-    /* óMŠ®—¹ó‘ÔƒNƒŠƒA */
+    /* å—ä¿¡å®Œäº†çŠ¶æ…‹ã‚¯ãƒªã‚¢ */
     this->m_IsReceived = false;
 
     while (true)
     {
-        /* ƒf[ƒ^“¯ŠúóM */
+        /* ãƒ‡ãƒ¼ã‚¿åŒæœŸå—ä¿¡ */
         this->m_PacketReceiver.ReceiveSync(*this->m_SocketReceiver);
 
-        /* óMŠ®—¹‚µ‚½‚çƒ‹[ƒv‚ğ”²‚¯‚é */
+        /* å—ä¿¡å®Œäº†ã—ãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹ */
         if (this->m_IsReceived == true)
         {
             break;
         }
     }
 
-    /* ƒƒbƒZ[ƒWIDƒZƒbƒg */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã‚»ãƒƒãƒˆ */
     message_id = this->m_MessageID;
 
-    /* óMƒƒbƒZ[ƒWƒZƒbƒg */
+    /* å—ä¿¡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚»ãƒƒãƒˆ */
     message = this->m_Message;
 }
 
-/* ƒf[ƒ^óMƒR[ƒ‹ƒoƒbƒN */
+/* ãƒ‡ãƒ¼ã‚¿å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ */
 void UdpReceiver::ReceiveCallback(const uint16_t message_id, const byte_ptr data_ptr, const size_t data_size)
 {
-    /* ƒƒbƒZ[ƒWIDƒZƒbƒg */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã‚»ãƒƒãƒˆ */
     this->m_MessageID = message_id;
 
-    /* óMƒƒbƒZ[ƒWƒZƒbƒg */
+    /* å—ä¿¡ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚»ãƒƒãƒˆ */
     std::stringstream ss;
 
     ss << data_ptr;
 
     this->m_Message = ss.str();
 
-    /* óMŠ®—¹ó‘ÔƒZƒbƒg */
+    /* å—ä¿¡å®Œäº†çŠ¶æ…‹ã‚»ãƒƒãƒˆ */
     this->m_IsReceived = true;
 }
 

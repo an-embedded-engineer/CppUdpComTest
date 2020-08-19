@@ -1,14 +1,14 @@
-#include "UdpPacketEncoder.h"
+ï»¿#include "UdpPacketEncoder.h"
 #include "AppException.h"
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 UdpPacketEncoder& UdpPacketEncoder::GetInstance()
 {
     static UdpPacketEncoder instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketEncoder::UdpPacketEncoder()
     : m_EnvironmentEndian(endian::GetEnvironmentEndian())
     , m_TargetEndian(EndianType::Big)
@@ -16,29 +16,29 @@ UdpPacketEncoder::UdpPacketEncoder()
     /* Nothing to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketEncoder::~UdpPacketEncoder()
 {
     /* Nothing to do */
 }
 
-/* “ü—Íƒf[ƒ^‚ğUDP Packet‚ÉƒGƒ“ƒR[ƒh */
+/* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’UDP Packetã«ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ */
 void UdpPacketEncoder::Encode(const UdpPacketHeader& src_header, byte_ptr src_data_ptr, size_t start_index, size_t data_size, UdpPacket& dst_packet)
 {
-    /* UDP Packet Header‚ÌƒGƒ“ƒfƒBƒAƒ“‚ğ•ÏŠ· */
+    /* UDP Packet Headerã®ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã‚’å¤‰æ› */
     this->ConvertEndian(src_header, dst_packet.Header);
 
-    /* “ü—Íƒf[ƒ^‚©‚çw’è‚³‚ê‚½”ÍˆÍ‚ğUDP Packet Data‚ÉƒRƒs[ */
+    /* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸç¯„å›²ã‚’UDP Packet Dataã«ã‚³ãƒ”ãƒ¼ */
     memcpy(dst_packet.Data, &src_data_ptr[start_index], data_size);
 }
 
-/* óMUDP Packet‚ğƒfƒR[ƒh */
+/* å—ä¿¡UDP Packetã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰ */
 void UdpPacketEncoder::Decode(const UdpPacket& src_packet, const size_t rx_size, UdpPacket& dst_packet)
 {
-    /* UDP Packet Header‚ÌƒGƒ“ƒfƒBƒAƒ“‚ğ•ÏŠ· */
+    /* UDP Packet Headerã®ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã‚’å¤‰æ› */
     this->ConvertEndian(src_packet.Header, dst_packet.Header);
 
-    /* UDP Packet Data•”‚ğƒNƒŠƒA */
+    /* UDP Packet Dataéƒ¨ã‚’ã‚¯ãƒªã‚¢ */
     memset(dst_packet.Data, 0, UDP_PACKET_DATA_SIZE);
 
     /* Check Packet Size */
@@ -46,7 +46,7 @@ void UdpPacketEncoder::Decode(const UdpPacket& src_packet, const size_t rx_size,
     {
         size_t rx_data_size = rx_size - UDP_PACKET_HEADER_SIZE;
 
-        /* óMƒf[ƒ^‚©‚çóMƒf[ƒ^ƒTƒCƒY‚ğUDP Packet Data‚ÉƒRƒs[ */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’UDP Packet Dataã«ã‚³ãƒ”ãƒ¼ */
         memcpy(dst_packet.Data, &src_packet.Data[0], rx_data_size);
     }
     else
@@ -55,18 +55,18 @@ void UdpPacketEncoder::Decode(const UdpPacket& src_packet, const size_t rx_size,
     }
 }
 
-/* UDP Packet Header‚ÌƒGƒ“ƒfƒBƒAƒ“‚ğ•ÏŠ· */
+/* UDP Packet Headerã®ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã‚’å¤‰æ› */
 void UdpPacketEncoder::ConvertEndian(const UdpPacketHeader& src, UdpPacketHeader& dst)
 {
-    /* ƒGƒ“ƒfƒBƒAƒ“‚ª“¯ˆê‚Ìê‡ */
+    /* ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ãŒåŒä¸€ã®å ´åˆ */
     if (this->m_EnvironmentEndian == this->m_TargetEndian)
     {
-        /* UDP Packet Header‚ğ‚»‚Ì‚Ü‚ÜƒRƒs[ */
+        /* UDP Packet Headerã‚’ãã®ã¾ã¾ã‚³ãƒ”ãƒ¼ */
         dst = src;
     }
     else
     {
-        /* UDP Packet Header‚ÌŠeƒƒ“ƒo[‚ÌƒGƒ“ƒfƒBƒAƒ“‚ğ•ÏŠ· */
+        /* UDP Packet Headerã®å„ãƒ¡ãƒ³ãƒãƒ¼ã®ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã‚’å¤‰æ› */
         dst.PacketSize = endian::ConvertEndian(src.PacketSize);
         dst.SequenceNum = endian::ConvertEndian(src.SequenceNum);
         dst.TotalSize = endian::ConvertEndian(src.TotalSize);

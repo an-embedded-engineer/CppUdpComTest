@@ -1,33 +1,33 @@
-#pragma once
+ï»¿#pragma once
 #include "SocketAdapter.h"
 
 #include <memory>
 
-/* UDP ReceiverƒNƒ‰ƒXéŒ¾ */
+/* UDP Receiverã‚¯ãƒ©ã‚¹å®£è¨€ */
 class UdpSocketReceiver
 {
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpSocketReceiver();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpSocketReceiver();
 
-    /* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     void OpenUniSocket(const uint16_t local_port);
-    /* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     void OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port);
-    /* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     void OpenBroadSocket(const uint16_t local_port);
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     void CloseSocket();
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     bool IsSocketOpened();
 
-    /* ƒpƒPƒbƒg“¯ŠúóM */
+    /* ãƒ‘ã‚±ãƒƒãƒˆåŒæœŸå—ä¿¡ */
     void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
 
 private:
-    /* Socket AdapterƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX */
+    /* Socket Adapterã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ */
     std::unique_ptr<SocketAdapter> m_Adapter;
 };
 

@@ -1,67 +1,67 @@
-#pragma once
+ï»¿#pragma once
 #include "UdpPacketTypes.h"
 #include "SocketDataTypes.h"
 
 #include <functional>
 #include <vector>
 
-/* UDP Packet Rx BufferƒNƒ‰ƒXéŒ¾ */
+/* UDP Packet Rx Bufferã‚¯ãƒ©ã‚¹å®£è¨€ */
 class UdpPacketRxBuffer
 {
 public:
-    /* ƒR[ƒ‹ƒoƒbƒN */
+    /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ */
     using CallbackType = std::function<void(const byte_ptr, const size_t)>;
 
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpPacketRxBuffer();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpPacketRxBuffer();
 
-    /* óMƒR[ƒ‹ƒoƒbƒN‚Ì“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®ç™»éŒ² */
     void RegisterCallback(CallbackType& callback);
 
-    /* ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ÌƒŠƒNƒGƒXƒg */
+    /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã®ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
     void RequestCallback();
 
-    /* UDP Packet‚Ì’Ç‰Á */
+    /* UDP Packetã®è¿½åŠ  */
     void Add(const UdpPacket& udp_packet);
 
-    /* óMƒoƒbƒtƒ@æ“¾ */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡å–å¾— */
     void GetBuffer(byte_ptr& data_ptr, size_t& data_size);
 
-    /* óMƒoƒbƒtƒ@‚Ì‰ğ•ú */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾ */
     void Release();
 
-    /* óMŠ®—¹ó‘Ôæ“¾ */
+    /* å—ä¿¡å®Œäº†çŠ¶æ…‹å–å¾— */
     bool IsCompleted();
 
 private:
-    /* 1”Ô–Ú‚ÌƒpƒPƒbƒg‚ğ’Ç‰Á */
+    /* 1ç•ªç›®ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’è¿½åŠ  */
     void AddFirstPacket(const UdpPacket& udp_packet);
 
-    /* 2”Ô–ÚˆÈ~‚ÌƒpƒPƒbƒg‚ğ’Ç‰Á */
+    /* 2ç•ªç›®ä»¥é™ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’è¿½åŠ  */
     void AddContinuousPacket(const UdpPacket& udp_packet);
 
-    /* óMŠ®—¹Šm”F */
+    /* å—ä¿¡å®Œäº†ç¢ºèª */
     bool CheckCompleted();
 
 private:
-    /* ƒƒbƒZ[ƒWID */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ID */
     uint16_t m_MessageID;
-    /* óMƒoƒbƒtƒ@ */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ */
     byte_ptr m_Buffer;
-    /* ‡Œvƒf[ƒ^ƒTƒCƒY */
+    /* åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
     size_t m_TotalSize;
-    /* ‡ŒvƒuƒƒbƒN” */
+    /* åˆè¨ˆãƒ–ãƒ­ãƒƒã‚¯æ•° */
     size_t m_TotalBlockNum;
-    /* óMƒuƒƒbƒN” */
+    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯æ•° */
     size_t m_ReceivedBlockNum;
-    /* óMƒXƒe[ƒ^ƒX */
+    /* å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ */
     std::vector<bool> m_RecvStatus;
-    /* óMŠ®—¹ó‘Ô */
+    /* å—ä¿¡å®Œäº†çŠ¶æ…‹ */
     bool m_IsCompleted;
-    /* óMƒR[ƒ‹ƒoƒbƒN */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ */
     CallbackType m_Callback;
 };
 

@@ -1,53 +1,53 @@
-#pragma once
+ï»¿#pragma once
 #include "UdpPacketRxBuffer.h"
 
 #include <map>
 
-/* UDP Packet Rx Buffer MapƒNƒ‰ƒXéŒ¾ */
+/* UDP Packet Rx Buffer Mapã‚¯ãƒ©ã‚¹å®£è¨€ */
 class UdpPacketRxBufferMap
 {
 public:
-    /* óMƒR[ƒ‹ƒoƒbƒN */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ */
     using CallbackType = std::function<void(const uint16_t, const byte_ptr, const size_t)>;
 
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static UdpPacketRxBufferMap& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpPacketRxBufferMap();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpPacketRxBufferMap();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketRxBufferMap(const UdpPacketRxBufferMap&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketRxBufferMap(UdpPacketRxBufferMap&&) = delete;
-    /* ƒRƒs[‘ã“ü‰‰Zqíœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketRxBufferMap& operator=(const UdpPacketRxBufferMap&) = delete;
-    /* ƒ€[ƒu‘ã“ü‰‰Zqíœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketRxBufferMap& operator=(UdpPacketRxBufferMap&&) = delete;
 
 public:
-    /* óMƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
     void RegisterCallback(CallbackType& callback);
 
-    /* ƒƒbƒZ[ƒWID‚²‚Æ‚ÌóMƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^ */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã”ã¨ã®å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
     void RegisterCallback(uint16_t message_id, UdpPacketRxBuffer::CallbackType& callback);
 
-    /* UDP Packet‚Ì’Ç‰Á */
+    /* UDP Packetã®è¿½åŠ  */
     void Add(const UdpPacket& udp_packet);
 
 private:
-    /* ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ÌƒŠƒNƒGƒXƒg */
+    /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã®ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
     void RequestCallback(uint16_t message_id, const byte_ptr data_ptr, const size_t data_size);
 
 private:
-    /* UDP PacketóMƒoƒbƒtƒ@ƒ}ƒbƒv */
+    /* UDP Packetå—ä¿¡ãƒãƒƒãƒ•ã‚¡ãƒãƒƒãƒ— */
     std::map<uint16_t, UdpPacketRxBuffer> m_Map;
 
-    /* óMƒR[ƒ‹ƒoƒbƒN */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ */
     CallbackType m_Callback;
 };

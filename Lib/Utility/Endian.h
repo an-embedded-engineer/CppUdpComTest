@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "FloatIntConverter.h"
 #include "AppException.h"
 
@@ -146,31 +146,31 @@ namespace endian
     template<EndianType From, EndianType To, class T>
     inline T ByteSwap(T value)
     {
-        /* “ü—Íƒf[ƒ^ƒTƒCƒYƒ`ƒFƒbƒN */
+        /* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯ */
         static_assert((sizeof(T) == 1) || (sizeof(T) == 2) || (sizeof(T) == 4) || (sizeof(T) == 8), "(sizeof(T) == 1) || (sizeof(T) == 2) || (sizeof(T) == 4) || (sizeof(T) == 8)");
-        /* “ü—Íƒf[ƒ^Œ^ƒ`ƒFƒbƒN */
+        /* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿å‹ãƒã‚§ãƒƒã‚¯ */
         static_assert((std::is_arithmetic<T>::value), "(std::is_arithmetic<T>::value)");
-        /* ƒGƒ“ƒfƒBƒAƒ“•ÏŠ· */
+        /* ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³å¤‰æ› */
         return detail::Swap<From, To, T>()(value);
     }
 
     template<class T>
     inline T ConvertEndian(T value)
     {
-        /* “ü—Íƒf[ƒ^ƒTƒCƒYƒ`ƒFƒbƒN */
+        /* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯ */
         static_assert((sizeof(T) == 1) || (sizeof(T) == 2) || (sizeof(T) == 4) || (sizeof(T) == 8), "(sizeof(T) == 1) || (sizeof(T) == 2) || (sizeof(T) == 4) || (sizeof(T) == 8)");
-        /* “ü—Íƒf[ƒ^Œ^ƒ`ƒFƒbƒN */
+        /* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿å‹ãƒã‚§ãƒƒã‚¯ */
         static_assert((std::is_arithmetic<T>::value), "(std::is_arithmetic<T>::value)");
 
-        /* ƒŠƒgƒ‹ƒGƒ“ƒfƒBƒAƒ“ */
+        /* ãƒªãƒˆãƒ«ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ */
         if (GetEnvironmentEndian() == EndianType::Little)
         {
-            /* ƒGƒ“ƒfƒBƒAƒ“•ÏŠ·(ƒŠƒgƒ‹ -> ƒrƒbƒO) */
+            /* ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³å¤‰æ›(ãƒªãƒˆãƒ« -> ãƒ“ãƒƒã‚°) */
             return detail::Swap<EndianType::Little, EndianType::Big, T>()(value);
         }
         else
         {
-            /* ƒGƒ“ƒfƒBƒAƒ“•ÏŠ·(ƒrƒbƒO -> ƒŠƒgƒ‹) */
+            /* ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³å¤‰æ›(ãƒ“ãƒƒã‚° -> ãƒªãƒˆãƒ«) */
             return detail::Swap<EndianType::Big, EndianType::Little, T>()(value);
         }
     }

@@ -1,50 +1,50 @@
-#include "SocketException.h"
+ï»¿#include "SocketException.h"
 #include "StringFormat.h"
 
 namespace exception
 {
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     SocketException::SocketException(const std::string& message, const int error_code)
         : ExceptionBase(message)
         , m_ErrorCode(error_code)
         , m_ErrorMessage("")
     {
-        /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
         this->m_ErrorMessage = this->GenerateErrorMessage();
     }
 
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     SocketException::SocketException(const std::string& message, const int error_code, const std::string& file, const std::string& func, const int line)
         : ExceptionBase(message, file, func, line)
         , m_ErrorCode(error_code)
         , m_ErrorMessage("")
     {
-        /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
         this->m_ErrorMessage = this->GenerateErrorMessage();
     }
 
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     SocketException::~SocketException()
     {
         /* Nothing to do */
     }
 
-    /* ƒGƒ‰[ƒR[ƒh‚ğæ“¾ */
+    /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’å–å¾— */
     int SocketException::GetErrorCode()
     {
         return this->m_ErrorCode;
     }
 
-    /* ƒGƒ‰[—vˆö‚ğæ“¾ */
+    /* ã‚¨ãƒ©ãƒ¼è¦å› ã‚’å–å¾— */
     char const* SocketException::what() const
     {
         return this->m_ErrorMessage.c_str();
     }
 
-    /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+    /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
     const std::string SocketException::GenerateErrorMessage()
     {
-        /* ƒGƒ‰[î•ñ‚ª‚ ‚éê‡‚ÍAƒGƒ‰[î•ñ•t‚«ƒƒbƒZ[ƒW‚ğ¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼æƒ…å ±ãŒã‚ã‚‹å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼æƒ…å ±ä»˜ããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç”Ÿæˆ */
         if (this->m_IsErrorInfoExists == true)
         {
             return Format("[Socket Error] %s : Error Code = %d @ %s[%s:L.%d]", this->m_Message.c_str(), this->m_ErrorCode, this->m_FunctionName.c_str(), this->m_FilePath.c_str(), this->m_LineNumber);

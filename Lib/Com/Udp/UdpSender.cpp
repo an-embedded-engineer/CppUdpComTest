@@ -1,58 +1,58 @@
-#include "UdpSender.h"
+ï»¿#include "UdpSender.h"
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpSender::UdpSender()
     : m_SocketSender(nullptr)
     , m_PacketSender(UdpPacketSender::GetInstance())
 {
-    /* UDP Socket SenderƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX¶¬ */
+    /* UDP Socket Senderã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ */
     this->m_SocketSender = std::make_unique<UdpSocketSender>();
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpSender::~UdpSender()
 {
     /* Nothing to do */
 }
 
-/* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSender::OpenUniSocket(const std::string& remote_ip, const uint16_t remote_port)
 {
-    /* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_SocketSender->OpenUniSocket(remote_ip, remote_port);
 }
 
-/* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSender::OpenMultiSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl)
 {
-    /* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_SocketSender->OpenMultiSocket(multicast_ip, local_ip, multicast_port, ttl);
 }
 
-/* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSender::OpenBroadSocket(const std::string& remote_ip, const uint16_t remote_port)
 {
-    /* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_SocketSender->OpenBroadSocket(remote_ip, remote_port);
 }
 
-/* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+/* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
 void UdpSender::CloseSocket()
 {
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     this->m_SocketSender->CloseSocket();
 }
 
-/* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+/* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
 bool UdpSender::IsSocketOpened()
 {
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     return this->m_SocketSender->IsSocketOpened();
 }
 
-/* ƒf[ƒ^‘—M */
+/* ãƒ‡ãƒ¼ã‚¿é€ä¿¡ */
 void UdpSender::Transmit(const uint16_t message_id, const byte_ptr data_ptr, const size_t tx_size)
 {
-    /* ƒf[ƒ^‚ğUDPƒpƒPƒbƒg‚É•ªŠ„‚µ‚Ä‘—M */
+    /* ãƒ‡ãƒ¼ã‚¿ã‚’UDPãƒ‘ã‚±ãƒƒãƒˆã«åˆ†å‰²ã—ã¦é€ä¿¡ */
     this->m_PacketSender.Transmit(*this->m_SocketSender, message_id, data_ptr, tx_size);
 }

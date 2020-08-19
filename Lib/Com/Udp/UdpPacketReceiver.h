@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "SocketDataTypes.h"
 #include "UdpPacketTypes.h"
 #include "UdpPacketRxBufferMap.h"
@@ -6,37 +6,37 @@
 class UdpSocketReceiver;
 class UdpPacketEncoder;
 
-/* UDP Packet SenderƒNƒ‰ƒXéŒ¾ */
+/* UDP Packet Senderã‚¯ãƒ©ã‚¹å®£è¨€ */
 class UdpPacketReceiver final
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static UdpPacketReceiver& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpPacketReceiver();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpPacketReceiver();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketReceiver(const UdpPacketReceiver&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketReceiver(UdpPacketReceiver&&) = delete;
-    /* ƒRƒs[‘ã“ü‰‰Zqíœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketReceiver& operator=(const UdpPacketReceiver&) = delete;
-    /* ƒ€[ƒu‘ã“ü‰‰Zqíœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketReceiver& operator=(UdpPacketReceiver&&) = delete;
 
 public:
-    /* ƒf[ƒ^“¯ŠúóM */
+    /* ãƒ‡ãƒ¼ã‚¿åŒæœŸå—ä¿¡ */
     void ReceiveSync(UdpSocketReceiver& udp_socket_receiver);
 
-    /* óMƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
     void RegisterCallback(UdpPacketRxBufferMap::CallbackType& callback);
 
-    /* ƒƒbƒZ[ƒWID‚²‚Æ‚ÌóMƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^ */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã”ã¨ã®å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
     void RegisterCallback(uint16_t message_id, UdpPacketRxBuffer::CallbackType& callback);
 
 private:

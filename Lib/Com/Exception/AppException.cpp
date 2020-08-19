@@ -1,36 +1,36 @@
-#include "AppException.h"
+ï»¿#include "AppException.h"
 #include "StringFormat.h"
 
 namespace exception
 {
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     AppException::AppException(const std::string& message)
         : ExceptionBase(message)
         , m_ErrorMessage("")
     {
-        /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
         this->m_ErrorMessage = this->GenerateErrorMessage();
     }
 
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     AppException::AppException(const std::string& message, const std::string& file, const std::string& func, const int line)
         : ExceptionBase(message, file, func, line)
         , m_ErrorMessage("")
     {
-        /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
         this->m_ErrorMessage = this->GenerateErrorMessage();
     }
 
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     AppException::~AppException()
     {
         /* Nothing to do */
     }
 
-    /* ƒGƒ‰[—vˆö‚ğæ“¾ */
+    /* ã‚¨ãƒ©ãƒ¼è¦å› ã‚’å–å¾— */
     char const* AppException::what() const
     {
-        /* ƒGƒ‰[î•ñ‚ª‚ ‚éê‡‚ÍAƒGƒ‰[î•ñ•t‚«ƒƒbƒZ[ƒW‚ğo—Í */
+        /* ã‚¨ãƒ©ãƒ¼æƒ…å ±ãŒã‚ã‚‹å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼æƒ…å ±ä»˜ããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡ºåŠ› */
         if (this->m_IsErrorInfoExists == true)
         {
             return this->m_ErrorMessage.c_str();
@@ -41,10 +41,10 @@ namespace exception
         }
     }
 
-    /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+    /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
     const std::string AppException::GenerateErrorMessage()
     {
-        /* ƒGƒ‰[î•ñ‚ª‚ ‚éê‡‚ÍAƒGƒ‰[î•ñ•t‚«ƒƒbƒZ[ƒW‚ğ¶¬ */
+        /* ã‚¨ãƒ©ãƒ¼æƒ…å ±ãŒã‚ã‚‹å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼æƒ…å ±ä»˜ããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç”Ÿæˆ */
         if (this->m_IsErrorInfoExists == true)
         {
             return Format("[Application Error] %s @ %s[%s:L.%d]", this->m_Message.c_str(), this->m_FunctionName.c_str(), this->m_FilePath.c_str(), this->m_LineNumber);

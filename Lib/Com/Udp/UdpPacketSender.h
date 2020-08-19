@@ -1,45 +1,45 @@
-#pragma once
+ï»¿#pragma once
 #include "SocketDataTypes.h"
 #include "UdpPacketTypes.h"
 
 class UdpSocketSender;
 class UdpPacketEncoder;
 
-/* UDP Packet SenderƒNƒ‰ƒXéŒ¾ */
+/* UDP Packet Senderã‚¯ãƒ©ã‚¹å®£è¨€ */
 class UdpPacketSender final
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static UdpPacketSender& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpPacketSender();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpPacketSender();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketSender(const UdpPacketSender&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketSender(UdpPacketSender&&) = delete;
-    /* ƒRƒs[‘ã“ü‰‰Zqíœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketSender& operator=(const UdpPacketSender&) = delete;
-    /* ƒ€[ƒu‘ã“ü‰‰Zqíœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketSender& operator=(UdpPacketSender&&) = delete;
 
 public:
-    /* ƒf[ƒ^‘—M */
+    /* ãƒ‡ãƒ¼ã‚¿é€ä¿¡ */
     void Transmit(UdpSocketSender& udp_sockeet_sender, uint16_t message_id, byte_ptr data_ptr, size_t data_size);
 
 private:
-    /* ƒf[ƒ^‚ğUDPƒpƒPƒbƒg‚É•ªŠ„‚µ‚Ä‘—M */
+    /* ãƒ‡ãƒ¼ã‚¿ã‚’UDPãƒ‘ã‚±ãƒƒãƒˆã«åˆ†å‰²ã—ã¦é€ä¿¡ */
     void TransmitPacket(UdpSocketSender& udp_sockeet_sender, uint16_t message_id, byte_ptr data_ptr, size_t total_data_size, size_t total_block_num, size_t current_block_num, size_t start_index, size_t packet_data_size);
 
 private:
     /* UDP Packet Encoder */
     UdpPacketEncoder& m_Encoder;
-    /* ƒV[ƒPƒ“ƒX”Ô† */
+    /* ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ç•ªå· */
     uint16_t m_SequenceNum;
 };
 

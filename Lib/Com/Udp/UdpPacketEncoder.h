@@ -1,45 +1,45 @@
-#pragma once
+ï»¿#pragma once
 #include "SocketDataTypes.h"
 #include "UdpPacketTypes.h"
 #include "Endian.h"
 
-/* UDP Packet EncoderƒNƒ‰ƒXéŒ¾ */
+/* UDP Packet Encoderã‚¯ãƒ©ã‚¹å®£è¨€ */
 class UdpPacketEncoder final
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static UdpPacketEncoder& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     UdpPacketEncoder();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~UdpPacketEncoder();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketEncoder(const UdpPacketEncoder&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     UdpPacketEncoder(UdpPacketEncoder&&) = delete;
-    /* ƒRƒs[‘ã“ü‰‰Zqíœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketEncoder& operator=(const UdpPacketEncoder&) = delete;
-    /* ƒ€[ƒu‘ã“ü‰‰Zqíœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     UdpPacketEncoder& operator=(UdpPacketEncoder&&) = delete;
 
 public:
-    /* “ü—Íƒf[ƒ^‚ğUDP Packet‚ÉƒGƒ“ƒR[ƒh */
+    /* å…¥åŠ›ãƒ‡ãƒ¼ã‚¿ã‚’UDP Packetã«ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ */
     void Encode(const UdpPacketHeader& src_header, byte_ptr src_data_ptr, size_t start_index, size_t data_size, UdpPacket& dst_packet);
 
-    /* óMUDP Packet‚ğƒfƒR[ƒh */
+    /* å—ä¿¡UDP Packetã‚’ãƒ‡ã‚³ãƒ¼ãƒ‰ */
     void Decode(const UdpPacket& src_packet, const size_t rx_size, UdpPacket& dst_packet);
 
 private:
-    /* UDP Packet Header‚ÌƒGƒ“ƒfƒBƒAƒ“‚ğ•ÏŠ· */
+    /* UDP Packet Headerã®ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã‚’å¤‰æ› */
     void ConvertEndian(const UdpPacketHeader& src, UdpPacketHeader& dst);
 
 private:
-    /* ÀsŠÂ‹«‚ÌƒGƒ“ƒfƒBƒAƒ“ */
+    /* å®Ÿè¡Œç’°å¢ƒã®ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ */
     EndianType m_EnvironmentEndian;
-    /* ƒ^[ƒQƒbƒgƒGƒ“ƒfƒBƒAƒ“ : ƒlƒbƒgƒ[ƒNƒoƒCƒgƒI[ƒ_[ */
+    /* ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ : ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ */
     EndianType m_TargetEndian;
 };

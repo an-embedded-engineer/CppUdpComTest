@@ -1,9 +1,9 @@
-#include "UdpPacketRxBuffer.h"
+ï»¿#include "UdpPacketRxBuffer.h"
 #include "AppException.h"
 
 #include <iostream>
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketRxBuffer::UdpPacketRxBuffer()
     : m_MessageID(0)
     , m_Buffer(nullptr)
@@ -17,19 +17,19 @@ UdpPacketRxBuffer::UdpPacketRxBuffer()
     /* Nothing to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpPacketRxBuffer::~UdpPacketRxBuffer()
 {
     /* Nothing to do */
 }
 
-/* óMƒR[ƒ‹ƒoƒbƒN‚Ì“o˜^ */
+/* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã®ç™»éŒ² */
 void UdpPacketRxBuffer::RegisterCallback(CallbackType& callback)
 {
-    /* óMƒR[ƒ‹ƒoƒbƒN–¢“o˜^ */
+    /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯æœªç™»éŒ² */
     if (this->m_Callback == nullptr)
     {
-        /* óMƒR[ƒ‹ƒoƒbƒN‚ğ“o˜^ */
+        /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ç™»éŒ² */
         this->m_Callback = callback;
     }
     else
@@ -38,19 +38,19 @@ void UdpPacketRxBuffer::RegisterCallback(CallbackType& callback)
     }
 }
 
-/* ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ‚ÌƒŠƒNƒGƒXƒg */
+/* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—ã®ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
 void UdpPacketRxBuffer::RequestCallback()
 {
-    /* ƒR[ƒ‹ƒoƒbƒN“o˜^Šm”F */
+    /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç™»éŒ²ç¢ºèª */
     if (this->m_Callback != nullptr)
     {
-        /* óMŠ®—¹Šm”F */
+        /* å—ä¿¡å®Œäº†ç¢ºèª */
         if (this->IsCompleted() == true)
         {
-            /* óMƒf[ƒ^&ƒTƒCƒYŠm”F */
+            /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿&ã‚µã‚¤ã‚ºç¢ºèª */
             if (this->m_Buffer != nullptr && this->m_TotalSize > 0)
             {
-                /* óMƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ */
+                /* å—ä¿¡ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã— */
                 this->m_Callback(this->m_Buffer, this->m_TotalSize);
             }
             else
@@ -69,116 +69,116 @@ void UdpPacketRxBuffer::RequestCallback()
     }
 }
 
-/* UDP Packet‚Ì’Ç‰Á */
+/* UDP Packetã®è¿½åŠ  */
 void UdpPacketRxBuffer::Add(const UdpPacket& udp_packet)
 {
-    /* 1”Ô–Ú‚ÌƒpƒPƒbƒg */
+    /* 1ç•ªç›®ã®ãƒ‘ã‚±ãƒƒãƒˆ */
     if (udp_packet.Header.CurrentBlockNum == 1)
     {
-        /* 1”Ô–Ú‚ÌƒpƒPƒbƒg‚ğ’Ç‰Á */
+        /* 1ç•ªç›®ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’è¿½åŠ  */
         this->AddFirstPacket(udp_packet);
     }
     else
     {
-        /* 2”Ô–ÚˆÈ~‚ÌƒpƒPƒbƒg‚ğ’Ç‰Á */
+        /* 2ç•ªç›®ä»¥é™ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’è¿½åŠ  */
         this->AddContinuousPacket(udp_packet);
     }
 
-    /* óMŠ®—¹Šm”F */
+    /* å—ä¿¡å®Œäº†ç¢ºèª */
     if (this->CheckCompleted() == true)
     {
-        /* óMŠ®—¹ó‘ÔXV */
+        /* å—ä¿¡å®Œäº†çŠ¶æ…‹æ›´æ–° */
         this->m_IsCompleted = true;
     }
 }
 
-/* óMƒoƒbƒtƒ@æ“¾ */
+/* å—ä¿¡ãƒãƒƒãƒ•ã‚¡å–å¾— */
 void UdpPacketRxBuffer::GetBuffer(byte_ptr& data_ptr, size_t& data_size)
 {
-    /* óMƒoƒbƒtƒ@ƒZƒbƒg */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚»ãƒƒãƒˆ */
     data_ptr = this->m_Buffer;
 
-    /* óMƒf[ƒ^ƒTƒCƒYƒZƒbƒg */
+    /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚»ãƒƒãƒˆ */
     data_size = this->m_TotalSize;
 }
 
-/* óMƒoƒbƒtƒ@‚Ì‰ğ•ú */
+/* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾ */
 void UdpPacketRxBuffer::Release()
 {
-    /* ƒƒbƒZ[ƒWIDƒNƒŠƒA */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã‚¯ãƒªã‚¢ */
     this->m_MessageID = 0;
 
-    /* ‡Œvƒf[ƒ^ƒTƒCƒYƒNƒŠƒA */
+    /* åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚¯ãƒªã‚¢ */
     this->m_TotalSize = 0;
 
-    /* ‡ŒvƒuƒƒbƒN”ƒNƒŠƒA */
+    /* åˆè¨ˆãƒ–ãƒ­ãƒƒã‚¯æ•°ã‚¯ãƒªã‚¢ */
     this->m_TotalBlockNum = 0;
 
-    /* óMƒuƒƒbƒN”ƒNƒŠƒA */
+    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯æ•°ã‚¯ãƒªã‚¢ */
     this->m_ReceivedBlockNum = 0;
 
-    /* óMƒXƒe[ƒ^ƒXƒNƒŠƒA */
+    /* å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¯ãƒªã‚¢ */
     this->m_RecvStatus.clear();
 
-    /* óMƒoƒbƒtƒ@‰ğ•ú */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡è§£æ”¾ */
     free(this->m_Buffer);
 
-    /* óMƒoƒbƒtƒ@ƒAƒhƒŒƒXƒNƒŠƒA */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚¯ãƒªã‚¢ */
     this->m_Buffer = nullptr;
 
-    /* óMŠ®—¹ó‘ÔƒNƒŠƒA */
+    /* å—ä¿¡å®Œäº†çŠ¶æ…‹ã‚¯ãƒªã‚¢ */
     this->m_IsCompleted = false;
 }
 
-/* óMŠ®—¹ó‘Ôæ“¾ */
+/* å—ä¿¡å®Œäº†çŠ¶æ…‹å–å¾— */
 bool UdpPacketRxBuffer::IsCompleted()
 {
     return this->m_IsCompleted;
 }
 
-/* 1”Ô–Ú‚ÌƒpƒPƒbƒg‚ğ’Ç‰Á */
+/* 1ç•ªç›®ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’è¿½åŠ  */
 void UdpPacketRxBuffer::AddFirstPacket(const UdpPacket& udp_packet)
 {
-    /* UDP Packet Header‚ğæ“¾ */
+    /* UDP Packet Headerã‚’å–å¾— */
     const UdpPacketHeader& header = udp_packet.Header;
 
-    /* Œ»İ‚ÌƒuƒƒbƒNƒCƒ“ƒfƒbƒNƒX‚ğZo */
+    /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç®—å‡º */
     size_t current_block_index = header.CurrentBlockNum - 1;
 
-    /* óMŠ®—¹ó‘Ô‚ğƒNƒŠƒA */
+    /* å—ä¿¡å®Œäº†çŠ¶æ…‹ã‚’ã‚¯ãƒªã‚¢ */
     this->m_IsCompleted = false;
 
-    /* ƒƒbƒZ[ƒWID‚ğƒZƒbƒg */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDã‚’ã‚»ãƒƒãƒˆ */
     this->m_MessageID = header.MessageID;
 
-    /* ‡Œvƒf[ƒ^ƒTƒCƒY‚ğƒZƒbƒg */
+    /* åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ */
     this->m_TotalSize = header.TotalSize;
 
-    /* ‡ŒvƒuƒƒbƒN”‚ğƒZƒbƒg */
+    /* åˆè¨ˆãƒ–ãƒ­ãƒƒã‚¯æ•°ã‚’ã‚»ãƒƒãƒˆ */
     this->m_TotalBlockNum = header.TotalBlockNum;
 
-    /* óMƒuƒƒbƒN”‚ğƒZƒbƒg */
+    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯æ•°ã‚’ã‚»ãƒƒãƒˆ */
     this->m_ReceivedBlockNum = 1;
 
-    /* óMƒXƒe[ƒ^ƒX‚ğ‰Šú‰» */
+    /* å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’åˆæœŸåŒ– */
     this->m_RecvStatus.resize(this->m_TotalBlockNum);
 
-    /* óMƒuƒƒbƒN‚ÌóMƒXƒe[ƒ^ƒX‚ğƒZƒbƒg */
+    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯ã®å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚»ãƒƒãƒˆ */
     this->m_RecvStatus[current_block_index] = true;
 
-    /* óMƒoƒbƒtƒ@‚Ìƒƒ‚ƒŠŠm•Û */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã®ãƒ¡ãƒ¢ãƒªç¢ºä¿ */
     this->m_Buffer = (byte_ptr)malloc(this->m_TotalSize);
 
-    /* óMƒoƒbƒtƒ@Šm•Û¬Œ÷ */
+    /* å—ä¿¡ãƒãƒƒãƒ•ã‚¡ç¢ºä¿æˆåŠŸ */
     if (this->m_Buffer != nullptr)
     {
-        /* ŠJnƒCƒ“ƒfƒbƒNƒXƒZƒbƒg */
+        /* é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚»ãƒƒãƒˆ */
         size_t start_index = 0;
 
-        /* ƒuƒƒbƒNƒTƒCƒYZo */
+        /* ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºç®—å‡º */
         size_t block_size = header.PacketSize - UDP_PACKET_HEADER_SIZE;
 
-        /* UDP Packet Data‚ğóMƒoƒbƒtƒ@‚ÉƒRƒs[ */
+        /* UDP Packet Dataã‚’å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ */
         memcpy(&this->m_Buffer[start_index], udp_packet.Data, block_size);
     }
     else
@@ -187,40 +187,40 @@ void UdpPacketRxBuffer::AddFirstPacket(const UdpPacket& udp_packet)
     }
 }
 
-/* 2”Ô–ÚˆÈ~‚ÌƒpƒPƒbƒg‚ğ’Ç‰Á */
+/* 2ç•ªç›®ä»¥é™ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’è¿½åŠ  */
 void UdpPacketRxBuffer::AddContinuousPacket(const UdpPacket& udp_packet)
 {
-    /* UDP Packet Header‚ğæ“¾ */
+    /* UDP Packet Headerã‚’å–å¾— */
     const UdpPacketHeader& header = udp_packet.Header;
 
-    /* Œ»İ‚ÌƒuƒƒbƒNƒCƒ“ƒfƒbƒNƒX‚ğZo */
+    /* ç¾åœ¨ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç®—å‡º */
     size_t current_block_index = header.CurrentBlockNum - 1;
 
-    /* ƒƒbƒZ[ƒWIDŠm”F */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸IDç¢ºèª */
     if (this->m_MessageID == header.MessageID)
     {
-        /* ‡Œvƒf[ƒ^ƒTƒCƒYŠm”F */
+        /* åˆè¨ˆãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºç¢ºèª */
         if (this->m_TotalSize == header.TotalSize)
         {
-            /* ‡ŒvƒuƒƒbƒN”Šm”F */
+            /* åˆè¨ˆãƒ–ãƒ­ãƒƒã‚¯æ•°ç¢ºèª */
             if (this->m_TotalBlockNum == header.TotalBlockNum)
             {
-                /* óMƒXƒe[ƒ^ƒXŠm”F */
+                /* å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç¢ºèª */
                 if (this->m_RecvStatus.at(current_block_index) == false)
                 {
-                    /* óMƒuƒƒbƒN”ƒCƒ“ƒNƒŠƒƒ“ƒg */
+                    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯æ•°ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ */
                     this->m_ReceivedBlockNum++;
 
-                    /* óMƒuƒƒbƒN‚ÌóMƒXƒe[ƒ^ƒX‚ğƒZƒbƒg */
+                    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯ã®å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚»ãƒƒãƒˆ */
                     this->m_RecvStatus[current_block_index] = true;
 
-                    /* ŠJnƒCƒ“ƒfƒbƒNƒX‚ğZo */
+                    /* é–‹å§‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç®—å‡º */
                     size_t start_index = (size_t)current_block_index * (size_t)UDP_PACKET_DATA_SIZE;
 
-                    /* ƒuƒƒbƒNƒTƒCƒYZo */
+                    /* ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºç®—å‡º */
                     size_t block_size = header.PacketSize - UDP_PACKET_HEADER_SIZE;
 
-                    /* UDP Packet Data‚ğóMƒoƒbƒtƒ@‚ÉƒRƒs[ */
+                    /* UDP Packet Dataã‚’å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã«ã‚³ãƒ”ãƒ¼ */
                     memcpy(&this->m_Buffer[start_index], udp_packet.Data, block_size);
                 }
                 else
@@ -244,28 +244,28 @@ void UdpPacketRxBuffer::AddContinuousPacket(const UdpPacket& udp_packet)
     }
 }
 
-/* óMŠ®—¹Šm”F */
+/* å—ä¿¡å®Œäº†ç¢ºèª */
 bool UdpPacketRxBuffer::CheckCompleted()
 {
-    /* óMƒuƒƒbƒN”Šm”F */
+    /* å—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯æ•°ç¢ºèª */
     if (this->m_ReceivedBlockNum == this->m_TotalBlockNum)
     {
-        /* óMƒXƒe[ƒ^ƒX‚ğŠm”F */
+        /* å—ä¿¡ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ç¢ºèª */
         for (const auto& flag : this->m_RecvStatus)
         {
-            /* –¢óMƒuƒƒbƒN‚ª‚ ‚éê‡‚ÍóM–¢Š®—¹ */
+            /* æœªå—ä¿¡ãƒ–ãƒ­ãƒƒã‚¯ãŒã‚ã‚‹å ´åˆã¯å—ä¿¡æœªå®Œäº† */
             if (flag == false)
             {
                 return false;
             }
         }
 
-        /* óMŠ®—¹ */
+        /* å—ä¿¡å®Œäº† */
         return true;
     }
     else
     {
-        /* óM–¢Š®—¹ */
+        /* å—ä¿¡æœªå®Œäº† */
         return false;
     }
 }

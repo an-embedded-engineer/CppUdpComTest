@@ -1,58 +1,58 @@
-#include "UdpSocketReceiver.h"
+ï»¿#include "UdpSocketReceiver.h"
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpSocketReceiver::UdpSocketReceiver()
     : m_Adapter(nullptr)
 {
-    /* Socket AdapterƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX¶¬ */
+    /* Socket Adapterã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ */
     this->m_Adapter = std::make_unique<SocketAdapter>();
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpSocketReceiver::~UdpSocketReceiver()
 {
     /* Nothing to do */
 }
 
 
-/* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSocketReceiver::OpenUniSocket(const uint16_t local_port)
 {
-    /* UDPƒ†ƒjƒLƒƒƒXƒgŽóM—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* UDPãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆå—ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_Adapter->OpenUdpUniRxSocket(local_port);
 }
 
-/* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒžãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSocketReceiver::OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port)
 {
-    /* UDPƒ}ƒ‹ƒ`ƒLƒƒƒXƒgŽóM—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* UDPãƒžãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆå—ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_Adapter->OpenUdpMultiRxSocket(multicast_ip, multicast_port);
 }
 
-/* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSocketReceiver::OpenBroadSocket(const uint16_t local_port)
 {
-    /* UDPƒuƒ[ƒhƒLƒƒƒXƒgŽóM—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* UDPãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆå—ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_Adapter->OpenUdpBroadRxSocket(local_port);
 }
 
-/* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+/* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
 void UdpSocketReceiver::CloseSocket()
 {
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     this->m_Adapter->CloseSocket();
 }
 
-/* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+/* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
 bool UdpSocketReceiver::IsSocketOpened()
 {
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     return this->m_Adapter->IsSocketOpened();
 }
 
-/* ƒpƒPƒbƒg“¯ŠúŽóM */
+/* ãƒ‘ã‚±ãƒƒãƒˆåŒæœŸå—ä¿¡ */
 void UdpSocketReceiver::ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
 {
-    /* ƒpƒPƒbƒg“¯ŠúŽóM */
+    /* ãƒ‘ã‚±ãƒƒãƒˆåŒæœŸå—ä¿¡ */
     this->m_Adapter->ReceiveSync(buffer_ptr, buffer_size, rx_size);
 }

@@ -1,33 +1,33 @@
-#include "Singleton.h"
+ï»¿#include "Singleton.h"
 
-/* ƒ~ƒ…[ƒeƒbƒNƒX */
+/* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ */
 std::mutex SingletonFinalizer::s_Mutex;
 
-/* ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”ƒŠƒXƒg */
+/* ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°ãƒªã‚¹ãƒˆ */
 std::deque<SingletonFinalizer::FinalizerFunc> SingletonFinalizer::s_Finalizers;
 
-/* ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”’Ç‰Á */
+/* ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°è¿½åŠ  */
 void SingletonFinalizer::AddFinalizer(SingletonFinalizer::FinalizerFunc func)
 {
-    /* ƒ~ƒ…[ƒeƒbƒNƒX‚É‚æ‚é”r‘¼ˆ— */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::lock_guard<std::mutex> lock(SingletonFinalizer::s_Mutex);
 
-    /* ƒŠƒXƒg‚Ìæ“ª‚Éƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”‚ğ’Ç‰Á */
+    /* ãƒªã‚¹ãƒˆã®å…ˆé ­ã«ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°ã‚’è¿½åŠ  */
     SingletonFinalizer::s_Finalizers.push_front(func);
 }
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒtƒ@ƒCƒiƒ‰ƒCƒY */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚º */
 void SingletonFinalizer::Finalize()
 {
-    /* ƒ~ƒ…[ƒeƒbƒNƒX‚É‚æ‚é”r‘¼ˆ— */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::lock_guard<std::mutex> lock(SingletonFinalizer::s_Mutex);
 
-    /* ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”‚ğ‡”Ô‚ÉŒÄ‚Ño‚µ */
+    /* ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°ã‚’é †ç•ªã«å‘¼ã³å‡ºã— */
     for (const auto& func : SingletonFinalizer::s_Finalizers)
     {
         func();
     }
 
-    /* ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”ƒŠƒXƒg‚ğƒNƒŠƒA */
+    /* ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢ */
     SingletonFinalizer::s_Finalizers.clear();
 }

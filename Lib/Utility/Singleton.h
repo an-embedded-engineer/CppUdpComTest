@@ -1,74 +1,74 @@
-#pragma once
+ï»¿#pragma once
 
 #include <cassert>
 #include <deque>
 #include <mutex>
 
-/* Singleton FinalizerƒNƒ‰ƒXéŒ¾ */
+/* Singleton Finalizerã‚¯ãƒ©ã‚¹å®£è¨€ */
 class SingletonFinalizer
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”Œ^’è‹` */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°å‹å®šç¾© */
     using FinalizerFunc = void(*)();
 
 public:
-    /* ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”’Ç‰Á */
+    /* ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°è¿½åŠ  */
     static void AddFinalizer(FinalizerFunc func);
 
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒtƒ@ƒCƒiƒ‰ƒCƒY */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚º */
     static void Finalize();
 
 private:
-    /* ƒ~ƒ…[ƒeƒbƒNƒX */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ */
     static std::mutex s_Mutex;
 
-    /* ƒtƒ@ƒCƒiƒ‰ƒCƒYŠÖ”ƒŠƒXƒg */
+    /* ãƒ•ã‚¡ã‚¤ãƒŠãƒ©ã‚¤ã‚ºé–¢æ•°ãƒªã‚¹ãƒˆ */
     static std::deque<SingletonFinalizer::FinalizerFunc> s_Finalizers;
 };
 
-/* Singletonƒeƒ“ƒvƒŒ[ƒgƒNƒ‰ƒXéŒ¾ */
+/* Singletonãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹å®£è¨€ */
 template <typename T>
 class Singleton final
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXƒQƒbƒg */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚²ãƒƒãƒˆ */
     static T& GetInstance()
     {
-        /* 1“x‚¾‚¯ƒCƒ“ƒXƒ^ƒ“ƒX¶¬ƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ */
+        /* 1åº¦ã ã‘ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã— */
         std::call_once(Singleton<T>::s_InitFlag, Singleton<T>::Create);
         
-        /* ƒCƒ“ƒXƒ^ƒ“ƒX¶¬Šm”F */
+        /* ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆç¢ºèª */
         assert(Singleton<T>::s_Instance);
         
-        /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚· */
+        /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™ */
         return *Singleton<T>::s_Instance;
     }
 
 private:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX¶¬ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ */
     static void Create()
     {
-        /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX¶¬ */
+        /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ */
         Singleton<T>::s_Instance = new T;
         
-        /* Singleton Finalizer‚ÉƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX”j‰óƒƒ\ƒbƒh‚ğ“o˜^ */
+        /* Singleton Finalizerã«ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç ´å£Šãƒ¡ã‚½ãƒƒãƒ‰ã‚’ç™»éŒ² */
         SingletonFinalizer::AddFinalizer(&Singleton<T>::Destroy);
     }
 
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX”j‰ó */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç ´å£Š */
     static void Destroy()
     {
-        /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXíœ */
+        /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å‰Šé™¤ */
         delete Singleton<T>::s_Instance;
 
-        /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXƒAƒhƒŒƒXƒNƒŠƒA */
+        /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚¯ãƒªã‚¢ */
         Singleton<T>::s_Instance = nullptr;
     }
 
 private:
-    /* ‰Šú‰»ƒtƒ‰ƒO */
+    /* åˆæœŸåŒ–ãƒ•ãƒ©ã‚° */
     static std::once_flag s_InitFlag;
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ */
     static T* s_Instance;
 };
 

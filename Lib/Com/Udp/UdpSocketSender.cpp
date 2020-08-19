@@ -1,55 +1,55 @@
-#include "UdpSocketSender.h"
+ï»¿#include "UdpSocketSender.h"
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpSocketSender::UdpSocketSender()
     : m_Adapter(nullptr)
 {
-    /* Socket AdapterƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX¶¬ */
+    /* Socket Adapterã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ */
     this->m_Adapter = std::make_unique<SocketAdapter>();
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpSocketSender::~UdpSocketSender()
 {
     /* Nothing to do */
 }
 
-/* ƒ†ƒjƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSocketSender::OpenUniSocket(const std::string& remote_ip, const uint16_t remote_port)
 {
-    /* UDPƒ†ƒjƒLƒƒƒXƒg‘—M—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* UDPãƒ¦ãƒ‹ã‚­ãƒ£ã‚¹ãƒˆé€ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_Adapter->OpenUdpUniTxSocket(remote_ip, remote_port);
 }
 
-/* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒžãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSocketSender::OpenMultiSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl)
 {
-    /* UDPƒ}ƒ‹ƒ`ƒLƒƒƒXƒg‘—M—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* UDPãƒžãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆé€ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_Adapter->OpenUdpMultiTxSocket(multicast_ip, local_ip, multicast_port, ttl);
 }
 
-/* ƒuƒ[ƒhƒLƒƒƒXƒg—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+/* ãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
 void UdpSocketSender::OpenBroadSocket(const std::string& remote_ip, const uint16_t remote_port)
 {
-    /* UDPƒuƒ[ƒhƒLƒƒƒXƒg‘—M—pƒ\ƒPƒbƒgƒI[ƒvƒ“ */
+    /* UDPãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆé€ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_Adapter->OpenUdpBroadTxSocket(remote_ip, remote_port);
 }
 
-/* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+/* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
 void UdpSocketSender::CloseSocket()
 {
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     this->m_Adapter->CloseSocket();
 }
 
-/* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+/* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
 bool UdpSocketSender::IsSocketOpened()
 {
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“Šm”F */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     return this->m_Adapter->IsSocketOpened();
 }
 
-/* ƒpƒPƒbƒg‘—M */
+/* ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡ */
 void UdpSocketSender::Transmit(const any_ptr data_ptr, const size_t tx_size)
 {
     this->m_Adapter->Transmit(data_ptr, tx_size);
