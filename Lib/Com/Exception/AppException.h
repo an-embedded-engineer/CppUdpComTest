@@ -17,7 +17,7 @@ namespace exception
         virtual ~AppException();
 
         /* エラー要因を取得 */
-        virtual char const* what() const override;
+        virtual char const* what() const noexcept override;
 
     private:
         /* エラーメッセージ生成 */

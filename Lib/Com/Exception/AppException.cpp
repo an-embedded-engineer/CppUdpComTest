@@ -28,7 +28,7 @@ namespace exception
     }
 
     /* エラー要因を取得 */
-    char const* AppException::what() const
+    char const* AppException::what() const noexcept
     {
         /* エラー情報がある場合は、エラー情報付きメッセージを出力 */
         if (this->m_IsErrorInfoExists == true)

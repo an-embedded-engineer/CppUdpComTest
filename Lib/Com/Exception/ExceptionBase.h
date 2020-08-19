@@ -13,7 +13,7 @@ namespace exception
 
         /* 関数名 */
         std::string function_name;
-        
+
         /* ファイル行番号 */
         int line_number;
 
@@ -52,7 +52,7 @@ namespace exception
         const ErrorInfo& GetErrorInfo();
 
         /* エラー要因を取得 */
-        virtual char const* what() const override;
+        virtual char const* what() const noexcept override;
 
     protected:
         /* エラーメッセージ */

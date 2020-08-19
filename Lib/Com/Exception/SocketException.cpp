@@ -36,7 +36,7 @@ namespace exception
     }
 
     /* エラー要因を取得 */
-    char const* SocketException::what() const
+    char const* SocketException::what() const noexcept
     {
         return this->m_ErrorMessage.c_str();
     }

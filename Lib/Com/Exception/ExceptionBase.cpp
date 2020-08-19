@@ -59,7 +59,7 @@ namespace exception
     }
 
     /* エラー要因を取得 */
-    char const* ExceptionBase::what() const
+    char const* ExceptionBase::what() const noexcept
     {
         if (this->m_IsErrorInfoExists == true)
         {
