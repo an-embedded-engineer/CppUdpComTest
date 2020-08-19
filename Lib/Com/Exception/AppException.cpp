@@ -76,7 +76,7 @@ namespace exception
             }
 
             ss << "  ";
-            ss << std::setw(16) << std::setfill('0') << std::hex << stack_trace.traces[i];
+            ss << std::setw(16) << std::setfill('0') << std::hex << (uint64_t)stack_trace.traces[i];
             ss << " | ";
             ss << stack_trace.symbols[i];
         }
