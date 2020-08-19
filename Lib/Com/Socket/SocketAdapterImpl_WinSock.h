@@ -33,7 +33,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = startup_result;
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("WSA Startup Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("WSA Startup Failed", SocketAdapterImpl::s_ErrorCode);
         }
     }
 
@@ -49,7 +49,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("WSA Cleanup Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("WSA Cleanup Failed", SocketAdapterImpl::s_ErrorCode);
         }
     }
 
@@ -95,7 +95,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Unicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPユニキャスト送信用アドレス情報セット */
@@ -120,7 +120,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Unicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPユニキャスト受信用アドレス情報セット */
@@ -138,7 +138,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */
@@ -158,7 +158,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Multicast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPマルチキャスト送信用アドレス情報セット */
@@ -179,7 +179,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = errno;
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Multicast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPマルチキャストTTLセット */
@@ -195,7 +195,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = errno;
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Tx TTL Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Multicast Tx TTL Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */
@@ -215,7 +215,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Multicast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPマルチキャスト受信用アドレス情報セット */
@@ -233,7 +233,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Multicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* マルチキャストリクエストのセット */
@@ -251,7 +251,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Multicast Rx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Multicast Rx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */
@@ -271,7 +271,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Broadcast Tx Socket Open Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPブロードキャスト送信用アドレス情報セット */
@@ -290,7 +290,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Broadcast Tx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */
@@ -310,7 +310,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Broadcast Rx Socket Open Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* UDPブロードキャスト受信用アドレス情報セット */
@@ -328,7 +328,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("UDP Broadcast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("UDP Broadcast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
         /* ソケットオープン状態更新 */
@@ -351,7 +351,7 @@ public:
                 SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
                 /* ソケット例外送出 */
-                throw SocketException(SocketAdapterImpl::GetErrorMessage("Socket Close Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+                THROW_SOCKET_EXCEPTION("Socket Close Failed", SocketAdapterImpl::s_ErrorCode);
             }
             /* ソケットクローズ成功時 */
             else
@@ -385,7 +385,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("Packet Transmit Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("Packet Transmit Failed", SocketAdapterImpl::s_ErrorCode);
         }
     }
 
@@ -402,7 +402,7 @@ public:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode);
         }
         /* パケット受信成功時 */
         else
@@ -413,16 +413,6 @@ public:
     }
 
 private:
-    /* エラーメッセージ生成 */
-    static inline std::string GetErrorMessage(const char* message, int error_code)
-    {
-        std::stringstream ss;
-
-        ss << "[Socket Error] " << message << " : ErrorCode = " << error_code;
-
-        return ss.str();
-    }
-
     /* IPアドレスの変換(文字列 -> 数値) */
     static ULONG ConvertIpStrToNum(const ADDRESS_FAMILY family, const std::string& ip)
     {
@@ -444,7 +434,7 @@ private:
             SocketAdapterImpl::s_ErrorCode = -1;
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode);
         }
         else
         {
@@ -452,7 +442,7 @@ private:
             SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
 
             /* ソケット例外送出 */
-            throw SocketException(SocketAdapterImpl::GetErrorMessage("Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode), SocketAdapterImpl::s_ErrorCode);
+            THROW_SOCKET_EXCEPTION("Convert IP Address Failed", SocketAdapterImpl::s_ErrorCode);
         }
     }
 

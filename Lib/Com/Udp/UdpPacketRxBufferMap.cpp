@@ -1,6 +1,6 @@
 #include "UdpPacketRxBufferMap.h"
+#include "AppException.h"
 
-#include <stdexcept>
 #include <iostream>
 
 /* シングルトンインスタンス取得 */
@@ -35,7 +35,7 @@ void UdpPacketRxBufferMap::RegisterCallback(CallbackType& callback)
     }
     else
     {
-        throw std::logic_error("Callback is already registered");
+        THROW_APP_EXCEPTION("Callback is already registered");
     }
 }
 
@@ -109,7 +109,7 @@ void UdpPacketRxBufferMap::RequestCallback(uint16_t message_id, const byte_ptr d
         }
         else
         {
-            throw std::logic_error("Rx Buffer & Size are invalid");
+            THROW_APP_EXCEPTION("Rx Buffer & Size are invalid");
         }
     }
     else

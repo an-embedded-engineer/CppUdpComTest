@@ -1,6 +1,6 @@
 #include "UdpPacketRxBuffer.h"
+#include "AppException.h"
 
-#include <stdexcept>
 #include <iostream>
 
 /* コンストラクタ */
@@ -34,7 +34,7 @@ void UdpPacketRxBuffer::RegisterCallback(CallbackType& callback)
     }
     else
     {
-        throw std::logic_error("Callback is already registered");
+        THROW_APP_EXCEPTION("Callback is already registered");
     }
 }
 
@@ -55,12 +55,12 @@ void UdpPacketRxBuffer::RequestCallback()
             }
             else
             {
-                throw std::logic_error("Rx Buffer & Size are invalid");
+                THROW_APP_EXCEPTION("Rx Buffer & Size are invalid");
             }
         }
         else
         {
-            throw std::logic_error("Rx Buffer is not completed");
+            THROW_APP_EXCEPTION("Rx Buffer is not completed");
         }
     }
     else
@@ -183,7 +183,7 @@ void UdpPacketRxBuffer::AddFirstPacket(const UdpPacket& udp_packet)
     }
     else
     {
-        throw std::bad_alloc();
+        THROW_APP_EXCEPTION("Memory Allocation Failed");
     }
 }
 
@@ -225,22 +225,22 @@ void UdpPacketRxBuffer::AddContinuousPacket(const UdpPacket& udp_packet)
                 }
                 else
                 {
-                    throw std::logic_error("Current Block is already received");
+                    THROW_APP_EXCEPTION("Current Block is already received");
                 }
             }
             else
             {
-                throw std::logic_error("Different Total Block Num");
+                THROW_APP_EXCEPTION("Different Total Block Num");
             }
         }
         else
         {
-            throw std::logic_error("Different Total Data Size");
+            THROW_APP_EXCEPTION("Different Total Data Size");
         }
     }
     else
     {
-        throw std::logic_error("Different Message ID");
+        THROW_APP_EXCEPTION("Different Message ID");
     }
 }
 

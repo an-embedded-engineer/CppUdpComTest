@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Com\Exception\AppException.h" />
+    <ClInclude Include="Com\Exception\ExceptionBase.h" />
     <ClInclude Include="Com\Socket\SocketAdapter.h" />
     <ClInclude Include="Com\Socket\SocketAdapterImpl_Socket.h" />
     <ClInclude Include="Com\Socket\SocketAdapterImpl_Unknown.h" />
     <ClInclude Include="Com\Socket\SocketAdapterImpl_WinSock.h" />
     <ClInclude Include="Com\Socket\SocketDataTypes.h" />
-    <ClInclude Include="Com\Socket\SocketException.h" />
+    <ClInclude Include="Com\Exception\SocketException.h" />
     <ClInclude Include="Com\Udp\UdpPacketTypes.h" />
     <ClInclude Include="Config\CompileSwitch.h" />
     <ClInclude Include="Com\Udp\UdpSocketSender.h" />
@@ -39,8 +41,12 @@
     <ClInclude Include="Utility\Endian.h" />
     <ClInclude Include="Utility\FloatIntConverter.h" />
     <ClInclude Include="Utility\Singleton.h" />
+    <ClInclude Include="Utility\StringFormat.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Com\Exception\AppException.cpp" />
+    <ClCompile Include="Com\Exception\ExceptionBase.cpp" />
+    <ClCompile Include="Com\Exception\SocketException.cpp" />
     <ClCompile Include="Com\Socket\SocketAdapter.cpp" />
     <ClCompile Include="Com\Udp\UdpSocketSender.cpp" />
     <ClCompile Include="Com\Udp\UdpSocketReceiver.cpp" />
@@ -134,7 +140,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Exception;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,7 +159,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Exception;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -172,7 +178,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Exception;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -191,7 +197,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\Com;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Com;.\Com\Exception;.\Com\Socket;.\Com\Udp;.\Config;.\Utility</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

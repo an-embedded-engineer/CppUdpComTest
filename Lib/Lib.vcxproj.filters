@@ -33,9 +33,6 @@
     <ClInclude Include="Com\Socket\SocketDataTypes.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Com\Socket\SocketException.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Com\Udp\UdpPacketTypes.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -75,6 +72,18 @@
     <ClInclude Include="Com\Udp\UdpReceiver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Com\Exception\SocketException.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Com\Exception\AppException.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Com\Exception\ExceptionBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StringFormat.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Com\Socket\SocketAdapter.cpp">
@@ -108,6 +117,15 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Com\Udp\UdpReceiver.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Com\Exception\ExceptionBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Com\Exception\AppException.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Com\Exception\SocketException.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

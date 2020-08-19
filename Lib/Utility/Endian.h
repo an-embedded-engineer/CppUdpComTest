@@ -1,8 +1,8 @@
 #pragma once
 #include "FloatIntConverter.h"
+#include "AppException.h"
 
 #include <cstdint>
-#include <stdexcept>
 #include <type_traits>
 
 enum class EndianType
@@ -44,7 +44,7 @@ namespace endian
         {
             inline T operator()(T value)
             {
-                throw std::out_of_range("Byte Size");
+                THROW_APP_EXCEPTION("Byte Size");
             }
         };
 

@@ -1,6 +1,7 @@
 #pragma once
+#include "AppException.h"
+
 #include <cstdint>
-#include <stdexcept>
 
 union Float32Int32Convert
 {
@@ -31,12 +32,12 @@ struct FloatIntConverter
 {
     static TF ConvertToFloat(TI value)
     {
-        throw std::out_of_range("Invalid Type");
+        THROW_APP_EXCEPTION("Invalid Type");
     }
 
     static TI ConvertToInt(TF value)
     {
-        throw std::out_of_range("Invalid Type");
+        THROW_APP_EXCEPTION("Invalid Type");
     }
 };
 

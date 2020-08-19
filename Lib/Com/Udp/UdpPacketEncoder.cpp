@@ -1,4 +1,5 @@
 #include "UdpPacketEncoder.h"
+#include "AppException.h"
 
 /* シングルトンインスタンス取得 */
 UdpPacketEncoder& UdpPacketEncoder::GetInstance()
@@ -50,7 +51,7 @@ void UdpPacketEncoder::Decode(const UdpPacket& src_packet, const size_t rx_size,
     }
     else
     {
-        throw std::runtime_error("Packet Size Mismatch");
+        THROW_APP_EXCEPTION("Packet Size Mismatch");
     }
 }
 

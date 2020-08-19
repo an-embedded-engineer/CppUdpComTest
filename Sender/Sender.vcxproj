@@ -97,7 +97,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,7 +133,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,7 +151,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile />
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Sender;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
