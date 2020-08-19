@@ -47,11 +47,11 @@ namespace exception
         /* エラー情報がある場合は、エラー情報付きメッセージを生成 */
         if (this->m_IsErrorInfoExists == true)
         {
-            return Format("[Application Error] %s @ %s[%s:L.%d]", this->m_Message.c_str(), this->m_FunctionName.c_str(), this->m_FilePath.c_str(), this->m_LineNumber);
+            return StringFormat("[Application Error] %s @ %s[%s:L.%d]", this->m_Message, this->m_FunctionName, this->m_FilePath, this->m_LineNumber);
         }
         else
         {
-            return Format("[Application Error] %s", this->m_Message.c_str());
+            return StringFormat("[Application Error] %s", this->m_Message);
         }
     }
 }

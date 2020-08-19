@@ -47,11 +47,11 @@ namespace exception
         /* エラー情報がある場合は、エラー情報付きメッセージを生成 */
         if (this->m_IsErrorInfoExists == true)
         {
-            return Format("[Socket Error] %s : Error Code = %d @ %s[%s:L.%d]", this->m_Message.c_str(), this->m_ErrorCode, this->m_FunctionName.c_str(), this->m_FilePath.c_str(), this->m_LineNumber);
+            return StringFormat("[Socket Error] %s : Error Code = %d @ %s[%s:L.%d]", this->m_Message, this->m_ErrorCode, this->m_FunctionName, this->m_FilePath, this->m_LineNumber);
         }
         else
         {
-            return Format("[Socket Error] %s : Error Code = %d", this->m_Message.c_str(), this->m_ErrorCode);
+            return StringFormat("[Socket Error] %s : Error Code = %d", this->m_Message, this->m_ErrorCode);
         }
     }
 }

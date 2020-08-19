@@ -2,6 +2,9 @@
 #include "UdpSocketSender.h"
 #include "UdpSender.h"
 #include "CompileSwitch.h"
+#include "AppException.h"
+#include "SocketException.h"
+#include "StringFormat.h"
 
 #include <chrono>
 #include <cstring>
