@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <cstdint>
 #include <vector>
+#include <string>
 
 /* アドレス型 */
 using address_t = void*;

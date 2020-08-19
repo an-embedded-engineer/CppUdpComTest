@@ -14,6 +14,22 @@
 #define COM_TYPE                    COM_UNKNONW         /* Other : Not Support */
 #endif
 
+#define TARGET_MSVC                 (0)
+#define TARGET_MAC                  (1)
+#define TARGET_LINUX                (2)
+#define TARGET_UNKNOWN              (-1)
+
+#if defined(_MSC_VER)
+#define TARGET_TYPE                 TARGET_MSVC         /* Visual Studio */
+#elif defined(__MACH__)
+#define TARGET_TYPE                 TARGET_MAC          /* Mac */
+#elif defined(__linux__)
+#define TARGET_TYPE                 TARGET_LINUX        /* Linux */
+#else
+#define TARGET_TYPE                 TARGET_UNKNOWN      /* Other */
+#endif
+
+
 #define TEST_COM_MODE_UNICAST       (0)
 #define TEST_COM_MODE_MULTICAST     (1)
 #define TEST_COM_MODE_BROADCAST     (2)
