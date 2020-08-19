@@ -48,6 +48,8 @@ const StackTrace StackTracer::GetStackTrace()
             stack_trace.traces.push_back(traces[i]);
             stack_trace.symbols.push_back(std::string(symbol->Name));
         }
+
+        free(symbol);
     }
 
     return stack_trace;
