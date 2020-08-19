@@ -59,6 +59,32 @@ const StackTrace StackTracer::GetStackTrace()
 
 #include <execinfo.h>
 #include <string>
+#include <iostream>
+#include <regex>
+
+#define DEMANGLE_SYMBOL_ENABLED     (1)
+
+#if DEMANGLE_SYMBOL_ENABLED == 1
+#include <cxxabi.h>
+#include <typeinfo>
+
+inline std::string GetRawFunctionName(const std::string& raw_symbol_info)
+{
+    std::regex pattern("^(\\d+)\\s+([\\w.]+)\\s+(0x[0-9A-Fa-f]+)\\s(\\w+)\\s(.+)$");
+    std::smatch sm;
+
+    if (std::regex_match(raw_symbol_info, sm, pattern))
+    {
+        std::string raw_function_name = sm[4].str();
+
+        return raw_function_name;
+    }
+    else
+    {
+        return "";
+    }
+}
+#endif
 
 /* スタックトレース情報取得 */
 const StackTrace StackTracer::GetStackTrace()
@@ -82,8 +108,48 @@ const StackTrace StackTracer::GetStackTrace()
     for (int i = 0; i < trace_size; i++)
     {
         stack_trace.traces.push_back(traces[i]);
-        stack_trace.symbols.push_back(std::string(symbols[i]));
+
+        std::string raw_symbol_info = symbols[i];
+
+#if DEMANGLE_SYMBOL_ENABLED == 1
+        std::string symbol_info = "";
+
+        std::string raw_function_name = GetRawFunctionName(raw_symbol_info);
+
+        if (raw_function_name != "")
+        {
+            std::cout << raw_function_name << std::endl;
+
+            if (raw_function_name[0] == '_')
+            {
+                int status = 0;
+                char* demangled = abi::__cxa_demangle(raw_function_name.c_str(), 0, 0, &status);
+
+                std::string demangled_function = demangled;
+
+                free(demangled);
+
+                symbol_info = demangled_function;
+            }
+            else
+            {
+                symbol_info = raw_function_name;
+            }
+
+        }
+        else
+        {
+            symbol_info = raw_symbol_info;
+        }
+
+#else
+        std::string symbol_info = raw_symbol_info;
+#endif
+
+        stack_trace.symbols.push_back(symbol_info);
     }
+
+    free(symbols);
 
     return stack_trace;
 }
