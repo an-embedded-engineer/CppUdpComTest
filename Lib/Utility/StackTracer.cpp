@@ -31,7 +31,7 @@ const StackTrace StackTracer::GetStackTrace()
     constexpr size_t MaxNameSize = 255;
     /* シンボル情報サイズを算出 */
     constexpr size_t SymbolInfoSize = sizeof(SYMBOL_INFO) + ((MaxNameSize + 1) * sizeof(char));
-    
+
     /* シンボル情報のメモリ確保 */
     SYMBOL_INFO* symbol = (SYMBOL_INFO*)calloc(SymbolInfoSize, 1);
 
@@ -120,7 +120,7 @@ struct SymbolInfo
 inline SymbolInfo GetSymbolInfo(const std::string& raw_symbol_info)
 {
     /* シンボル情報パターン ： <Depth> <ObjectName> <Address> <MangledSymbolName> + <Offset> */
-    std::regex pattern("^(\\d+)\\s+([\\w.]+)\\s+(0x[0-9A-Fa-f]+)\\s+(\\w+)\\s+\\+\\s+(\\d+)$");
+    std::regex pattern("^(\\d+)\\s+([\\w.\\?]+)\\s+(0x[0-9A-Fa-f]+)\\s+(\\w+)\\s+\\+\\s+(\\d+)$");
     std::smatch sm;
 
     /* シンボル情報生成 */
