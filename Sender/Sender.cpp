@@ -34,6 +34,9 @@ static void EncodeBigTxMessage(const size_t tx_msg_size, byte_ptr& buffer_ptr, s
 
 int main()
 {
+    std::string text = "Test Message";
+    std::cout << StringFormat("%s %d", text, 111) << std::endl;
+
     try
     {
 #if TEST_MODE == TEST_MODE_SCOKET_ADAPTER
