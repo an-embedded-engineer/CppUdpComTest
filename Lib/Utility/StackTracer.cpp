@@ -21,36 +21,57 @@ const StackTrace StackTracer::GetStackTrace()
     /* 現在のプロセスを取得 */
     HANDLE process = GetCurrentProcess();
 
+    /* シンボルハンドラの初期化 */
     SymInitialize(process, NULL, TRUE);
 
+    /* スタックトレースの取得 */
     uint16_t trace_size = CaptureStackBackTrace(0, MaxSize, traces, NULL);
 
+    /* シンボル名最大サイズをセット */
     constexpr size_t MaxNameSize = 255;
+    /* シンボル情報サイズを算出 */
     constexpr size_t SymbolInfoSize = sizeof(SYMBOL_INFO) + ((MaxNameSize + 1) * sizeof(char));
-
+    
+    /* シンボル情報のメモリ確保 */
     SYMBOL_INFO* symbol = (SYMBOL_INFO*)calloc(SymbolInfoSize, 1);
 
     /* スタックトレース情報生成 */
     StackTrace stack_trace;
 
+    /* シンボル情報メモリ確保成功 */
     if (symbol != nullptr)
     {
+        /* シンボル名最大サイズをセット */
         symbol->MaxNameLen = MaxNameSize;
+        /* シンボル情報サイズをセット */
         symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
 
+        /* トレースサイズをセット */
         stack_trace.trace_size = (uint32_t)trace_size;
+        /* トレースリストのメモリ確保 */
         stack_trace.traces.reserve((size_t)trace_size);
+        /* シンボルリストのメモリ確保 */
         stack_trace.symbols.reserve((size_t)trace_size);
 
+        /* トレースサイズ分ループ */
         for (uint16_t i = 0; i < trace_size; i++)
         {
+            /* トレースアドレスからシンボル情報を取得 */
             SymFromAddr(process, (DWORD64)(traces[i]), 0, symbol);
 
+            /* トレースアドレスをトレースリストに追加 */
             stack_trace.traces.push_back(traces[i]);
+
+            /* シンボル名をシンボルリストに追加 */
             stack_trace.symbols.push_back(std::string(symbol->Name));
         }
 
+        /* シンボル情報のメモリ解放 */
         free(symbol);
+    }
+    else
+    {
+        /* Nothing to do */
     }
 
     return stack_trace;
@@ -63,7 +84,8 @@ const StackTrace StackTracer::GetStackTrace()
 #include <iostream>
 #include <regex>
 
-#define DEMANGLE_SYMBOL_ENABLED     (0)
+/* シンボルのデマングル有効化 */
+#define DEMANGLE_SYMBOL_ENABLED     (1)
 
 #if DEMANGLE_SYMBOL_ENABLED == 1
 #include <cxxabi.h>
