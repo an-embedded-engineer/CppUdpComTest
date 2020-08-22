@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CMakeLists.txt = CMakeLists.txt
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{5C2E53F3-9012-42BA-BD17-D4E02DA20869}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +49,14 @@ Global
 		{4DC54F3F-9921-4FDF-93F6-FAEE2FA5CB0B}.Release|x64.Build.0 = Release|x64
 		{4DC54F3F-9921-4FDF-93F6-FAEE2FA5CB0B}.Release|x86.ActiveCfg = Release|Win32
 		{4DC54F3F-9921-4FDF-93F6-FAEE2FA5CB0B}.Release|x86.Build.0 = Release|Win32
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Debug|x64.ActiveCfg = Debug|x64
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Debug|x64.Build.0 = Debug|x64
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Debug|x86.ActiveCfg = Debug|Win32
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Debug|x86.Build.0 = Debug|Win32
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Release|x64.ActiveCfg = Release|x64
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Release|x64.Build.0 = Release|x64
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Release|x86.ActiveCfg = Release|Win32
+		{5C2E53F3-9012-42BA-BD17-D4E02DA20869}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
