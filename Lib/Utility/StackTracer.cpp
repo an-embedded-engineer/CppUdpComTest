@@ -131,7 +131,7 @@ inline SymbolInfo GetSymbolInfo(const std::string& raw_symbol_info)
 inline SymbolInfo GetSymbolInfo(const std::string& raw_symbol_info)
 {
     /* シンボル情報パターン ： <ObjectName>(<MangledSymbolName>+<Offset>) [<Address>] */
-    std::regex pattern("^(.+)\\((\\w*)\+(0x[0-9a-fA-F]+)\\)\\s+\\[(0x[0-9a-fA-F]+)\\]$");
+    std::regex pattern("^(.+)\\((\\w*)\\+(0x[0-9a-fA-F]+)\\)\\s+\\[(0x[0-9a-fA-F]+)\\]$");
     std::smatch sm;
 
     /* シンボル情報生成 */
@@ -207,7 +207,7 @@ inline std::string GetSymbolInfoText(const std::string& raw_symbol_info)
         else
         {
             /* シンボル情報テキストをセット */
-            symbol_info_text = StringFormat("%s %s() + %s", symbol_info.object_name, mangled_symbol_name, symbol_info.offset);
+            symbol_info_text = StringFormat("%s %s + %s", symbol_info.object_name, mangled_symbol_name, symbol_info.offset);
         }
     }
     else
