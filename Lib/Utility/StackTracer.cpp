@@ -113,6 +113,7 @@ struct SymbolInfo
         , mangled_symbol_name("")
         , offset("")
     {
+        /* Nothing to do */
     }
 };
 
@@ -182,6 +183,7 @@ inline SymbolInfo GetSymbolInfo(const std::string& raw_symbol_info)
     return symbol_info;
 }
 #else
+/* シンボル情報取得 */
 inline SymbolInfo GetSymbolInfo(const std::string& raw_symbol_info)
 {
     /* 無効なシンボル情報を生成 */
