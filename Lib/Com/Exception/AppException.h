@@ -31,6 +31,7 @@ namespace exception
     };
 }
 
+/* Application Exceptionのthrow */
 #define THROW_APP_EXCEPTION(message) \
     throw exception::AppException(message, __FILE__, __FUNCTION__, __LINE__)
 

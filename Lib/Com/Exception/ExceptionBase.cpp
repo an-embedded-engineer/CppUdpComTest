@@ -61,18 +61,22 @@ namespace exception
     /* エラー要因を取得 */
     char const* ExceptionBase::what() const noexcept
     {
+        /* エラー情報が存在する場合 */
         if (this->m_IsErrorInfoExists == true)
         {
             std::stringstream ss;
 
+            /* エラーメッセージに、エラー発生箇所(関数名、ファイルパス、ファイル行数)を付加 */
             ss << this->m_Message << " @ " << this->m_FunctionName << "[" << this->m_FilePath << ": L." << this->m_LineNumber << "]";
 
             std::string message = ss.str();
 
             return message.c_str();
         }
+        /* エラー情報が存在しない場合 */
         else
         {
+            /* エラーメッセージのみ出力 */
             return this->m_Message.c_str();
         }
     }

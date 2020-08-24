@@ -35,6 +35,7 @@ namespace exception
     };
 }
 
+/* Socket Exceptionのthrow */
 #define THROW_SOCKET_EXCEPTION(message, error_code) \
     throw exception::SocketException(message, error_code, __FILE__, __FUNCTION__, __LINE__)
 

@@ -41,7 +41,6 @@ static void ExceptionTest()
     TestFunc1();
 }
 
-
 static void TestFunc1()
 {
     TestFunc2();
