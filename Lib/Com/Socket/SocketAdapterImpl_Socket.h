@@ -17,6 +17,8 @@
 
 #include <sstream>
 #include <cstring>
+#include <thread>
+#include <chrono>
 
 /* Socket Adapter Implクラス定義 */
 class SocketAdapterImpl final
@@ -480,33 +482,40 @@ public:
         }
         else
         {
-            /* ソケットからパケット受信(ノンブロッキング) */
-            int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
-
-            /* パケット受信成功時 */
-            if (receive_result >= 0)
+            while (true)
             {
-                /* 受信データサイズをセット */
-                rx_size = (size_t)receive_result;
-            }
-            /* パケット受信失敗時のエラー処理 */
-            else
-            {
-                /* エラーコード取得 */
-                int error_code = errno;
+                /* ソケットからパケット受信(ノンブロッキング) */
+                int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-                /* データ未受信の場合 */
-                if (error_code == EAGAIN)
+                /* パケット受信成功時 */
+                if (receive_result >= 0)
                 {
-                    /* Nothing to do */
+                    /* 受信データサイズをセット */
+                    rx_size = (size_t)receive_result;
+
+                    /* ループを抜ける */
+                    break;
                 }
+                /* パケット受信失敗時のエラー処理 */
                 else
                 {
-                    /* エラーコードセット */
-                    SocketAdapterImpl::s_ErrorCode = errno;
+                    /* エラーコード取得 */
+                    int error_code = errno;
 
-                    /* ソケット例外送出 */
-                    THROW_SOCKET_EXCEPTION("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode);
+                    /* データ未受信の場合 */
+                    if (error_code == EAGAIN)
+                    {
+                        /* 10ms待機 */
+                        std::this_thread::sleep_for(std::chrono::microseconds(10));
+                    }
+                    else
+                    {
+                        /* エラーコードセット */
+                        SocketAdapterImpl::s_ErrorCode = errno;
+
+                        /* ソケット例外送出 */
+                        THROW_SOCKET_EXCEPTION("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode);
+                    }
                 }
             }
         }

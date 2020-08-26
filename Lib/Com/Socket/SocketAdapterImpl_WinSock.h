@@ -147,7 +147,7 @@ public:
 
         /* 受信タイプをセット */
         this->m_ReceiveType = receive_type;
-        
+
         /* 受信タイプが非同期の場合 */
         if (this->m_ReceiveType == ReceiveType::Async)
         {
@@ -515,6 +515,7 @@ public:
                     /* 受信データサイズをセット */
                     rx_size = (size_t)receive_result;
 
+                    /* ループを抜ける */
                     break;
                 }
             }

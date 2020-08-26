@@ -21,6 +21,7 @@ add_library(ComLib
 target_include_directories(ComLib
   PUBLIC
   ${PROJECT_SOURCE_DIR}/Lib/Com
+  ${PROJECT_SOURCE_DIR}/Lib/Com/Common
   ${PROJECT_SOURCE_DIR}/Lib/Com/Exception
   ${PROJECT_SOURCE_DIR}/Lib/Com/Socket
   ${PROJECT_SOURCE_DIR}/Lib/Com/Udp
