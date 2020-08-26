@@ -2,6 +2,7 @@
 #include "UdpSocketReceiver.h"
 #include "UdpReceiver.h"
 #include "CompileSwitch.h"
+#include "ReceiveType.h"
 
 #include <iostream>
 #include <sstream>
@@ -24,6 +25,8 @@ static void UdpReceiverTest();
 /* 受信メッセージのデコード */
 static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size);
 #endif
+
+constexpr ReceiveType RecvType = ReceiveType::Async;
 
 int main()
 {
@@ -64,17 +67,17 @@ static void SocketAdapterTest()
 
 #if TEST_COM_MODE == TEST_COM_MODE_UNICAST
     /* UDPユニキャスト受信用ソケットオープン */
-    adapter.OpenUdpUniRxSocket(UDP_PORT);
+    adapter.OpenUdpUniRxSocket(UDP_PORT, RecvType);
 
     std::cout << "UDP Unicast Rx Socket Open Success" << std::endl;
 #elif TEST_COM_MODE == TEST_COM_MODE_MULTICAST
     /* UDPマルチキャスト受信用ソケットオープン */
-    adapter.OpenUdpMultiRxSocket(MULTICAST_IP, UDP_PORT);
+    adapter.OpenUdpMultiRxSocket(MULTICAST_IP, UDP_PORT, RecvType);
 
     std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
 #elif TEST_COM_MODE == TEST_COM_MODE_BROADCAST
     /* UDPブロードキャスト受信用ソケットオープン */
-    adapter.OpenUdpBroadRxSocket(UDP_PORT);
+    adapter.OpenUdpBroadRxSocket(UDP_PORT, RecvType);
 
     std::cout << "UDP Broadcast Rx Socket Open Success" << std::endl;
 #endif
@@ -91,8 +94,8 @@ static void SocketAdapterTest()
 
         try
         {
-            /* パケット同期受信 */
-            adapter.ReceiveSync(buffer_ptr, buffer_size, rx_size);
+            /* パケット受信 */
+            adapter.Receive(buffer_ptr, buffer_size, rx_size);
 
             /* 受信メッセージをデコード */
             std::string rx_msg = DecodeRxMessage(buffer_ptr, rx_size);
@@ -141,17 +144,17 @@ static void UdpSocketReceiverTest()
 
 #if TEST_COM_MODE == TEST_COM_MODE_UNICAST
     /* ユニキャスト用ソケットオープン */
-    receiver.OpenUniSocket(UDP_PORT);
+    receiver.OpenUniSocket(UDP_PORT, RecvType);
 
     std::cout << "UDP Unicast Rx Socket Open Success" << std::endl;
 #elif TEST_COM_MODE == TEST_COM_MODE_MULTICAST
     /* マルチキャスト用ソケットオープン */
-    receiver.OpenMultiSocket(MULTICAST_IP, UDP_PORT);
+    receiver.OpenMultiSocket(MULTICAST_IP, UDP_PORT, RecvType);
 
     std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
 #elif TEST_COM_MODE == TEST_COM_MODE_BROADCAST
     /* ブロードキャスト用ソケットオープン */
-    receiver.OpenBroadSocket(UDP_PORT);
+    receiver.OpenBroadSocket(UDP_PORT, RecvType);
 
     std::cout << "UDP Broadcast Rx Socket Open Success" << std::endl;
 #endif
@@ -168,8 +171,8 @@ static void UdpSocketReceiverTest()
 
         try
         {
-            /* パケット同期受信 */
-            receiver.ReceiveSync(buffer_ptr, buffer_size, rx_size);
+            /* パケット受信 */
+            receiver.Receive(buffer_ptr, buffer_size, rx_size);
 
             /* 受信メッセージをデコード */
             std::string rx_msg = DecodeRxMessage(buffer_ptr, rx_size);
@@ -218,17 +221,17 @@ static void UdpReceiverTest()
 
 #if TEST_COM_MODE == TEST_COM_MODE_UNICAST
     /* ユニキャスト用ソケットオープン */
-    receiver.OpenUniSocket(UDP_PORT);
+    receiver.OpenUniSocket(UDP_PORT, RecvType);
 
     std::cout << "UDP Unicast Rx Socket Open Success" << std::endl;
 #elif TEST_COM_MODE == TEST_COM_MODE_MULTICAST
     /* マルチキャスト用ソケットオープン */
-    receiver.OpenMultiSocket(MULTICAST_IP, UDP_PORT);
+    receiver.OpenMultiSocket(MULTICAST_IP, UDP_PORT, RecvType);
 
     std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
 #elif TEST_COM_MODE == TEST_COM_MODE_BROADCAST
     /* ブロードキャスト用ソケットオープン */
-    receiver.OpenBroadSocket(UDP_PORT);
+    receiver.OpenBroadSocket(UDP_PORT, RecvType);
 
     std::cout << "UDP Broadcast Rx Socket Open Success" << std::endl;
 #endif
@@ -240,8 +243,8 @@ static void UdpReceiverTest()
 
         try
         {
-            /* パケット同期受信 */
-            receiver.ReceiveSync(message_id, message);
+            /* パケット受信 */
+            receiver.Receive(message_id, message);
 
             std::cout << "UDP Message Received : [" << message_id << "]" << std::endl;
             std::cout << message << std::endl;

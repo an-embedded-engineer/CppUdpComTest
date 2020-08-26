@@ -4,12 +4,15 @@
 #if COM_TYPE == COM_WINSOCK
 #include "SocketDataTypes.h"
 #include "SocketException.h"
+#include "ReceiveType.h"
 
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 
 #include <sstream>
 #include <cstring>
+#include <thread>
+#include <chrono>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -66,6 +69,7 @@ public:
         , m_LocalIpAddress(0)
         , m_TTL(0)
         , m_MulticastRequest()
+        , m_ReceiveType(ReceiveType::Sync)
         , m_IsSocketOpened(false)
     {
         /* Nothing to do */
@@ -108,7 +112,7 @@ public:
     }
 
     /* UDPユニキャスト受信用ソケットオープン */
-    void OpenUdpUniRxSocket(const uint16_t local_port)
+    void OpenUdpUniRxSocket(const uint16_t local_port, const ReceiveType receive_type)
     {
         /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -139,6 +143,27 @@ public:
 
             /* ソケット例外送出 */
             THROW_SOCKET_EXCEPTION("UDP Unicast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* 受信タイプをセット */
+        this->m_ReceiveType = receive_type;
+        
+        /* 受信タイプが非同期の場合 */
+        if (this->m_ReceiveType == ReceiveType::Async)
+        {
+            /* ノンブロッキングI/Oモードにセット */
+            u_long val = 1;
+            int ioctrl_result = ioctlsocket(this->m_Socket, FIONBIO, &val);
+
+            /* ノンブロッキングI/Oモード設定失敗時のエラー処理 */
+            if (ioctrl_result != 0)
+            {
+                /* エラーコードセット */
+                SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+                /* ソケット例外送出 */
+                THROW_SOCKET_EXCEPTION("UDP Unicast Rx Socket I/O Control Failed", SocketAdapterImpl::s_ErrorCode);
+            }
         }
 
         /* ソケットオープン状態更新 */
@@ -203,7 +228,7 @@ public:
     }
 
     /* UDPマルチキャスト受信用ソケットオープン */
-    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type)
     {
         /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -254,6 +279,27 @@ public:
             THROW_SOCKET_EXCEPTION("UDP Multicast Rx Socket Option Set Failed", SocketAdapterImpl::s_ErrorCode);
         }
 
+        /* 受信タイプをセット */
+        this->m_ReceiveType = receive_type;
+
+        /* 受信タイプが非同期の場合 */
+        if (this->m_ReceiveType == ReceiveType::Async)
+        {
+            /* ノンブロッキングI/Oモードにセット */
+            u_long val = 1;
+            int ioctrl_result = ioctlsocket(this->m_Socket, FIONBIO, &val);
+
+            /* ノンブロッキングI/Oモード設定失敗時のエラー処理 */
+            if (ioctrl_result != 0)
+            {
+                /* エラーコードセット */
+                SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+                /* ソケット例外送出 */
+                THROW_SOCKET_EXCEPTION("UDP Unicast Rx Socket I/O Control Failed", SocketAdapterImpl::s_ErrorCode);
+            }
+        }
+
         /* ソケットオープン状態更新 */
         this->m_IsSocketOpened = true;
     }
@@ -298,7 +344,7 @@ public:
     }
 
     /* UDPブロードキャスト受信用ソケットオープン */
-    void OpenUdpBroadRxSocket(const uint16_t local_port)
+    void OpenUdpBroadRxSocket(const uint16_t local_port, const ReceiveType receive_type)
     {
         /* UDP用ソケットをオープン */
         this->m_Socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -329,6 +375,27 @@ public:
 
             /* ソケット例外送出 */
             THROW_SOCKET_EXCEPTION("UDP Broadcast Rx Socket Bind Failed", SocketAdapterImpl::s_ErrorCode);
+        }
+
+        /* 受信タイプをセット */
+        this->m_ReceiveType = receive_type;
+
+        /* 受信タイプが非同期の場合 */
+        if (this->m_ReceiveType == ReceiveType::Async)
+        {
+            /* ノンブロッキングI/Oモードにセット */
+            u_long val = 1;
+            int ioctrl_result = ioctlsocket(this->m_Socket, FIONBIO, &val);
+
+            /* ノンブロッキングI/Oモード設定失敗時のエラー処理 */
+            if (ioctrl_result != 0)
+            {
+                /* エラーコードセット */
+                SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+                /* ソケット例外送出 */
+                THROW_SOCKET_EXCEPTION("UDP Unicast Rx Socket I/O Control Failed", SocketAdapterImpl::s_ErrorCode);
+            }
         }
 
         /* ソケットオープン状態更新 */
@@ -389,26 +456,68 @@ public:
         }
     }
 
-    /* パケット同期受信 */
-    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+    /* パケット受信 */
+    void Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
     {
-        /* ソケットからパケット受信(ブロッキング) */
-        int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
-
-        /* パケット受信失敗時のエラー処理 */
-        if (receive_result == SOCKET_ERROR)
+        /* 受信タイプが同期の場合 */
+        if (this->m_ReceiveType == ReceiveType::Sync)
         {
-            /* エラーコードセット */
-            SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+            /* ソケットからパケット受信(ブロッキング) */
+            int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-            /* ソケット例外送出 */
-            THROW_SOCKET_EXCEPTION("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode);
+            /* パケット受信失敗時のエラー処理 */
+            if (receive_result == SOCKET_ERROR)
+            {
+                /* エラーコードセット */
+                SocketAdapterImpl::s_ErrorCode = WSAGetLastError();
+
+                /* ソケット例外送出 */
+                THROW_SOCKET_EXCEPTION("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode);
+            }
+            /* パケット受信成功時 */
+            else
+            {
+                /* 受信データサイズをセット */
+                rx_size = (size_t)receive_result;
+            }
         }
-        /* パケット受信成功時 */
         else
         {
-            /* 受信データサイズをセット */
-            rx_size = (size_t)receive_result;
+            while (true)
+            {
+                /* ソケットからパケット受信(ノンブロッキングブロッキング) */
+                int receive_result = recv(this->m_Socket, (char*)buffer_ptr, (int)buffer_size, 0);
+
+                /* パケット受信失敗時のエラー処理 */
+                if (receive_result == SOCKET_ERROR)
+                {
+                    /* エラーコード取得 */
+                    int error_code = WSAGetLastError();
+
+                    /* データ未受信の場合 */
+                    if (error_code == WSAEWOULDBLOCK)
+                    {
+                        /* 10ms待機 */
+                        std::this_thread::sleep_for(std::chrono::microseconds(10));
+                    }
+                    else
+                    {
+                        /* エラーコードセット */
+                        SocketAdapterImpl::s_ErrorCode = error_code;
+
+                        /* ソケット例外送出 */
+                        THROW_SOCKET_EXCEPTION("Packet Receive Failed", SocketAdapterImpl::s_ErrorCode);
+                    }
+                }
+                /* パケット受信成功時 */
+                else
+                {
+                    /* 受信データサイズをセット */
+                    rx_size = (size_t)receive_result;
+
+                    break;
+                }
+            }
         }
     }
 
@@ -463,6 +572,8 @@ private:
     int m_TTL;
     /* マルチキャストリクエスト */
     ip_mreq m_MulticastRequest;
+    /* 受信タイプ */
+    ReceiveType m_ReceiveType;
     /* ソケットオープン状態 */
     bool m_IsSocketOpened;
 };

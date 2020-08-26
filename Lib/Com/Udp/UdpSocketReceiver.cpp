@@ -16,24 +16,24 @@ UdpSocketReceiver::~UdpSocketReceiver()
 
 
 /* ユニキャスト用ソケットオープン */
-void UdpSocketReceiver::OpenUniSocket(const uint16_t local_port)
+void UdpSocketReceiver::OpenUniSocket(const uint16_t local_port, const ReceiveType receive_type)
 {
     /* UDPユニキャスト受信用ソケットオープン */
-    this->m_Adapter->OpenUdpUniRxSocket(local_port);
+    this->m_Adapter->OpenUdpUniRxSocket(local_port, receive_type);
 }
 
 /* マルチキャスト用ソケットオープン */
-void UdpSocketReceiver::OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+void UdpSocketReceiver::OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type)
 {
     /* UDPマルチキャスト受信用ソケットオープン */
-    this->m_Adapter->OpenUdpMultiRxSocket(multicast_ip, multicast_port);
+    this->m_Adapter->OpenUdpMultiRxSocket(multicast_ip, multicast_port, receive_type);
 }
 
 /* ブロードキャスト用ソケットオープン */
-void UdpSocketReceiver::OpenBroadSocket(const uint16_t local_port)
+void UdpSocketReceiver::OpenBroadSocket(const uint16_t local_port, const ReceiveType receive_type)
 {
     /* UDPブロードキャスト受信用ソケットオープン */
-    this->m_Adapter->OpenUdpBroadRxSocket(local_port);
+    this->m_Adapter->OpenUdpBroadRxSocket(local_port, receive_type);
 }
 
 /* ソケットクローズ */
@@ -50,9 +50,9 @@ bool UdpSocketReceiver::IsSocketOpened()
     return this->m_Adapter->IsSocketOpened();
 }
 
-/* パケット同期受信 */
-void UdpSocketReceiver::ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+/* パケット受信 */
+void UdpSocketReceiver::Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
 {
-    /* パケット同期受信 */
-    this->m_Adapter->ReceiveSync(buffer_ptr, buffer_size, rx_size);
+    /* パケット受信 */
+    this->m_Adapter->Receive(buffer_ptr, buffer_size, rx_size);
 }

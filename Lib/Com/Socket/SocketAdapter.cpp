@@ -48,9 +48,9 @@ void SocketAdapter::OpenUdpUniTxSocket(const std::string& remote_ip, const uint1
 }
 
 /* UDPユニキャスト受信用ソケットオープン */
-void SocketAdapter::OpenUdpUniRxSocket(const uint16_t local_port)
+void SocketAdapter::OpenUdpUniRxSocket(const uint16_t local_port, const ReceiveType receive_type)
 {
-    this->m_Impl->OpenUdpUniRxSocket(local_port);
+    this->m_Impl->OpenUdpUniRxSocket(local_port, receive_type);
 }
 
 /* UDPマルチキャスト送信用ソケットオープン */
@@ -60,9 +60,9 @@ void SocketAdapter::OpenUdpMultiTxSocket(const std::string& multicast_ip, const 
 }
 
 /* UDPマルチキャスト受信用ソケットオープン */
-void SocketAdapter::OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+void SocketAdapter::OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type)
 {
-    this->m_Impl->OpenUdpMultiRxSocket(multicast_ip, multicast_port);
+    this->m_Impl->OpenUdpMultiRxSocket(multicast_ip, multicast_port, receive_type);
 }
 
 /* UDPブロードキャスト送信用ソケットオープン */
@@ -72,9 +72,9 @@ void SocketAdapter::OpenUdpBroadTxSocket(const std::string& remote_ip, const uin
 }
 
 /* UDPブロードキャスト受信用ソケットオープン */
-void SocketAdapter::OpenUdpBroadRxSocket(const uint16_t local_port)
+void SocketAdapter::OpenUdpBroadRxSocket(const uint16_t local_port, const ReceiveType receive_type)
 {
-    this->m_Impl->OpenUdpBroadRxSocket(local_port);
+    this->m_Impl->OpenUdpBroadRxSocket(local_port, receive_type);
 }
 
 /* ソケットクローズ */
@@ -95,8 +95,8 @@ void SocketAdapter::Transmit(const any_ptr data_ptr, const size_t tx_size)
     this->m_Impl->Transmit(data_ptr, tx_size);
 }
 
-/* パケット同期受信 */
-void SocketAdapter::ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+/* パケット受信 */
+void SocketAdapter::Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
 {
-    this->m_Impl->ReceiveSync(buffer_ptr, buffer_size, rx_size);
+    this->m_Impl->Receive(buffer_ptr, buffer_size, rx_size);
 }

@@ -13,18 +13,18 @@ public:
     ~UdpSocketReceiver();
 
     /* ユニキャスト用ソケットオープン */
-    void OpenUniSocket(const uint16_t local_port);
+    void OpenUniSocket(const uint16_t local_port, const ReceiveType receive_type);
     /* マルチキャスト用ソケットオープン */
-    void OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port);
+    void OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type);
     /* ブロードキャスト用ソケットオープン */
-    void OpenBroadSocket(const uint16_t local_port);
+    void OpenBroadSocket(const uint16_t local_port, const ReceiveType receive_type);
     /* ソケットクローズ */
     void CloseSocket();
     /* ソケットオープン確認 */
     bool IsSocketOpened();
 
-    /* パケット同期受信 */
-    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
+    /* パケット受信 */
+    void Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
 
 private:
     /* Socket Adapterクラスインスタンス */

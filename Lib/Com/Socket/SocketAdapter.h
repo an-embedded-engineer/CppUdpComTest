@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "SocketDataTypes.h"
+#include "ReceiveType.h"
 
 #include <memory>
 
@@ -25,15 +26,15 @@ public:
     /* UDPユニキャスト送信用ソケットオープン */
     void OpenUdpUniTxSocket(const std::string& remote_ip, const uint16_t remote_port);
     /* UDPユニキャスト受信用ソケットオープン */
-    void OpenUdpUniRxSocket(const uint16_t local_port);
+    void OpenUdpUniRxSocket(const uint16_t local_port, const ReceiveType receive_type);
     /* UDPマルチキャスト送信用ソケットオープン */
     void OpenUdpMultiTxSocket(const std::string& multicast_ip, const std::string& local_ip, const uint16_t multicast_port, const int32_t ttl);
     /* UDPマルチキャスト受信用ソケットオープン */
-    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port);
+    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type);
     /* UDPブロードキャスト送信用ソケットオープン */
     void OpenUdpBroadTxSocket(const std::string& remote_ip, const uint16_t remote_port);
     /* UDPブロードキャスト受信用ソケットオープン */
-    void OpenUdpBroadRxSocket(const uint16_t local_port);
+    void OpenUdpBroadRxSocket(const uint16_t local_port, const ReceiveType receive_type);
     /* ソケットクローズ */
     void CloseSocket();
 
@@ -42,8 +43,8 @@ public:
 
     /* パケット送信 */
     void Transmit(const any_ptr data_ptr, const size_t tx_size);
-    /* パケット同期受信 */
-    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
+    /* パケット受信 */
+    void Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
 
 private:
     /* Socket Adapter Implクラスインスタンス */

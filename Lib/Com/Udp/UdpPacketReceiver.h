@@ -30,8 +30,8 @@ public:
     UdpPacketReceiver& operator=(UdpPacketReceiver&&) = delete;
 
 public:
-    /* データ同期受信 */
-    void ReceiveSync(UdpSocketReceiver& udp_socket_receiver);
+    /* データ受信 */
+    void Receive(UdpSocketReceiver& udp_socket_receiver);
 
     /* 受信コールバックを登録 */
     void RegisterCallback(UdpPacketRxBufferMap::CallbackType& callback);

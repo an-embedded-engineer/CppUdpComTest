@@ -87,6 +87,9 @@
     <ClInclude Include="Utility\StackTracer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Com\Common\ReceiveType.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Com\Socket\SocketAdapter.cpp">

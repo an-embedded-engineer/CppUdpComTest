@@ -23,8 +23,8 @@ UdpPacketReceiver::~UdpPacketReceiver()
     /* Nothing to do */
 }
 
-/* データ同期受信 */
-void UdpPacketReceiver::ReceiveSync(UdpSocketReceiver& udp_socket_receiver)
+/* データ受信 */
+void UdpPacketReceiver::Receive(UdpSocketReceiver& udp_socket_receiver)
 {
     /* UDP Packet受信バッファを生成 */
     UdpPacketBuffer udp_packet_buffer;
@@ -35,8 +35,8 @@ void UdpPacketReceiver::ReceiveSync(UdpSocketReceiver& udp_socket_receiver)
     /* 受信サイズを初期化 */
     size_t rx_size = 0;
 
-    /* UDP Packetを同期受信 */
-    udp_socket_receiver.ReceiveSync(buffer_ptr, UDP_PACKET_SIZE, rx_size);
+    /* UDP Packetを受信 */
+    udp_socket_receiver.Receive(buffer_ptr, UDP_PACKET_SIZE, rx_size);
 
     /* UDP Packetを生成 */
     UdpPacket udp_packet;

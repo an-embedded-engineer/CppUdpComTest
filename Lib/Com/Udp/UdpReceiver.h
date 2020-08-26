@@ -12,18 +12,18 @@ public:
     ~UdpReceiver();
 
     /* ユニキャスト用ソケットオープン */
-    void OpenUniSocket(const uint16_t local_port);
+    void OpenUniSocket(const uint16_t local_port, const ReceiveType receive_type);
     /* マルチキャスト用ソケットオープン */
-    void OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port);
+    void OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type);
     /* ブロードキャスト用ソケットオープン */
-    void OpenBroadSocket(const uint16_t local_port);
+    void OpenBroadSocket(const uint16_t local_port, const ReceiveType receive_type);
     /* ソケットクローズ */
     void CloseSocket();
     /* ソケットオープン確認 */
     bool IsSocketOpened();
 
-    /* データ同期受信 */
-    void ReceiveSync(uint16_t& message_id, std::string& message);
+    /* データ受信 */
+    void Receive(uint16_t& message_id, std::string& message);
 
 private:
     /* データ受信コールバック */

@@ -97,7 +97,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Common;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
@@ -114,7 +114,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Common;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
@@ -131,7 +131,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Common;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
@@ -148,7 +148,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib\Com;..\Lib\Com\Common;..\Lib\Com\Exception;..\Lib\Com\Socket;..\Lib\Com\Udp;..\Lib\Config;..\Lib\Utility;.\Test;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>

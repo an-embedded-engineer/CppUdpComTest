@@ -30,24 +30,24 @@ UdpReceiver::~UdpReceiver()
 }
 
 /* ユニキャスト用ソケットオープン */
-void UdpReceiver::OpenUniSocket(const uint16_t local_port)
+void UdpReceiver::OpenUniSocket(const uint16_t local_port, const ReceiveType receive_type)
 {
     /* ユニキャスト用ソケットオープン */
-    this->m_SocketReceiver->OpenUniSocket(local_port);
+    this->m_SocketReceiver->OpenUniSocket(local_port, receive_type);
 }
 
 /* マルチキャスト用ソケットオープン */
-void UdpReceiver::OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+void UdpReceiver::OpenMultiSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type)
 {
     /* マルチキャスト用ソケットオープン */
-    this->m_SocketReceiver->OpenMultiSocket(multicast_ip, multicast_port);
+    this->m_SocketReceiver->OpenMultiSocket(multicast_ip, multicast_port, receive_type);
 }
 
 /* ブロードキャスト用ソケットオープン */
-void UdpReceiver::OpenBroadSocket(const uint16_t local_port)
+void UdpReceiver::OpenBroadSocket(const uint16_t local_port, const ReceiveType receive_type)
 {
     /* ブロードキャスト用ソケットオープン */
-    this->m_SocketReceiver->OpenBroadSocket(local_port);
+    this->m_SocketReceiver->OpenBroadSocket(local_port, receive_type);
 }
 
 /* ソケットクローズ */
@@ -64,16 +64,16 @@ bool UdpReceiver::IsSocketOpened()
     return this->m_SocketReceiver->IsSocketOpened();
 }
 
-/* データ同期受信 */
-void UdpReceiver::ReceiveSync(uint16_t& message_id, std::string& message)
+/* データ受信 */
+void UdpReceiver::Receive(uint16_t& message_id, std::string& message)
 {
     /* 受信完了状態クリア */
     this->m_IsReceived = false;
 
     while (true)
     {
-        /* データ同期受信 */
-        this->m_PacketReceiver.ReceiveSync(*this->m_SocketReceiver);
+        /* データ受信 */
+        this->m_PacketReceiver.Receive(*this->m_SocketReceiver);
 
         /* 受信完了したらループを抜ける */
         if (this->m_IsReceived == true)

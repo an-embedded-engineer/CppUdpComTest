@@ -4,6 +4,7 @@
 #if COM_TYPE != COM_WINSOCK && COM_TYPE != COM_SOCKET && COM_TYPE != COM_MACSOCK
 #include "SocketDataTypes.h"
 #include "AppException.h"
+#include "ReceiveType.h"
 
 /* Socket Adapter Implクラス定義 */
 class SocketAdapterImpl final
@@ -45,7 +46,7 @@ public:
     }
 
     /* UDPユニキャスト受信用ソケットオープン */
-    void OpenUdpUniRxSocket(const uint16_t local_port)
+    void OpenUdpUniRxSocket(const uint16_t local_port, const ReceiveType receive_type)
     {
         THROW_APP_EXCEPTION("Invalid Com Type : " + std::to_string(COM_TYPE));
     }
@@ -57,7 +58,7 @@ public:
     }
 
     /* UDPマルチキャスト受信用ソケットオープン */
-    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port)
+    void OpenUdpMultiRxSocket(const std::string& multicast_ip, const uint16_t multicast_port, const ReceiveType receive_type)
     {
         THROW_APP_EXCEPTION("Invalid Com Type : " + std::to_string(COM_TYPE));
     }
@@ -69,7 +70,7 @@ public:
     }
 
     /* UDPブロードキャスト受信用ソケットオープン */
-    void OpenUdpBroadRxSocket(const uint16_t local_port)
+    void OpenUdpBroadRxSocket(const uint16_t local_port, const ReceiveType receive_type)
     {
         THROW_APP_EXCEPTION("Invalid Com Type : " + std::to_string(COM_TYPE));
     }
@@ -92,13 +93,13 @@ public:
         THROW_APP_EXCEPTION("Invalid Com Type : " + std::to_string(COM_TYPE));
     }
 
-    /* パケット同期受信 */
-    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+    /* パケット受信 */
+    void Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
     {
         THROW_APP_EXCEPTION("Invalid Com Type : " + std::to_string(COM_TYPE));
     }
 };
 
 #else
-#error Invalid Com Type : COM_TYPE
+
 #endif
