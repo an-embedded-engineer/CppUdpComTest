@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include "ThreadTypes.h"
 #include "CancellationPoint.h"
@@ -6,45 +6,45 @@
 #include <functional>
 #include <thread>
 
-/* Cancellable ThreadƒNƒ‰ƒX */
+/* Cancellable Threadã‚¯ãƒ©ã‚¹ */
 class CancellableThread
 {
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     CancellableThread();
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     CancellableThread(const thread_id_t id, const std::string& name, ThreadFuncType thread_func);
 
-    /* ƒXƒŒƒbƒhŠJn */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
     void Start();
-    /* ƒXƒŒƒbƒh’â~ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
     void Stop();
-    /* ƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
     void NotifyReady();
 
-    /* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
     void Join();
-    /* ƒXƒŒƒbƒh‚ÌŠÇ—‚ğ•úŠü */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
     void Detach();
 
-    /* ƒXƒŒƒbƒhIDæ“¾ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰IDå–å¾— */
     const thread_id_t GetID();
-    /* ƒXƒŒƒbƒh–¼æ“¾ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åå–å¾— */
     const std::string& GetName();
-    /* ƒXƒŒƒbƒhÀs’†Šm”F */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œä¸­ç¢ºèª */
     bool IsRunning();
 
 private:
-    /* ƒXƒŒƒbƒhID */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ID */
     thread_id_t m_ID;
-    /* ƒXƒŒƒbƒh–¼ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰å */
     std::string m_Name;
-    /* ThreadƒIƒuƒWƒFƒNƒg */
+    /* Threadã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
     std::thread m_Thread;
-    /* Cancellation PointƒIƒuƒWƒFƒNƒg */
+    /* Cancellation Pointã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
     CancellationPoint m_CancellationPoint;
-    /* ƒXƒŒƒbƒhÀsŠÖ” */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œé–¢æ•° */
     ThreadFuncType m_ThreadFunc;
-    /* ƒXƒŒƒbƒhÀs’†ƒtƒ‰ƒO */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œä¸­ãƒ•ãƒ©ã‚° */
     bool m_IsRunning;
 };

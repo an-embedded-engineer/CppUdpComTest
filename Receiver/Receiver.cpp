@@ -19,8 +19,11 @@ static void SocketAdapterTest();
 static void UdpSocketReceiverTest();
 #elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Receiverによる通信テスト */
-static void UdpReceiverTest();
+#if 0
+static void SyncUdpReceiverTest();
+#else
 static void AsyncUdpReceiverTest();
+#endif
 #endif
 
 /* 受信メッセージのデコード */
@@ -208,6 +211,7 @@ static void UdpSocketReceiverTest()
 
 #elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Receiverによる通信テスト */
+#if 0
 static void SyncUdpReceiverTest()
 {
     /* Socket全体の初期化 */
@@ -275,7 +279,7 @@ static void SyncUdpReceiverTest()
 
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
-
+#else
 /* UDP Receiverによる通信テスト */
 static void AsyncUdpReceiverTest()
 {
@@ -329,7 +333,7 @@ static void AsyncUdpReceiverTest()
 
                     if (result == true)
                     {
-                        std::string message_text  = DecodeRxMessage(message.GetDataPtr(), message.GetDataSize());
+                        std::string message_text = DecodeRxMessage(message.GetDataPtr(), message.GetDataSize());
 
                         std::cout << "UDP Message Received : ID=" << message_id << std::endl;
                         std::cout << message_text << std::endl;
@@ -373,7 +377,7 @@ static void AsyncUdpReceiverTest()
 
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
-
+#endif
 #endif
 
 /* 受信メッセージのデコード */

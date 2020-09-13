@@ -1,20 +1,20 @@
-#include "AsyncTaskManager.h"
+ï»¿#include "AsyncTaskManager.h"
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 AsyncTaskManager& AsyncTaskManager::GetInstance()
 {
     static AsyncTaskManager instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 AsyncTaskManager::AsyncTaskManager()
     : m_ThreadManager(ThreadManager::GetInstance())
 {
     /* Nothin to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 AsyncTaskManager::~AsyncTaskManager()
 {
     /* Nothing to do */

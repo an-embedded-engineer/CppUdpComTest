@@ -1,4 +1,4 @@
-#include "SocketReceiveData.h"
+﻿#include "SocketReceiveData.h"
 
 SocketReceiveData::SocketReceiveData()
     : m_DataPtr(nullptr)

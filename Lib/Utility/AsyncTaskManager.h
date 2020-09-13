@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "ThreadManager.h"
 #include "Logger.h"
 
@@ -22,28 +22,28 @@ using AsyncLoopTaskType = std::function<LoopTaskResult(AsyncTask&, CancellationP
 class AsyncTaskManager
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static AsyncTaskManager& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     AsyncTaskManager();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~AsyncTaskManager();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     AsyncTaskManager(const AsyncTaskManager&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ðíœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‰Šé™¤ */
     AsyncTaskManager(AsyncTaskManager&&) = delete;
-    /* ƒRƒs[‘ã“üƒIƒyƒŒ[ƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥ã‚ªãƒšãƒ¬ãƒ¼ã‚¿å‰Šé™¤ */
     AsyncTaskManager& operator=(const AsyncTaskManager&) = delete;
-    /* ƒ€[ƒu‘ã“üƒIƒyƒŒ[ƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥ã‚ªãƒšãƒ¬ãƒ¼ã‚¿å‰Šé™¤ */
     AsyncTaskManager& operator=(AsyncTaskManager&&) = delete;
 
 public:
     template<typename T>
-    task_id_t AddTask(const std::string& name, void(T::*fp)(AsyncTask& task, CancellationPoint& cp), T* obj)
+    task_id_t AddTask(const std::string& name, void(T::* fp)(AsyncTask& task, CancellationPoint& cp), T* obj)
     {
         return this->AddTask(name, std::bind(fp, obj, std::placeholders::_1, std::placeholders::_2));
     }
@@ -67,17 +67,17 @@ public:
 
     task_id_t AddTask(const std::string& name, AsyncTaskFuncType task_func)
     {
-        task_id_t task_id = this->m_ThreadManager.Add(name, [this, task_func](AsyncTask& task, CancellationPoint& cp)
-        {
-            try
+        task_id_t task_id = this->m_ThreadManager.Add(name, [task_func](AsyncTask& task, CancellationPoint& cp)
             {
-                task_func(task, cp);
-            }
-            catch (ThreadCancelledException&)
-            {
-                Logger::Warn("Thread Cancelled : ID=%d Name=%s", task.GetID(), task.GetName());
-            }
-        });
+                try
+                {
+                    task_func(task, cp);
+                }
+                catch (ThreadCancelledException&)
+                {
+                    Logger::Warn("Thread Cancelled : ID=%d Name=%s", task.GetID(), task.GetName());
+                }
+            });
 
         return task_id;
     }
@@ -85,36 +85,36 @@ public:
     template <typename PeriodType>
     task_id_t AddLoopTask(const std::string& name, AsyncLoopTaskType task_func, PeriodType period)
     {
-        task_id_t task_id = this->m_ThreadManager.Add(name, [this, task_func, period](AsyncTask& task, CancellationPoint& cp)
-        {
-            try
+        task_id_t task_id = this->m_ThreadManager.Add(name, [task_func, period](AsyncTask& task, CancellationPoint& cp)
             {
-                while (true)
+                try
                 {
-                    try
+                    while (true)
                     {
-                        cp.CheckCancelRequested();
-
-                        LoopTaskResult result = task_func(task, cp);
-
-                        if (result == LoopTaskResult::Exit)
+                        try
                         {
-                            break;
-                        }
+                            cp.CheckCancelRequested();
 
-                        std::this_thread::sleep_for(period);
-                    }
-                    catch (const std::exception& ex)
-                    {
-                        Logger::Error("Exception Occurred : %s", ex.what());
+                            LoopTaskResult result = task_func(task, cp);
+
+                            if (result == LoopTaskResult::Exit)
+                            {
+                                break;
+                            }
+
+                            std::this_thread::sleep_for(period);
+                        }
+                        catch (const std::exception& ex)
+                        {
+                            Logger::Error("Exception Occurred : %s", ex.what());
+                        }
                     }
                 }
-            }
-            catch (ThreadCancelledException& ex)
-            {
-                Logger::Warn("Thread Cancelled : ID=%d Name=%s", task.GetID(), task.GetName());
-            }
-        });
+                catch (ThreadCancelledException& ex)
+                {
+                    Logger::Warn("Thread Cancelled : ID=%d Name=%s", task.GetID(), task.GetName());
+                }
+            });
 
         return task_id;
     }

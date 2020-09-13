@@ -1,14 +1,14 @@
-#include "ThreadManager.h"
+ï»¿#include "ThreadManager.h"
 #include "Logger.h"
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXŽæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 ThreadManager& ThreadManager::GetInstance()
 {
     static ThreadManager instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 ThreadManager::ThreadManager()
     : m_ThreadCount(0)
     , m_ThreadMap()
@@ -17,31 +17,31 @@ ThreadManager::ThreadManager()
     /* Nothing to do */
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 ThreadManager::~ThreadManager()
 {
     /* Nothing to do */
 }
 
-/* ƒXƒŒƒbƒh’Ç‰Á */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰è¿½åŠ  */
 thread_id_t ThreadManager::Add(const std::string& name, ThreadFuncType thread_func)
 {
-    /* ŽŸ‚ÌƒXƒŒƒbƒhID‚ðŽæ“¾ */
+    /* æ¬¡ã®ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
     thread_id_t thread_id = this->GetNextID();
 
-    /* ƒXƒŒƒbƒhƒ}ƒbƒv‚ÉID‚ÆƒXƒŒƒbƒh‚ð’Ç‰Á */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒžãƒƒãƒ—ã«IDã¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’è¿½åŠ  */
     this->m_ThreadMap.emplace(std::piecewise_construct, std::forward_as_tuple(thread_id), std::forward_as_tuple(thread_id, name, thread_func));
 
-    /* ƒXƒŒƒbƒh–¼ƒ}ƒbƒv‚ÉID‚ÆƒXƒŒƒbƒh–¼‚ð’Ç‰Á */
-    this->m_ThreadNameMap.insert_or_assign(thread_id, name);
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åãƒžãƒƒãƒ—ã«IDã¨ã‚¹ãƒ¬ãƒƒãƒ‰åã‚’è¿½åŠ  */
+    this->m_ThreadNameMap[thread_id] = name;
 
     return thread_id;
 }
 
-/* ƒXƒŒƒbƒh‘¶ÝŠm”F */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰å­˜åœ¨ç¢ºèª */
 bool ThreadManager::IsExists(const thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒhID‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©Šm”F */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰IDãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèª */
     if (this->m_ThreadMap.count(thread_id) > 0 && this->m_ThreadNameMap.count(thread_id) > 0)
     {
         return true;
@@ -52,13 +52,13 @@ bool ThreadManager::IsExists(const thread_id_t thread_id)
     }
 }
 
-/* ƒXƒŒƒbƒh–¼Žæ“¾ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰åå–å¾— */
 const std::string ThreadManager::GetName(const thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒh–¼Žæ“¾ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰åå–å¾— */
         return this->m_ThreadMap[thread_id].GetName();
     }
     else
@@ -69,13 +69,13 @@ const std::string ThreadManager::GetName(const thread_id_t thread_id)
     }
 }
 
-/* ƒXƒŒƒbƒhŠJŽn */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
 void ThreadManager::Start(thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒhŠJŽn */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
         this->m_ThreadMap[thread_id].Start();
     }
     else
@@ -84,13 +84,13 @@ void ThreadManager::Start(thread_id_t thread_id)
     }
 }
 
-/* ƒXƒŒƒbƒh’âŽ~ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
 void ThreadManager::Stop(thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒh’âŽ~ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
         this->m_ThreadMap[thread_id].Stop();
     }
     else
@@ -99,13 +99,13 @@ void ThreadManager::Stop(thread_id_t thread_id)
     }
 }
 
-/* ƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
 void ThreadManager::NotifyReady(thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
         this->m_ThreadMap[thread_id].NotifyReady();
     }
     else
@@ -115,13 +115,13 @@ void ThreadManager::NotifyReady(thread_id_t thread_id)
 }
 
 
-/* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
 void ThreadManager::Join(thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
         this->m_ThreadMap[thread_id].Join();
     }
     else
@@ -130,13 +130,13 @@ void ThreadManager::Join(thread_id_t thread_id)
     }
 }
 
-/* ƒXƒŒƒbƒh‚ÌŠÇ—‚ð•úŠü */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
 void ThreadManager::Detach(thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒh‚ÌŠÇ—‚ð•úŠü */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
         this->m_ThreadMap[thread_id].Detach();
     }
     else
@@ -145,13 +145,13 @@ void ThreadManager::Detach(thread_id_t thread_id)
     }
 }
 
-/* “®ì’†Šm”F */
+/* å‹•ä½œä¸­ç¢ºèª */
 bool ThreadManager::IsRunning(thread_id_t thread_id)
 {
-    /* ƒXƒŒƒbƒh‚ª“o˜^‚³‚ê‚Ä‚¢‚éê‡ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ´åˆ */
     if (this->IsExists(thread_id) == true)
     {
-        /* ƒXƒŒƒbƒh“®ì’†Šm”F */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰å‹•ä½œä¸­ç¢ºèª */
         return this->m_ThreadMap[thread_id].IsRunning();
     }
     else
@@ -162,86 +162,86 @@ bool ThreadManager::IsRunning(thread_id_t thread_id)
     }
 }
 
-/* ‘SƒXƒŒƒbƒhŠJŽn */
+/* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
 void ThreadManager::StartAll()
 {
-    /* ‘SƒXƒŒƒbƒh‚ð‘–¸ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’èµ°æŸ» */
     for (const auto& item : this->m_ThreadNameMap)
     {
-        /* ƒXƒŒƒbƒhID‚ðŽæ“¾ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
         thread_id_t thread_id = item.first;
 
-        /* ƒXƒŒƒbƒh‚ðŠJŽn */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é–‹å§‹ */
         this->Start(thread_id);
     }
 }
 
-/* ‘SƒXƒŒƒbƒh’âŽ~ */
+/* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
 void ThreadManager::StopAll()
 {
-    /* ‘SƒXƒŒƒbƒh‚ð‘–¸ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’èµ°æŸ» */
     for (const auto& item : this->m_ThreadNameMap)
     {
-        /* ƒXƒŒƒbƒhID‚ðŽæ“¾ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
         thread_id_t thread_id = item.first;
 
-        /* ƒXƒŒƒbƒh‚ð’âŽ~ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’åœæ­¢ */
         this->Stop(thread_id);
     }
 }
 
-/* ‘SƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+/* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
 void ThreadManager::NotifyReadyAll()
 {
-    /* ‘SƒXƒŒƒbƒh‚ð‘–¸ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’èµ°æŸ» */
     for (const auto& item : this->m_ThreadNameMap)
     {
-        /* ƒXƒŒƒbƒhID‚ðŽæ“¾ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
         thread_id_t thread_id = item.first;
 
-        /* ƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
         this->NotifyReady(thread_id);
     }
 }
 
 
-/* ‘SƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+/* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
 void ThreadManager::JoinAll()
 {
-    /* ‘SƒXƒŒƒbƒh‚ð‘–¸ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’èµ°æŸ» */
     for (const auto& item : this->m_ThreadNameMap)
     {
-        /* ƒXƒŒƒbƒhID‚ðŽæ“¾ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
         thread_id_t thread_id = item.first;
 
-        /* ƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+        /* ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
         this->Join(thread_id);
     }
 }
 
-/* ‘SƒXƒŒƒbƒh‚ÌŠÇ—‚ð•úŠü */
+/* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
 void ThreadManager::DetachAll()
 {
-    /* ‘SƒXƒŒƒbƒh‚ð‘–¸ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’èµ°æŸ» */
     for (const auto& item : this->m_ThreadNameMap)
     {
-        /* ƒXƒŒƒbƒhID‚ðŽæ“¾ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
         thread_id_t thread_id = item.first;
 
-        /* ƒXƒŒƒbƒh‚ÌŠÇ—‚ð•úŠü */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
         this->Join(thread_id);
     }
 }
 
-/* ŽŸ‚ÌƒXƒŒƒbƒhID‚ðŽæ“¾ */
+/* æ¬¡ã®ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
 thread_id_t ThreadManager::GetNextID()
 {
     while (true)
     {
-        /* ƒXƒŒƒbƒhIDƒCƒ“ƒNƒŠƒƒ“ƒg(1Žn‚Ü‚è) */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ(1å§‹ã¾ã‚Š) */
         this->m_ThreadCount++;
 
-        /* ƒXƒŒƒbƒhID‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰IDãŒç™»éŒ²ã•ã‚Œã¦ã„ãªã„ */
         if (this->IsExists(this->m_ThreadCount) == false)
         {
             return this->m_ThreadCount;

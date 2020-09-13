@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CompileSwitch.h"
 #include "SocketDataTypes.h"
 
@@ -140,7 +140,7 @@ public:
 
 #if COM_TYPE == COM_WINSOCK
 private:
-    /* IPƒAƒhƒŒƒX‚Ì•ÏŠ·(•¶Žš—ñ -> ”’l) */
+    /* IPã‚¢ãƒ‰ãƒ¬ã‚¹ã®å¤‰æ›(æ–‡å­—åˆ— -> æ•°å€¤) */
     static IpAddressType ConvertIpStrToNum(const AddressFamilyType family, const std::string& ip);
 #endif
 };

@@ -1,11 +1,11 @@
-#include "CancellableThread.h"
+ï»¿#include "CancellableThread.h"
 #include "StringFormat.h"
 #include "Logger.h"
 
 #include <stdexcept>
 #include <iostream>
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 CancellableThread::CancellableThread()
     : m_ID(0)
     , m_Name("")
@@ -17,7 +17,7 @@ CancellableThread::CancellableThread()
     /* Nothing to do */
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 CancellableThread::CancellableThread(const thread_id_t id, const std::string& name, ThreadFuncType thread_func)
     : m_ID(id)
     , m_Name(name)
@@ -29,122 +29,122 @@ CancellableThread::CancellableThread(const thread_id_t id, const std::string& na
     /* Nothing to do */
 }
 
-/* ƒXƒŒƒbƒhŠJŽn */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
 void CancellableThread::Start()
 {
-    /* ƒXƒŒƒbƒh‚ªŽÀs’†‚Å‚È‚¢ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒå®Ÿè¡Œä¸­ã§ãªã„ */
     if (this->m_IsRunning == false)
     {
-        /* ƒXƒŒƒbƒhŽÀsŠÖ”‚ð“n‚µ‚ÄƒXƒŒƒbƒhŽÀsŠJŽn */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œé–¢æ•°ã‚’æ¸¡ã—ã¦ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œé–‹å§‹ */
         this->m_Thread = std::thread([this]()
             {
                 this->m_ThreadFunc(*this, this->m_CancellationPoint);
             });
 
-        /* ƒXƒŒƒbƒhŽÀs’†ƒtƒ‰ƒOƒZƒbƒg */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œä¸­ãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ */
         this->m_IsRunning = true;
     }
-    /* ƒXƒŒƒbƒh‚ªŠù‚ÉŽÀs’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ—¢ã«å®Ÿè¡Œä¸­ */
     else
     {
         Logger::Error("Thread is already running : ID=%d Name=%s", this->m_ID, this->m_Name);
     }
 }
 
-/* ƒXƒŒƒbƒh’âŽ~ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
 void CancellableThread::Stop()
 {
-    /* ƒXƒŒƒbƒh‚ªŽÀs’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒå®Ÿè¡Œä¸­ */
     if (this->m_IsRunning == true)
     {
-        /* ƒXƒŒƒbƒhƒLƒƒƒ“ƒZƒ‹‚ðƒŠƒNƒGƒXƒg */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
         this->m_CancellationPoint.RequestCancel();
 
-        /* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
         this->Join();
     }
-    /* ƒXƒŒƒbƒh‚ªŠù‚É’âŽ~ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ—¢ã«åœæ­¢ */
     else
     {
         Logger::Warn("Thread is already stopped : ID=%d Name=%s", this->m_ID, this->m_Name);
     }
 }
 
-/* ƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
 void CancellableThread::NotifyReady()
 {
-    /* ƒXƒŒƒbƒh‚ªŽÀs’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒå®Ÿè¡Œä¸­ */
     if (this->m_IsRunning == true)
     {
-        /* ƒXƒŒƒbƒhƒŒƒfƒB‚ðƒŠƒNƒGƒXƒg */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
         this->m_CancellationPoint.RequestReady();
     }
-    /* ƒXƒŒƒbƒh‚ª’âŽ~’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒåœæ­¢ä¸­ */
     else
     {
         Logger::Warn("Thread is not running : ID=%d Name=%s", this->m_ID, this->m_Name);
     }
 }
 
-/* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
 void CancellableThread::Join()
 {
-    /* ƒXƒŒƒbƒh‚ªŽÀs’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒå®Ÿè¡Œä¸­ */
     if (this->m_IsRunning == true)
     {
-        /* ƒXƒŒƒbƒh‚ªThreadƒIƒuƒWƒFƒNƒg‚ÉŠÖ˜A•t‚¯‚ç‚ê‚Ä‚¢‚é‚©‚ðŠm”F */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒThreadã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«é–¢é€£ä»˜ã‘ã‚‰ã‚Œã¦ã„ã‚‹ã‹ã‚’ç¢ºèª */
         if (this->m_Thread.joinable() == true)
         {
-            /* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+            /* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
             this->m_Thread.join();
 
-            /* ƒXƒŒƒbƒhŽÀs’†ƒtƒ‰ƒOƒNƒŠƒA */
+            /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œä¸­ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢ */
             this->m_IsRunning = false;
         }
     }
-    /* ƒXƒŒƒbƒh‚ª’âŽ~’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒåœæ­¢ä¸­ */
     else
     {
         Logger::Warn("Thread is already joined : ID=%d Name=%s", this->m_ID, this->m_Name);
     }
 }
 
-/* ƒXƒŒƒbƒh‚ÌŠÇ—‚ð•úŠü */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
 void CancellableThread::Detach()
 {
-    /* ƒXƒŒƒbƒh‚ªŽÀs’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒå®Ÿè¡Œä¸­ */
     if (this->m_IsRunning == true)
     {
-        /* ƒXƒŒƒbƒh‚ªThreadƒIƒuƒWƒFƒNƒg‚ÉŠÖ˜A•t‚¯‚ç‚ê‚Ä‚¢‚é‚©‚ðŠm”F */
+        /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒThreadã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«é–¢é€£ä»˜ã‘ã‚‰ã‚Œã¦ã„ã‚‹ã‹ã‚’ç¢ºèª */
         if (this->m_Thread.joinable() == true)
         {
-            /* ƒXƒŒƒbƒh‚ÌŠÇ—‚ð•úŠü */
+            /* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
             this->m_Thread.detach();
 
-            /* ƒXƒŒƒbƒhŽÀs’†ƒtƒ‰ƒOƒNƒŠƒA */
+            /* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œä¸­ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢ */
             this->m_IsRunning = false;
         }
     }
-    /* ƒXƒŒƒbƒh‚ª’âŽ~’† */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãŒåœæ­¢ä¸­ */
     else
     {
         Logger::Warn("Thread is already joined : ID=%d Name=%s", this->m_ID, this->m_Name);
     }
 }
 
-/* ƒXƒŒƒbƒhIDŽæ“¾ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰IDå–å¾— */
 const thread_id_t CancellableThread::GetID()
 {
     return this->m_ID;
 }
 
-/* ƒXƒŒƒbƒh–¼Žæ“¾ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰åå–å¾— */
 const std::string& CancellableThread::GetName()
 {
     return this->m_Name;
 }
 
-/* ƒXƒŒƒbƒhŽÀs’†Šm”F */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œä¸­ç¢ºèª */
 bool CancellableThread::IsRunning()
 {
     return this->m_IsRunning;

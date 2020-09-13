@@ -1,70 +1,70 @@
-#pragma once
+ï»¿#pragma once
 #include "StringFormat.h"
 #include "FileLogger.h"
 
 #include <string>
 #include <mutex>
 
-/* LoggerƒNƒ‰ƒXéŒ¾ */
+/* Loggerã‚¯ãƒ©ã‚¹å®£è¨€ */
 class Logger
 {
 public:
-    /* ‘®w’èInformationƒƒO */
+    /* æ›¸å¼æŒ‡å®šInformationãƒ­ã‚° */
     template<typename ... Args>
     static void Info(const std::string& format, Args&& ... args)
     {
-        /* ‘®ƒtƒH[ƒ}ƒbƒg‚µ‚ÄƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ÌInformationƒƒOo—ÍŒÄ‚Ño‚µ */
+        /* æ›¸å¼ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ã¦ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®Informationãƒ­ã‚°å‡ºåŠ›å‘¼ã³å‡ºã— */
         Logger::GetInstance().LogInfo(StringFormat(format, std::forward<Args>(args) ...));
     }
 
-    /* ‘®w’èWarningƒƒO */
+    /* æ›¸å¼æŒ‡å®šWarningãƒ­ã‚° */
     template<typename ... Args>
     static void Warn(const std::string& format, Args&& ... args)
     {
-        /* ‘®ƒtƒH[ƒ}ƒbƒg‚µ‚ÄƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ÌWarningƒƒOo—ÍŒÄ‚Ño‚µ */
+        /* æ›¸å¼ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ã¦ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®Warningãƒ­ã‚°å‡ºåŠ›å‘¼ã³å‡ºã— */
         Logger::GetInstance().LogWarn(StringFormat(format, std::forward<Args>(args) ...));
     }
 
-    /* ‘®w’èErrorƒƒO */
+    /* æ›¸å¼æŒ‡å®šErrorãƒ­ã‚° */
     template<typename ... Args>
     static void Error(const std::string& format, Args&& ... args)
     {
-        /* ‘®ƒtƒH[ƒ}ƒbƒg‚µ‚ÄƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ÌErrorƒƒOo—ÍŒÄ‚Ño‚µ */
+        /* æ›¸å¼ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ã¦ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®Errorãƒ­ã‚°å‡ºåŠ›å‘¼ã³å‡ºã— */
         Logger::GetInstance().LogError(StringFormat(format, std::forward<Args>(args) ...));
     }
 
 private:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static Logger& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     Logger();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~Logger();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğíœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‰Šé™¤ */
     Logger(const Logger&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğíœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‰Šé™¤ */
     Logger(Logger&&) = delete;
-    /* ƒRƒs[‘ã“üƒIƒyƒŒ[ƒ^‚ğíœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ã‚’å‰Šé™¤ */
     Logger& operator=(const Logger&) = delete;
-    /* ƒ€[ƒu‘ã“üƒIƒyƒŒ[ƒ^‚ğíœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ã‚’å‰Šé™¤ */
     Logger& operator=(Logger&&) = delete;
 
 private:
-    /* InformationƒƒOo—Í */
+    /* Informationãƒ­ã‚°å‡ºåŠ› */
     void LogInfo(const std::string& message);
-    /* WarningƒƒOo—Í */
+    /* Warningãƒ­ã‚°å‡ºåŠ› */
     void LogWarn(const std::string& message);
-    /* ErrorƒƒOo—Í */
+    /* Errorãƒ­ã‚°å‡ºåŠ› */
     void LogError(const std::string& message);
 
 private:
-    /* ƒ~ƒ…[ƒeƒbƒNƒX */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ */
     std::mutex m_Mutex;
 
-    /* File LoggerƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX */
+    /* File Loggerã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ */
     FileLogger m_FileLogger;
 };

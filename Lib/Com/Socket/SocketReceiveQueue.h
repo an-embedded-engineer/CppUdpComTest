@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "SocketDataTypes.h"
 #include "SocketReceiveData.h"
 #include "CancellationPoint.h"
@@ -10,23 +10,23 @@
 class SocketReceiveQueue
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static SocketReceiveQueue& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     SocketReceiveQueue();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~SocketReceiveQueue();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     SocketReceiveQueue(const SocketReceiveQueue&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     SocketReceiveQueue(SocketReceiveQueue&&) = delete;
-    /* ƒRƒs[‘ã“ü‰‰Zqíœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     SocketReceiveQueue& operator=(const SocketReceiveQueue&) = delete;
-    /* ƒ€[ƒu‘ã“ü‰‰Zqíœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­å‰Šé™¤ */
     SocketReceiveQueue& operator=(SocketReceiveQueue&&) = delete;
 
 public:

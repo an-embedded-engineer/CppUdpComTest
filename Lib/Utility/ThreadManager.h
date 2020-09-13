@@ -1,40 +1,40 @@
-#pragma once
+ï»¿#pragma once
 #include "CancellableThread.h"
 
 #include <map>
 
-/* Thread ManagerƒNƒ‰ƒXéŒ¾ */
+/* Thread Managerã‚¯ãƒ©ã‚¹å®£è¨€ */
 class ThreadManager
 {
 public:
-    /* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+    /* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
     static ThreadManager& GetInstance();
 
 private:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ThreadManager();
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~ThreadManager();
 
 public:
-    /* ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å‰Šé™¤ */
     ThreadManager(const ThreadManager&) = delete;
-    /* ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğíœ */
+    /* ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‰Šé™¤ */
     ThreadManager(ThreadManager&&) = delete;
-    /* ƒRƒs[‘ã“üƒIƒyƒŒ[ƒ^íœ */
+    /* ã‚³ãƒ”ãƒ¼ä»£å…¥ã‚ªãƒšãƒ¬ãƒ¼ã‚¿å‰Šé™¤ */
     ThreadManager& operator=(const ThreadManager&) = delete;
-    /* ƒ€[ƒu‘ã“üƒIƒyƒŒ[ƒ^íœ */
+    /* ãƒ ãƒ¼ãƒ–ä»£å…¥ã‚ªãƒšãƒ¬ãƒ¼ã‚¿å‰Šé™¤ */
     ThreadManager& operator=(ThreadManager&&) = delete;
 
 public:
-    /* ƒXƒŒƒbƒh’Ç‰Á */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰è¿½åŠ  */
     template<typename C, typename T>
     thread_id_t Add(const std::string& name, void(C::*fp)(T), C* obj)
     {
         return this->Add(name, std::bind(fp, obj, std::placeholders::_1, std::placeholders::_2));
     }
 
-    /* ƒXƒŒƒbƒh’Ç‰Á */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰è¿½åŠ  */
     template<typename T>
     thread_id_t Add(const std::string& name, void(*fp)(T))
     {
@@ -42,54 +42,54 @@ public:
     }
 
 public:
-    /* ƒXƒŒƒbƒh’Ç‰Á */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰è¿½åŠ  */
     thread_id_t Add(const std::string& name, ThreadFuncType thread_func);
 
-    /* ƒXƒŒƒbƒh‘¶İŠm”F */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰å­˜åœ¨ç¢ºèª */
     bool IsExists(const thread_id_t thread_id);
 
-    /* ƒXƒŒƒbƒh–¼æ“¾ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åå–å¾— */
     const std::string GetName(const thread_id_t thread_id);
 
-    /* ƒXƒŒƒbƒhŠJn */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
     void Start(thread_id_t thread_id);
-    /* ƒXƒŒƒbƒh’â~ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
     void Stop(thread_id_t thread_id);
-    /* ƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
     void NotifyReady(thread_id_t thread_id);
 
-    /* “®ì’†Šm”F */
+    /* å‹•ä½œä¸­ç¢ºèª */
     bool IsRunning(thread_id_t thread_id);
 
-    /* ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
     void Join(thread_id_t thread_id);
-    /* ƒXƒŒƒbƒh‚ÌŠÇ—‚ğ•úŠü */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
     void Detach(thread_id_t thread_id);
 
-    /* ‘SƒXƒŒƒbƒhŠJn */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹ */
     void StartAll();
-    /* ‘SƒXƒŒƒbƒh’â~ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰åœæ­¢ */
     void StopAll();
-    /* ‘SƒXƒŒƒbƒhƒŒƒfƒB’Ê’m */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£é€šçŸ¥ */
     void NotifyReadyAll();
 
-    /* ‘SƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@ */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ */
     void JoinAll();
-    /* ‘SƒXƒŒƒbƒh‚ÌŠÇ—‚ğ•úŠü */
+    /* å…¨ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç®¡ç†ã‚’æ”¾æ£„ */
     void DetachAll();
 
 private:
-    /* Ÿ‚ÌƒXƒŒƒbƒhID‚ğæ“¾ */
+    /* æ¬¡ã®ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å–å¾— */
     thread_id_t GetNextID();
 
 private:
-    /* ƒXƒŒƒbƒh” */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰æ•° */
     thread_id_t m_ThreadCount;
 
-    /* ƒXƒŒƒbƒhƒ}ƒbƒv */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒãƒƒãƒ— */
     std::map<thread_id_t, CancellableThread> m_ThreadMap;
 
-    /* ƒXƒŒƒbƒh–¼ƒ}ƒbƒv */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åãƒãƒƒãƒ— */
     std::map<thread_id_t, std::string> m_ThreadNameMap;
 };
 

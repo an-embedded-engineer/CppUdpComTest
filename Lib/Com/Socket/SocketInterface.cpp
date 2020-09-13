@@ -1,4 +1,4 @@
-#include "SocketInterface.h"
+ï»¿#include "SocketInterface.h"
 #include "SocketException.h"
 #include "AppException.h"
 
@@ -12,16 +12,16 @@ static int s_ErrorCode;
 void SocketInterface::Initialize()
 {
 #if COM_TYPE == COM_WINSOCK
-    /* WinSockƒT[ƒrƒXƒXƒ^[ƒgƒAƒbƒv */
+    /* WinSockã‚µãƒ¼ãƒ“ã‚¹ã‚¹ã‚¿ãƒ¼ãƒˆã‚¢ãƒƒãƒ— */
     int startup_result = WSAStartup(MAKEWORD(2, 0), &s_WsaData);
 
-    /* WinSockƒT[ƒrƒXƒXƒXƒ^[ƒgƒAƒbƒv¸”s‚ÌƒGƒ‰[ˆ— */
+    /* WinSockã‚µãƒ¼ãƒ“ã‚¹ã‚¹ã‚¹ã‚¿ãƒ¼ãƒˆã‚¢ãƒƒãƒ—å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (startup_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = startup_result;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("WSA Startup Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
@@ -34,15 +34,15 @@ void SocketInterface::Initialize()
 void SocketInterface::Finalize()
 {
 #if COM_TYPE == COM_WINSOCK
-    /* WinSockƒT[ƒrƒXƒNƒŠ[ƒ“ƒAƒbƒv */
+    /* WinSockã‚µãƒ¼ãƒ“ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ— */
     int cleanup_result = WSACleanup();
 
-    /* WinSockƒT[ƒrƒXƒNƒŠ[ƒ“ƒAƒbƒv¸”s‚ÌƒGƒ‰[ˆ— */
+    /* WinSockã‚µãƒ¼ãƒ“ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (cleanup_result == SOCKET_ERROR)
     {
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("WSA Cleanup Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
@@ -60,31 +60,31 @@ int SocketInterface::GetErrorCode()
 SocketType SocketInterface::OpenUdpSocket()
 {
 #if COM_TYPE == COM_WINSOCK
-    /* UDP—pƒ\ƒPƒbƒg‚ğƒI[ƒvƒ“ */
+    /* UDPç”¨ã‚½ã‚±ãƒƒãƒˆã‚’ã‚ªãƒ¼ãƒ—ãƒ³ */
     SocketType sock = socket(AF_INET, SOCK_DGRAM, 0);
 
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (sock == INVALID_SOCKET)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("UDP Socket Open Failed", s_ErrorCode);
     }
 
     return sock;
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* UDP—pƒ\ƒPƒbƒg‚ğƒI[ƒvƒ“ */
+    /* UDPç”¨ã‚½ã‚±ãƒƒãƒˆã‚’ã‚ªãƒ¼ãƒ—ãƒ³ */
     SocketType sock = socket(AF_INET, SOCK_DGRAM, 0);
 
-    /* ƒ\ƒPƒbƒgƒI[ƒvƒ“¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (sock < 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("UDP Socket Open Failed", s_ErrorCode);
     }
 
@@ -97,29 +97,29 @@ SocketType SocketInterface::OpenUdpSocket()
 void SocketInterface::CloseSocket(SocketType socket)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     int close_result = closesocket(socket);
 
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚ºå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (close_result == SOCKET_ERROR)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Socket Close Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚º */
     int close_result = close(socket);
 
-    /* ƒ\ƒPƒbƒgƒNƒ[ƒY¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚¯ãƒ­ãƒ¼ã‚ºå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (close_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Socket Close Failed", s_ErrorCode);
     }
 #else
@@ -132,7 +132,7 @@ SocketAddressType SocketInterface::GetTxSocketAddress(const std::string& dst_ip,
 #if COM_TYPE == COM_WINSOCK
     SocketAddressType sock_address;
 
-    /* ‘—M—pƒAƒhƒŒƒXî•ñƒZƒbƒg */
+    /* é€ä¿¡ç”¨ã‚¢ãƒ‰ãƒ¬ã‚¹æƒ…å ±ã‚»ãƒƒãƒˆ */
     sock_address.sin_family = AF_INET;
     sock_address.sin_port = htons(dst_port);
     sock_address.sin_addr.S_un.S_addr = SocketInterface::ConvertIpStrToNum(sock_address.sin_family, dst_ip);
@@ -141,7 +141,7 @@ SocketAddressType SocketInterface::GetTxSocketAddress(const std::string& dst_ip,
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
     SocketAddressType sock_address;
 
-    /* ‘—M—pƒAƒhƒŒƒXî•ñƒZƒbƒg */
+    /* é€ä¿¡ç”¨ã‚¢ãƒ‰ãƒ¬ã‚¹æƒ…å ±ã‚»ãƒƒãƒˆ */
     sock_address.sin_family = AF_INET;
     sock_address.sin_port = htons(dst_port);
     sock_address.sin_addr.s_addr = inet_addr(dst_ip.c_str());
@@ -160,7 +160,7 @@ SocketAddressType SocketInterface::GetRxSocketAddress(const uint16_t src_port)
 #if COM_TYPE == COM_WINSOCK
     SocketAddressType sock_address;
 
-    /* óM—pƒAƒhƒŒƒXî•ñƒZƒbƒg */
+    /* å—ä¿¡ç”¨ã‚¢ãƒ‰ãƒ¬ã‚¹æƒ…å ±ã‚»ãƒƒãƒˆ */
     sock_address.sin_family = AF_INET;
     sock_address.sin_port = htons(src_port);
     sock_address.sin_addr.S_un.S_addr = INADDR_ANY;
@@ -169,7 +169,7 @@ SocketAddressType SocketInterface::GetRxSocketAddress(const uint16_t src_port)
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
     SocketAddressType sock_address;
 
-    /* óM—pƒAƒhƒŒƒXî•ñƒZƒbƒg */
+    /* å—ä¿¡ç”¨ã‚¢ãƒ‰ãƒ¬ã‚¹æƒ…å ±ã‚»ãƒƒãƒˆ */
     sock_address.sin_family = AF_INET;
     sock_address.sin_port = htons(src_port);
     sock_address.sin_addr.s_addr = INADDR_ANY;
@@ -186,29 +186,29 @@ SocketAddressType SocketInterface::GetRxSocketAddress(const uint16_t src_port)
 void SocketInterface::BindSocket(SocketType& socket, const SocketAddressType& socket_address)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒ\ƒPƒbƒg‚ÉƒAƒhƒŒƒXî•ñ‚ğƒoƒCƒ“ƒh */
+    /* ã‚½ã‚±ãƒƒãƒˆã«ã‚¢ãƒ‰ãƒ¬ã‚¹æƒ…å ±ã‚’ãƒã‚¤ãƒ³ãƒ‰ */
     int bind_result = bind(socket, (struct sockaddr*)&socket_address, sizeof(socket_address));
 
-    /* ƒ\ƒPƒbƒgƒoƒCƒ“ƒh¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆãƒã‚¤ãƒ³ãƒ‰å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (bind_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Socket Bind Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒ\ƒPƒbƒg‚ÉƒAƒhƒŒƒXî•ñ‚ğƒoƒCƒ“ƒh */
+    /* ã‚½ã‚±ãƒƒãƒˆã«ã‚¢ãƒ‰ãƒ¬ã‚¹æƒ…å ±ã‚’ãƒã‚¤ãƒ³ãƒ‰ */
     int bind_result = bind(socket, (struct sockaddr*)&socket_address, sizeof(socket_address));
 
-    /* ƒ\ƒPƒbƒgƒoƒCƒ“ƒh¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆãƒã‚¤ãƒ³ãƒ‰å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (bind_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Socket Bind Failed", s_ErrorCode);
     }
 #else
@@ -219,31 +219,31 @@ void SocketInterface::BindSocket(SocketType& socket, const SocketAddressType& so
 void SocketInterface::SetNonBlockingMode(SocketType& socket)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒmƒ“ƒuƒƒbƒLƒ“ƒOI/Oƒ‚[ƒh‚ÉƒZƒbƒg */
+    /* ãƒãƒ³ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°I/Oãƒ¢ãƒ¼ãƒ‰ã«ã‚»ãƒƒãƒˆ */
     u_long val = 1;
     int ioctrl_result = ioctlsocket(socket, FIONBIO, &val);
 
-    /* ƒmƒ“ƒuƒƒbƒLƒ“ƒOI/Oƒ‚[ƒhİ’è¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒãƒ³ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°I/Oãƒ¢ãƒ¼ãƒ‰è¨­å®šå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (ioctrl_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Socket I/O Control(Set Non Blocking Mode) Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒmƒ“ƒuƒƒbƒLƒ“ƒOI/Oƒ‚[ƒh‚ÉƒZƒbƒg */
+    /* ãƒãƒ³ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°I/Oãƒ¢ãƒ¼ãƒ‰ã«ã‚»ãƒƒãƒˆ */
     int val = 1;
     int ioctrl_result = ioctl(socket, FIONBIO, &val);
 
-    /* ƒmƒ“ƒuƒƒbƒLƒ“ƒOI/Oƒ‚[ƒhİ’è¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒãƒ³ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°I/Oãƒ¢ãƒ¼ãƒ‰è¨­å®šå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (ioctrl_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Socket I/O Control(Set Non Blocking Mode) Failed", s_ErrorCode);
     }
 #else
@@ -254,35 +254,35 @@ void SocketInterface::SetNonBlockingMode(SocketType& socket)
 void SocketInterface::SetMulticastTxSocketOption(SocketType& socket, const SocketAddressType& socket_address, const std::string& src_ip)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒ[ƒJƒ‹IPƒAƒhƒŒƒXƒZƒbƒg */
+    /* ãƒ­ãƒ¼ã‚«ãƒ«IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚»ãƒƒãƒˆ */
     IpAddressType local_ip_num = SocketInterface::ConvertIpStrToNum(socket_address.sin_family, src_ip);
 
-    /* UDPƒ}ƒ‹ƒ`ƒLƒƒƒXƒgƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* UDPãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int set_opt_result = setsockopt(socket, IPPROTO_IP, IP_MULTICAST_IF, (char*)&local_ip_num, sizeof(local_ip_num));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_opt_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Multicast Tx Socket Option Set Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒ[ƒJƒ‹IPƒAƒhƒŒƒXƒZƒbƒg */
+    /* ãƒ­ãƒ¼ã‚«ãƒ«IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚»ãƒƒãƒˆ */
     IpAddressType local_ip_num = inet_addr(src_ip.c_str());
 
-    /* UDPƒ}ƒ‹ƒ`ƒLƒƒƒXƒgƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* UDPãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int set_opt_result = setsockopt(socket, IPPROTO_IP, IP_MULTICAST_IF, (char*)&local_ip_num, sizeof(local_ip_num));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_opt_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Multicast Tx Socket Option Set Failed", s_ErrorCode);
     }
 #else
@@ -295,41 +295,41 @@ void SocketInterface::SetMulticastRxSocketOption(SocketType& socket, const Socke
 #if COM_TYPE == COM_WINSOCK
     MulticastRequestType multicast_request;
 
-    /* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒgƒŠƒNƒGƒXƒg‚ÌƒZƒbƒg */
+    /* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆãƒªã‚¯ã‚¨ã‚¹ãƒˆã®ã‚»ãƒƒãƒˆ */
     memset(&multicast_request, 0, sizeof(multicast_request));
     multicast_request.imr_interface.S_un.S_addr = INADDR_ANY;
     multicast_request.imr_multiaddr.S_un.S_addr = SocketInterface::ConvertIpStrToNum(socket_address.sin_family, dst_ip);
 
-    /* UDPƒ}ƒ‹ƒ`ƒLƒƒƒXƒgƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* UDPãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int set_opt_result = setsockopt(socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&multicast_request, sizeof(multicast_request));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_opt_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Multicast Rx Socket Option Set Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
     MulticastRequestType multicast_request;
 
-    /* ƒ}ƒ‹ƒ`ƒLƒƒƒXƒgƒŠƒNƒGƒXƒg‚ÌƒZƒbƒg */
+    /* ãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆãƒªã‚¯ã‚¨ã‚¹ãƒˆã®ã‚»ãƒƒãƒˆ */
     memset(&multicast_request, 0, sizeof(multicast_request));
     multicast_request.imr_interface.s_addr = INADDR_ANY;
     multicast_request.imr_multiaddr.s_addr = inet_addr(dst_ip.c_str());
 
-    /* UDPƒ}ƒ‹ƒ`ƒLƒƒƒXƒgƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* UDPãƒãƒ«ãƒã‚­ãƒ£ã‚¹ãƒˆã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int set_opt_result = setsockopt(socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&multicast_request, sizeof(multicast_request));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_opt_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Multicast Rx Socket Option Set Failed", s_ErrorCode);
     }
 #else
@@ -340,31 +340,31 @@ void SocketInterface::SetMulticastRxSocketOption(SocketType& socket, const Socke
 void SocketInterface::SetBroadcastTxSocketOption(SocketType& socket)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* UDPƒuƒ[ƒhƒLƒƒƒXƒg‘—M—pƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* UDPãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆé€ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     BOOL yes = 1;
     int set_opt_result = setsockopt(socket, SOL_SOCKET, SO_BROADCAST, (char*)&yes, sizeof(yes));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_opt_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Broadcast Tx Socket Option Set Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* UDPƒuƒ[ƒhƒLƒƒƒXƒg‘—M—pƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* UDPãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆé€ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int yes = 1;
     int set_opt_result = setsockopt(socket, SOL_SOCKET, SO_BROADCAST, (char*)&yes, sizeof(yes));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_opt_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Broadcast Tx Socket Option Set Failed", s_ErrorCode);
     }
 #else
@@ -375,35 +375,35 @@ void SocketInterface::SetBroadcastTxSocketOption(SocketType& socket)
 void SocketInterface::SetTTLSocketOption(SocketType& socket, const int32_t ttl)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* TTLƒZƒbƒg */
+    /* TTLã‚»ãƒƒãƒˆ */
     TTLType ttl_value = static_cast<TTLType>(ttl);
 
-    /* TTLƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* TTLã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int set_ttl_result = setsockopt(socket, IPPROTO_IP, IP_MULTICAST_TTL, (char*)&ttl_value, sizeof(ttl_value));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_ttl_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("TTL Socket Option Set Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* TTLƒZƒbƒg */
+    /* TTLã‚»ãƒƒãƒˆ */
     TTLType ttl_value = static_cast<TTLType>(ttl);
 
-    /* TTLƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg */
+    /* TTLã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ */
     int set_ttl_result = setsockopt(socket, IPPROTO_IP, IP_MULTICAST_TTL, (char*)&ttl_value, sizeof(ttl_value));
 
-    /* ƒ\ƒPƒbƒgƒIƒvƒVƒ‡ƒ“ƒZƒbƒg¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ã‚½ã‚±ãƒƒãƒˆã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆå¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (set_ttl_result != 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("TTL Socket Option Set Failed", s_ErrorCode);
     }
 #else
@@ -414,29 +414,29 @@ void SocketInterface::SetTTLSocketOption(SocketType& socket, const int32_t ttl)
 void SocketInterface::Transmit(SocketType& socket, const SocketAddressType& socket_address, const any_ptr data_ptr, const size_t tx_size)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒ\ƒPƒbƒg‚ÉƒpƒPƒbƒg‘—M */
+    /* ã‚½ã‚±ãƒƒãƒˆã«ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡ */
     int send_result = sendto(socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&socket_address, sizeof(socket_address));
 
-    /* ƒpƒPƒbƒg‘—M¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (send_result == SOCKET_ERROR)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Packet Transmit Failed", s_ErrorCode);
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒ\ƒPƒbƒg‚ÉƒpƒPƒbƒg‘—M */
+    /* ã‚½ã‚±ãƒƒãƒˆã«ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡ */
     int send_result = sendto(socket, (const char*)data_ptr, (int)tx_size, 0, (struct sockaddr*)&socket_address, sizeof(socket_address));
 
-    /* ƒpƒPƒbƒg‘—M¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒ‘ã‚±ãƒƒãƒˆé€ä¿¡å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (send_result < 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Packet Transmit Failed", s_ErrorCode);
     }
 #else
@@ -447,41 +447,41 @@ void SocketInterface::Transmit(SocketType& socket, const SocketAddressType& sock
 void SocketInterface::ReceiveSync(SocketType& socket, byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒ\ƒPƒbƒg‚©‚çƒpƒPƒbƒgóM(ƒuƒƒbƒLƒ“ƒO) */
+    /* ã‚½ã‚±ãƒƒãƒˆã‹ã‚‰ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡(ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°) */
     int receive_result = recv(socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-    /* ƒpƒPƒbƒgóM¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (receive_result == SOCKET_ERROR)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Packet Receive Failed", s_ErrorCode);
     }
-    /* ƒpƒPƒbƒgóM¬Œ÷ */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡æˆåŠŸæ™‚ */
     else
     {
-        /* óMƒf[ƒ^ƒTƒCƒY‚ğƒZƒbƒg */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ */
         rx_size = (size_t)receive_result;
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒ\ƒPƒbƒg‚©‚çƒpƒPƒbƒgóM(ƒuƒƒbƒLƒ“ƒO) */
+    /* ã‚½ã‚±ãƒƒãƒˆã‹ã‚‰ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡(ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°) */
     int receive_result = recv(socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-    /* ƒpƒPƒbƒgóM¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (receive_result < 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = errno;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Packet Receive Failed", s_ErrorCode);
     }
-    /* ƒpƒPƒbƒgóM¬Œ÷ */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡æˆåŠŸæ™‚ */
     else
     {
-        /* óMƒf[ƒ^ƒTƒCƒY‚ğƒZƒbƒg */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ */
         rx_size = (size_t)receive_result;
     }
 #else
@@ -492,16 +492,16 @@ void SocketInterface::ReceiveSync(SocketType& socket, byte_ptr& buffer_ptr, cons
 bool SocketInterface::ReceiveAsync(SocketType& socket, byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
 {
 #if COM_TYPE == COM_WINSOCK
-    /* ƒ\ƒPƒbƒg‚©‚çƒpƒPƒbƒgóM(ƒmƒ“ƒuƒƒbƒLƒ“ƒOƒuƒƒbƒLƒ“ƒO) */
+    /* ã‚½ã‚±ãƒƒãƒˆã‹ã‚‰ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡(ãƒãƒ³ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°) */
     int receive_result = recv(socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-    /* ƒpƒPƒbƒgóM¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (receive_result == SOCKET_ERROR)
     {
-        /* ƒGƒ‰[ƒR[ƒhæ“¾ */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å–å¾— */
         int error_code = WSAGetLastError();
 
-        /* ƒf[ƒ^–¢óM‚Ìê‡ */
+        /* ãƒ‡ãƒ¼ã‚¿æœªå—ä¿¡ã®å ´åˆ */
         if (error_code == WSAEWOULDBLOCK)
         {
             rx_size = 0;
@@ -510,32 +510,32 @@ bool SocketInterface::ReceiveAsync(SocketType& socket, byte_ptr& buffer_ptr, con
         }
         else
         {
-            /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+            /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
             s_ErrorCode = error_code;
 
-            /* ƒ\ƒPƒbƒg—áŠO‘—o */
+            /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
             THROW_SOCKET_EXCEPTION("Packet Receive Failed", s_ErrorCode);
         }
     }
-    /* ƒpƒPƒbƒgóM¬Œ÷ */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡æˆåŠŸæ™‚ */
     else
     {
-        /* óMƒf[ƒ^ƒTƒCƒY‚ğƒZƒbƒg */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ */
         rx_size = (size_t)receive_result;
 
         return true;
     }
 #elif COM_TYPE == COM_SOCKET || COM_TYPE == COM_MACSOCK
-    /* ƒ\ƒPƒbƒg‚©‚çƒpƒPƒbƒgóM(ƒmƒ“ƒuƒƒbƒLƒ“ƒOƒuƒƒbƒLƒ“ƒO) */
+    /* ã‚½ã‚±ãƒƒãƒˆã‹ã‚‰ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡(ãƒãƒ³ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°) */
     int receive_result = recv(socket, (char*)buffer_ptr, (int)buffer_size, 0);
 
-    /* ƒpƒPƒbƒgóM¸”s‚ÌƒGƒ‰[ˆ— */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     if (receive_result < 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhæ“¾ */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰å–å¾— */
         int error_code = errno;
 
-        /* ƒf[ƒ^–¢óM‚Ìê‡ */
+        /* ãƒ‡ãƒ¼ã‚¿æœªå—ä¿¡ã®å ´åˆ */
         if (error_code == EAGAIN)
         {
             rx_size = 0;
@@ -544,17 +544,17 @@ bool SocketInterface::ReceiveAsync(SocketType& socket, byte_ptr& buffer_ptr, con
         }
         else
         {
-            /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+            /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
             s_ErrorCode = error_code;
 
-            /* ƒ\ƒPƒbƒg—áŠO‘—o */
+            /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
             THROW_SOCKET_EXCEPTION("Packet Receive Failed", s_ErrorCode);
         }
     }
-    /* ƒpƒPƒbƒgóM¬Œ÷ */
+    /* ãƒ‘ã‚±ãƒƒãƒˆå—ä¿¡æˆåŠŸæ™‚ */
     else
     {
-        /* óMƒf[ƒ^ƒTƒCƒY‚ğƒZƒbƒg */
+        /* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆ */
         rx_size = (size_t)receive_result;
 
         return true;
@@ -565,35 +565,35 @@ bool SocketInterface::ReceiveAsync(SocketType& socket, byte_ptr& buffer_ptr, con
 }
 
 #if COM_TYPE == COM_WINSOCK
-/* IPƒAƒhƒŒƒX‚Ì•ÏŠ·(•¶š—ñ -> ”’l) */
+/* IPã‚¢ãƒ‰ãƒ¬ã‚¹ã®å¤‰æ›(æ–‡å­—åˆ— -> æ•°å€¤) */
 IpAddressType SocketInterface::ConvertIpStrToNum(const AddressFamilyType family, const std::string& ip)
 {
-    /* •ÏŠ·ŒãIPƒAƒhƒŒƒX */
+    /* å¤‰æ›å¾ŒIPã‚¢ãƒ‰ãƒ¬ã‚¹ */
     ULONG ip_num = 0;
 
-    /* IPƒAƒhƒŒƒX‚ğ•¶š—ñ‚©‚ç”’l‚É•ÏŠ· */
+    /* IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ–‡å­—åˆ—ã‹ã‚‰æ•°å€¤ã«å¤‰æ› */
     int pton_result = inet_pton(family, ip.c_str(), &ip_num);
 
-    /* IPƒAƒhƒŒƒX•ÏŠ·¬Œ÷ */
+    /* IPã‚¢ãƒ‰ãƒ¬ã‚¹å¤‰æ›æˆåŠŸæ™‚ */
     if (pton_result == 1)
     {
         return ip_num;
     }
-    /* IPƒAƒhƒŒƒX•ÏŠ·¸”s‚ÌƒGƒ‰[ˆ— */
+    /* IPã‚¢ãƒ‰ãƒ¬ã‚¹å¤‰æ›å¤±æ•—æ™‚ã®ã‚¨ãƒ©ãƒ¼å‡¦ç† */
     else if (pton_result == 0)
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = -1;
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Convert IP Address Failed", s_ErrorCode);
     }
     else
     {
-        /* ƒGƒ‰[ƒR[ƒhƒZƒbƒg */
+        /* ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆ */
         s_ErrorCode = WSAGetLastError();
 
-        /* ƒ\ƒPƒbƒg—áŠO‘—o */
+        /* ã‚½ã‚±ãƒƒãƒˆä¾‹å¤–é€å‡º */
         THROW_SOCKET_EXCEPTION("Convert IP Address Failed", s_ErrorCode);
     }
 }

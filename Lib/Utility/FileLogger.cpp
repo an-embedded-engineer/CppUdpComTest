@@ -1,6 +1,6 @@
-#include "FileLogger.h"
+ï»¿#include "FileLogger.h"
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 FileLogger::FileLogger()
     : m_FilePath("")
     , m_Stream()
@@ -8,55 +8,55 @@ FileLogger::FileLogger()
     /* Nothing to do */
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 FileLogger::FileLogger(const std::string& file_path)
     : m_FilePath(file_path)
     , m_Stream()
 {
-    /* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ */
     this->Open(file_path);
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 FileLogger::~FileLogger()
 {
-    /* ƒtƒ@ƒCƒ‹ƒNƒ[ƒY */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ã‚¯ãƒ­ãƒ¼ã‚º */
     this->Close();
 }
 
-/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ */
+/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ */
 void FileLogger::Open(const std::string& file_path)
 {
-    /* ƒtƒ@ƒCƒ‹‚ªŠJ‚¢‚Ä‚¢‚È‚©‚Á‚½‚ç */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã„ã¦ã„ãªã‹ã£ãŸã‚‰ */
     if (this->IsOpened() == false)
     {
         this->m_Stream.open(file_path, std::ios::out);
     }
 }
 
-/* ƒtƒ@ƒCƒ‹ƒNƒ[ƒY */
+/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚¯ãƒ­ãƒ¼ã‚º */
 void FileLogger::Close()
 {
-    /* ƒtƒ@ƒCƒ‹‚ªŠJ‚¢‚Ä‚¢‚½‚ç */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã„ã¦ã„ãŸã‚‰ */
     if (this->IsOpened() == true)
     {
         this->m_Stream.close();
     }
 }
 
-/* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“Šm”F */
+/* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
 bool FileLogger::IsOpened()
 {
     return this->m_Stream.is_open();
 }
 
-/* ƒtƒ@ƒCƒ‹‘‚«ž‚Ý */
+/* ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿ */
 void FileLogger::Write(const std::string& log)
 {
-    /* ƒtƒ@ƒCƒ‹‚ªŠJ‚¢‚Ä‚¢‚½‚ç */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã„ã¦ã„ãŸã‚‰ */
     if (this->IsOpened() == true)
     {
-        /* ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€‚É‘‚«ž‚Ý */
+        /* ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã¿ */
         this->m_Stream << log << std::endl;
     }
 }

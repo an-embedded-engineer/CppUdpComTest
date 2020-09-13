@@ -1,7 +1,7 @@
-#include "CancellationPoint.h"
+ï»¿#include "CancellationPoint.h"
 #include "CancellableThread.h"
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 CancellationPoint::CancellationPoint(CancellableThread& thread)
     : m_Thread(thread)
     , m_ThreadName("")
@@ -10,76 +10,76 @@ CancellationPoint::CancellationPoint(CancellableThread& thread)
     , m_Mutex()
     , m_ConditionVariable()
 {
-    /* ƒXƒŒƒbƒh–¼‚ğƒZƒbƒg */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰åã‚’ã‚»ãƒƒãƒˆ */
     this->m_ThreadName = this->m_Thread.GetName();
 }
 
-/* ƒXƒŒƒbƒhƒLƒƒƒ“ƒZƒ‹‚ğƒŠƒNƒGƒXƒg*/
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ*/
 void CancellationPoint::RequestCancel()
 {
-    /* Mutex‚É‚æ‚é”r‘¼ˆ— */
+    /* Mutexã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::unique_lock<std::mutex> lock(this->m_Mutex);
 
     Logger::Info("[%s] Cancel Request Accepted", this->m_ThreadName);
 
-    /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒOƒZƒbƒg */
+    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ */
     this->m_IsCancelled = true;
 
-    /* ‘Ò‹@ƒXƒŒƒbƒh‚ğ‚·‚×‚Ä‹N°‚³‚¹‚é */
+    /* å¾…æ©Ÿã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ã™ã¹ã¦èµ·åºŠã•ã›ã‚‹ */
     this->m_ConditionVariable.notify_all();
 }
 
-/* ƒLƒƒƒ“ƒZƒ‹ƒŠƒNƒGƒXƒgŠm”F */
+/* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒªã‚¯ã‚¨ã‚¹ãƒˆç¢ºèª */
 void CancellationPoint::CheckCancelRequested()
 {
-    /* Mutex‚É‚æ‚é”r‘¼ˆ— */
+    /* Mutexã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::unique_lock<std::mutex> lock(this->m_Mutex);
 
     //Logger::Info("[%s] Check Cancel Request", this->m_ThreadName);
 
-    /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒOŠm”F */
+    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ç¢ºèª */
     if (this->m_IsCancelled == true)
     {
         Logger::Info("[%s] Cancelled in Thread Operation", this->m_ThreadName);
 
-        /* ƒLƒƒƒ“ƒZƒ‹‚ğ’Ê’m */
+        /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€šçŸ¥ */
         this->NotifyCancel();
     }
 }
 
-/* ƒXƒŒƒbƒhƒŒƒfƒB‚ğƒŠƒNƒGƒXƒg */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
 void CancellationPoint::RequestReady()
 {
-    /* Mutex‚É‚æ‚é”r‘¼ˆ— */
+    /* Mutexã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::unique_lock<std::mutex> lock(this->m_Mutex);
 
     Logger::Info("[%s] Read Request Accepted", this->m_ThreadName);
 
-    /* ƒŒƒfƒBƒtƒ‰ƒO‚ğƒZƒbƒg */
+    /* ãƒ¬ãƒ‡ã‚£ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ */
     this->m_IsReady = true;
 
-    /* ‘Ò‹@ƒXƒŒƒbƒh‚ğ‚·‚×‚Ä‹N°‚³‚¹‚é */
+    /* å¾…æ©Ÿã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ã™ã¹ã¦èµ·åºŠã•ã›ã‚‹ */
     this->m_ConditionVariable.notify_all();
 }
 
-/* ƒXƒŒƒbƒhƒŒƒfƒBƒŠƒNƒGƒXƒg‚ğ‘Ò‹@(ƒLƒƒƒ“ƒZƒ‹Šm”FŠÜ‚Ş) */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’å¾…æ©Ÿ(ã‚­ãƒ£ãƒ³ã‚»ãƒ«ç¢ºèªå«ã‚€) */
 void CancellationPoint::WaitReady()
 {
-    /* Mutex‚É‚æ‚é”r‘¼ˆ— */
+    /* Mutexã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::unique_lock<std::mutex> lock(this->m_Mutex);
 
-    /* ƒŒƒfƒBƒtƒ‰ƒO‚ª—§‚Â‚Ü‚Å‘Ò‹@ */
+    /* ãƒ¬ãƒ‡ã‚£ãƒ•ãƒ©ã‚°ãŒç«‹ã¤ã¾ã§å¾…æ©Ÿ */
     this->m_ConditionVariable.wait(lock,
         [this]
         {
             //Logger::Info("[%s] Check Cancel Request in Wait Ready", this->m_ThreadName);
 
-            /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒOŠm”F */
+            /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ç¢ºèª */
             if (this->m_IsCancelled == true)
             {
                 Logger::Info("[%s] Cancelled in Wait Ready", this->m_ThreadName);
 
-                /* ƒLƒƒƒ“ƒZƒ‹‚ğ’Ê’m */
+                /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€šçŸ¥ */
                 this->NotifyCancel();
             }
 
@@ -87,17 +87,17 @@ void CancellationPoint::WaitReady()
         });
 }
 
-/* ƒXƒŒƒbƒhƒLƒƒƒ“ƒZƒ‹’Ê’m */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«é€šçŸ¥ */
 void CancellationPoint::NotifyCancel()
 {
-    /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒOƒNƒŠƒA */
+    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢ */
     this->m_IsCancelled = false;
 
-    /* ƒŒƒfƒBƒtƒ‰ƒOƒNƒŠƒA */
+    /* ãƒ¬ãƒ‡ã‚£ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢ */
     this->m_IsReady = false;
 
     Logger::Info("[%s] Throw Cancelld Exception", this->m_ThreadName);
 
-    /* Cancelled Exception‚ğthrow */
+    /* Cancelled Exceptionã‚’throw */
     throw ThreadCancelledException(this->m_Thread);
 }

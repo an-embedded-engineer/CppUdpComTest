@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <mutex>
 #include <condition_variable>
 
@@ -6,96 +6,96 @@
 #include "Logger.h"
 
 
-/* Cancellable ThreadƒNƒ‰ƒX‘O•ûéŒ¾ */
+/* Cancellable Threadã‚¯ãƒ©ã‚¹å‰æ–¹å®£è¨€ */
 class CancellableThread;
 
-/* Cancellation PointƒNƒ‰ƒXéŒ¾ */
+/* Cancellation Pointã‚¯ãƒ©ã‚¹å®£è¨€ */
 class CancellationPoint
 {
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     CancellationPoint(CancellableThread& thread);
 
-    /* ƒXƒŒƒbƒhƒLƒƒƒ“ƒZƒ‹‚ğƒŠƒNƒGƒXƒg*/
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ*/
     void RequestCancel();
 
-    /* ƒLƒƒƒ“ƒZƒ‹ƒŠƒNƒGƒXƒgŠm”F */
+    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒªã‚¯ã‚¨ã‚¹ãƒˆç¢ºèª */
     void CheckCancelRequested();
 
-    /* ƒXƒŒƒbƒhƒŒƒfƒB‚ğƒŠƒNƒGƒXƒg */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ */
     void RequestReady();
 
-    /* ƒXƒŒƒbƒhƒŒƒfƒBƒŠƒNƒGƒXƒg‚ğ‘Ò‹@(ƒLƒƒƒ“ƒZƒ‹Šm”FŠÜ‚Ş) */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’å¾…æ©Ÿ(ã‚­ãƒ£ãƒ³ã‚»ãƒ«ç¢ºèªå«ã‚€) */
     void WaitReady();
 
-    /* ƒXƒŒƒbƒhƒŒƒfƒBƒŠƒNƒGƒXƒg‚ğ‘Š‘ÎŠÔƒ^ƒCƒ€ƒAƒEƒg•t‚«‚Å‘Ò‹@(ƒLƒƒƒ“ƒZƒ‹Šm”FŠÜ‚Ş) */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ç›¸å¯¾æ™‚é–“ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆä»˜ãã§å¾…æ©Ÿ(ã‚­ãƒ£ãƒ³ã‚»ãƒ«ç¢ºèªå«ã‚€) */
     template <typename PeriodType>
     void WaitFor(const PeriodType& period)
     {
-        /* Mutex‚É‚æ‚é”r‘¼ˆ— */
+        /* Mutexã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
         std::unique_lock<std::mutex> lock(this->m_Mutex);
 
-        /* w’èŠÔ(ŒÄ‚Ño‚µŠÔ‚©‚ç‚Ì‘Š‘Î)‚É‚È‚é‚Ü‚Å‘Ò‹@ */
+        /* æŒ‡å®šæ™‚é–“(å‘¼ã³å‡ºã—æ™‚é–“ã‹ã‚‰ã®ç›¸å¯¾æ™‚åˆ»)ã«ãªã‚‹ã¾ã§å¾…æ©Ÿ */
         if (false == this->m_ConditionVariable.wait_for(lock, period, [this]
             {
                 //Logger::Info("[%s] Check Cancel Request in Wait For Ready", this->m_ThreadName);
 
-                /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒOŠm”F */
+                /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ç¢ºèª */
                 if (this->m_IsCancelled == true)
                 {
                     Logger::Info("[%s] Cancelled in Wait For Ready", this->m_ThreadName);
 
-                    /* ƒLƒƒƒ“ƒZƒ‹‚ğ’Ê’m */
+                    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€šçŸ¥ */
                     this->NotifyCancel();
                 }
 
                 return this->m_IsReady;
             }))
         {
-            /* ƒ^ƒCƒ€ƒAƒEƒg‚·‚é‚Ü‚ÅƒŒƒfƒBƒŠƒNƒGƒXƒg‚È‚µ */
+            /* ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã™ã‚‹ã¾ã§ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆãªã— */
             Logger::Info("[%s] Cancelled by Timeout in Wait For Ready", this->m_ThreadName);
 
-            /* ƒLƒƒƒ“ƒZƒ‹‚ğ’Ê’m */
+            /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€šçŸ¥ */
             this->NotifyCancel();
         }
-        /* ƒ^ƒCƒ€ƒAƒEƒg‚·‚é‘O‚ÉƒŒƒfƒBƒŠƒNƒGƒXƒg‚ ‚è */
+        /* ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã™ã‚‹å‰ã«ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚ã‚Š */
         else
         {
             return;
         }
     }
 
-    /* ƒXƒŒƒbƒhƒŒƒfƒBƒŠƒNƒGƒXƒg‚ğ‘Š‘ÎŠÔƒ^ƒCƒ€ƒAƒEƒg•t‚«‚Å‘Ò‹@(ƒLƒƒƒ“ƒZƒ‹Šm”FŠÜ‚Ş) */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ç›¸å¯¾æ™‚é–“ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆä»˜ãã§å¾…æ©Ÿ(ã‚­ãƒ£ãƒ³ã‚»ãƒ«ç¢ºèªå«ã‚€) */
     template <typename PeriodType>
     void WaitUntil(const PeriodType& period)
     {
-        /* Mutex‚É‚æ‚é”r‘¼ˆ— */
+        /* Mutexã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
         std::unique_lock<std::mutex> lock(this->m_Mutex);
 
-        /* w’èŠÔ(ŒÄ‚Ño‚µ‚Éw’è‚µ‚½â‘Î)‚É‚È‚é‚Ü‚Å‘Ò‹@ */
+        /* æŒ‡å®šæ™‚é–“(å‘¼ã³å‡ºã—æ™‚ã«æŒ‡å®šã—ãŸçµ¶å¯¾æ™‚åˆ»)ã«ãªã‚‹ã¾ã§å¾…æ©Ÿ */
         if (false == this->m_ConditionVariable.wait_until(lock, period, [this]
             {
                 //Logger::Info("[%s] Check Cancel Request in Wait Until Ready", this->m_ThreadName);
 
-                /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒOŠm”F */
+                /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚°ç¢ºèª */
                 if (this->m_IsCancelled == true)
                 {
                     Logger::Info("[%s] Cancelled in Wait Until Ready", this->m_ThreadName);
 
-                    /* ƒLƒƒƒ“ƒZƒ‹‚ğ’Ê’m */
+                    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€šçŸ¥ */
                     this->NotifyCancel();
                 }
 
                 return this->m_IsReady;
             }))
         {
-            /* ƒ^ƒCƒ€ƒAƒEƒg‚·‚é‚Ü‚ÅƒŒƒfƒBƒŠƒNƒGƒXƒg‚È‚µ */
+            /* ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã™ã‚‹ã¾ã§ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆãªã— */
             Logger::Info("[%s] Cancelled by Timeout in Wait Until Ready", this->m_ThreadName);
 
-            /* ƒLƒƒƒ“ƒZƒ‹‚ğ’Ê’m */
+            /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€šçŸ¥ */
             this->NotifyCancel();
         }
-            /* ƒ^ƒCƒ€ƒAƒEƒg‚·‚é‘O‚ÉƒŒƒfƒBƒŠƒNƒGƒXƒg‚ ‚è */
+            /* ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã™ã‚‹å‰ã«ãƒ¬ãƒ‡ã‚£ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚ã‚Š */
         else
         {
             return;
@@ -103,17 +103,17 @@ public:
     }
 
 private:
-    /* ƒXƒŒƒbƒhƒLƒƒƒ“ƒZƒ‹’Ê’m */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰ã‚­ãƒ£ãƒ³ã‚»ãƒ«é€šçŸ¥ */
     void NotifyCancel();
 
 private:
-    /* Cancellable ThreadƒNƒ‰ƒXƒCƒ“ƒXƒ^ƒ“ƒX */
+    /* Cancellable Threadã‚¯ãƒ©ã‚¹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ */
     CancellableThread& m_Thread;
-    /* ƒXƒŒƒbƒh–¼ */
+    /* ã‚¹ãƒ¬ãƒƒãƒ‰å */
     std::string m_ThreadName;
-    /* ƒLƒƒƒ“ƒZƒ‹ƒtƒ‰ƒO */
+    /* ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒ•ãƒ©ã‚° */
     bool m_IsCancelled;
-    /* ƒŒƒfƒBƒtƒ‰ƒO */
+    /* ãƒ¬ãƒ‡ã‚£ãƒ•ãƒ©ã‚° */
     bool m_IsReady;
     /* Mutex */
     std::mutex m_Mutex;

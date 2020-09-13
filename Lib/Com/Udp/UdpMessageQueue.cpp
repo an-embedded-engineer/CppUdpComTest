@@ -1,4 +1,4 @@
-#include "UdpMessageQueue.h"
+﻿#include "UdpMessageQueue.h"
 
 UdpMessageQueue::UdpMessageQueue()
     : m_Mutex()

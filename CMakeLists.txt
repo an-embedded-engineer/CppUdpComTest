@@ -1,4 +1,4 @@
-# Set CMake Version
+﻿# Set CMake Version
 cmake_minimum_required(VERSION 3.1)
 
 # Set Project Name

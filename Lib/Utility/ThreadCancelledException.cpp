@@ -1,30 +1,30 @@
-#include "ThreadCancelledException.h"
+ï»¿#include "ThreadCancelledException.h"
 #include "CancellableThread.h"
 #include "StringFormat.h"
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 ThreadCancelledException::ThreadCancelledException(CancellableThread& thread)
     : m_ErrorMessage("")
 {
-    /* ƒfƒtƒHƒ‹ƒg•¶š—ñ‚ÅƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+    /* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ–‡å­—åˆ—ã§ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
     this->m_ErrorMessage = this->GenerateErrorMessage(thread, "Thread Cancelled");
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 ThreadCancelledException::ThreadCancelledException(CancellableThread& thread, const std::string& message)
     : m_ErrorMessage("")
 {
-    /* w’è•¶š—ñ‚ÅƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+    /* æŒ‡å®šæ–‡å­—åˆ—ã§ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
     this->m_ErrorMessage = this->GenerateErrorMessage(thread, message);
 }
 
-/* ƒƒbƒZ[ƒW“à—e‚ğæ“¾ */
+/* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å†…å®¹ã‚’å–å¾— */
 const char* ThreadCancelledException::what() const noexcept
 {
     return this->m_ErrorMessage.c_str();
 }
 
-/* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+/* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
 std::string ThreadCancelledException::GenerateErrorMessage(CancellableThread& thread, const std::string& message)
 {
     return StringFormat("[Cancelled Exception] %s : ID=%d Name=%s", message, thread.GetID(), thread.GetName());

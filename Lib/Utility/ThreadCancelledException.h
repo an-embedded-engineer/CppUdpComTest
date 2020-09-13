@@ -1,25 +1,25 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 
-/* Cancellable ThreadƒNƒ‰ƒX‘O•ûéŒ¾ */
+/* Cancellable Threadã‚¯ãƒ©ã‚¹å‰æ–¹å®£è¨€ */
 class CancellableThread;
 
-/* Cancelled ExceptionƒNƒ‰ƒXéŒ¾ */
+/* Cancelled Exceptionã‚¯ãƒ©ã‚¹å®£è¨€ */
 class ThreadCancelledException
 {
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ThreadCancelledException(CancellableThread& thread);
     ThreadCancelledException(CancellableThread& thread, const std::string& message);
 
-    /* ƒƒbƒZ[ƒW“à—e‚ğæ“¾ */
+    /* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å†…å®¹ã‚’å–å¾— */
     const char* what() const noexcept;
 
 private:
-    /* ƒGƒ‰[ƒƒbƒZ[ƒW¶¬ */
+    /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”Ÿæˆ */
     std::string GenerateErrorMessage(CancellableThread& thread, const std::string& message);
 
 private:
-    /* ƒGƒ‰[ƒƒbƒZ[ƒW */
+    /* ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
     std::string m_ErrorMessage;
 };

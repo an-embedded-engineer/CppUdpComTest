@@ -1,36 +1,36 @@
-#pragma once
+ï»¿#pragma once
 #include <fstream>
 
-/* File LoggerƒNƒ‰ƒXéŒ¾ */
+/* File Loggerã‚¯ãƒ©ã‚¹å®£è¨€ */
 class FileLogger
 {
 public:
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     FileLogger();
 
-    /* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+    /* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     FileLogger(const std::string& file_path);
 
-    /* ƒfƒXƒgƒ‰ƒNƒ^ */
+    /* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
     ~FileLogger();
 
-    /* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ */
     void Open(const std::string& file_path);
 
-    /* ƒtƒ@ƒCƒ‹ƒNƒ[ƒY */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ã‚¯ãƒ­ãƒ¼ã‚º */
     void Close();
 
-    /* ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“Šm”F */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ç¢ºèª */
     bool IsOpened();
 
-    /* ƒtƒ@ƒCƒ‹‘‚«‚İ */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿ */
     void Write(const std::string& log);
 
 private:
-    /* ƒƒOƒtƒ@ƒCƒ‹ƒpƒX */
+    /* ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ */
     std::string m_FilePath;
 
-    /* ƒtƒ@ƒCƒ‹o—ÍƒXƒgƒŠ[ƒ€ */
+    /* ãƒ•ã‚¡ã‚¤ãƒ«å‡ºåŠ›ã‚¹ãƒˆãƒªãƒ¼ãƒ  */
     std::ofstream m_Stream;
 };
 

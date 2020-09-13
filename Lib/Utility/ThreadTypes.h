@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 #include <cstddef>
 #include <functional>
 
-/* ƒNƒ‰ƒX‘O•ûéŒ¾ */
+/* ã‚¯ãƒ©ã‚¹å‰æ–¹å®£è¨€ */
 class CancellableThread;
 class CancellationPoint;
 
-/* ƒXƒŒƒbƒhIDŒ^ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰IDå‹ */
 using thread_id_t = size_t;
 
-/* ƒXƒŒƒbƒhÀsŠÖ”Œ^ */
+/* ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œé–¢æ•°å‹ */
 using ThreadFuncType = std::function<void(CancellableThread& thread, CancellationPoint&)>;
 

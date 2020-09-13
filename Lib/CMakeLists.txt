@@ -1,10 +1,16 @@
-# Generate Com Library
+﻿# Generate Com Library
 add_library(ComLib
   STATIC
     Com/Exception/AppException.cpp
     Com/Exception/ExceptionBase.cpp
     Com/Exception/SocketException.cpp
     Com/Socket/SocketAdapter.cpp
+    Com/Socket/SocketInterface.cpp
+    Com/Socket/SocketReceiveData.cpp
+    Com/Socket/SocketReceiveQueue.cpp
+    Com/Udp/UdpMessage.cpp
+    Com/Udp/UdpMessageQueue.cpp
+    Com/Udp/UdpMessageQueueMap.cpp
     Com/Udp/UdpPacketEncoder.cpp
     Com/Udp/UdpPacketReceiver.cpp
     Com/Udp/UdpPacketRxBuffer.cpp
@@ -14,7 +20,14 @@ add_library(ComLib
     Com/Udp/UdpSender.cpp
     Com/Udp/UdpSocketReceiver.cpp
     Com/Udp/UdpSocketSender.cpp
+    Utility/AsyncTaskManager.cpp
+    Utility/CancellableThread.cpp
+    Utility/CancellationPoint.cpp
+    Utility/FileLogger.cpp
+    Utility/Logger.cpp
     Utility/StackTracer.cpp
+    Utility/ThreadCancelledException.cpp
+    Utility/ThreadManager.cpp
 )
 
 # Set Include Directories

@@ -1,4 +1,4 @@
-# Generate Executable File
+﻿# Generate Executable File
 add_executable(Receiver.out Receiver.cpp)
 
 # Link Libraries

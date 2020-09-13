@@ -1,5 +1,7 @@
-#include "SocketReceiveQueue.h"
+﻿#include "SocketReceiveQueue.h"
 #include "ThreadCancelledException.h"
+
+#include <thread>
 
 SocketReceiveQueue& SocketReceiveQueue::GetInstance()
 {

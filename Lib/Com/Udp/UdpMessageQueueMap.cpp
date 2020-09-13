@@ -1,4 +1,4 @@
-#include "UdpMessageQueueMap.h"
+ï»¿#include "UdpMessageQueueMap.h"
 #include "AppException.h"
 
 
@@ -8,7 +8,7 @@ UdpMessageQueueMap& UdpMessageQueueMap::GetInstance()
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpMessageQueueMap::UdpMessageQueueMap()
     : m_Mutex()
     , m_Map()
@@ -16,7 +16,7 @@ UdpMessageQueueMap::UdpMessageQueueMap()
 
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 UdpMessageQueueMap::~UdpMessageQueueMap()
 {
     this->m_Map.clear();

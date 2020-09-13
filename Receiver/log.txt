@@ -1,4 +1,4 @@
-[INFO] [Callback Receive Task] Cancel Request Accepted
+﻿[INFO] [Callback Receive Task] Cancel Request Accepted
 [INFO] [Callback Receive Task] Cancelled in Thread Operation
 [INFO] [Callback Receive Task] Throw Cancelld Exception
 [WARN] Thread Cancelled : ID=2 Name=Callback Receive Task

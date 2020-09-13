@@ -1,7 +1,7 @@
-#include "Logger.h"
+ï»¿#include "Logger.h"
 #include <iostream>
 
-/* ƒRƒ“ƒ\[ƒ‹o—Í•¶šF§ŒäƒR[ƒh */
+/* ã‚³ãƒ³ã‚½ãƒ¼ãƒ«å‡ºåŠ›æ–‡å­—è‰²åˆ¶å¾¡ã‚³ãƒ¼ãƒ‰ */
 constexpr const char* ConsoleColorReset     = "\x1b[0m";
 constexpr const char* ConsoleColorBlack     = "\x1b[30m";
 constexpr const char* ConsoleColorRed       = "\x1b[31m";
@@ -13,73 +13,73 @@ constexpr const char* ConsoleColorCyan      = "\x1b[36m";
 constexpr const char* ConsoleColorWhite     = "\x1b[37m";
 
 
-/* ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ */
+/* ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾— */
 Logger& Logger::GetInstance()
 {
     static Logger instance;
     return instance;
 }
 
-/* ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
+/* ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 Logger::Logger()
     : m_Mutex()
     , m_FileLogger()
 {
-    /* ƒƒOƒtƒ@ƒCƒ‹ƒI[ƒvƒ“ */
+    /* ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³ */
     this->m_FileLogger.Open("log.txt");
 }
 
-/* ƒfƒXƒgƒ‰ƒNƒ^ */
+/* ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
 Logger::~Logger()
 {
-    /* ƒƒOƒtƒ@ƒCƒ‹ƒNƒ[ƒY */
+    /* ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚¯ãƒ­ãƒ¼ã‚º */
     this->m_FileLogger.Close();
 }
 
-/* InformationƒƒOo—Í */
+/* Informationãƒ­ã‚°å‡ºåŠ› */
 void Logger::LogInfo(const std::string& message)
 {
-    /* ƒ~ƒ…[ƒeƒbƒNƒX‚É‚æ‚é”r‘¼ˆ— */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::lock_guard<std::mutex> lock(this->m_Mutex);
 
-    /* InformationƒƒO‚ğ¶¬ */
+    /* Informationãƒ­ã‚°ã‚’ç”Ÿæˆ */
     std::string log_message = StringFormat("[INFO] %s", message);
 
-    /* InformationƒƒO‚ğ•W€o—Í‚Éo—Í(ƒVƒAƒ“) */
+    /* Informationãƒ­ã‚°ã‚’æ¨™æº–å‡ºåŠ›ã«å‡ºåŠ›(ã‚·ã‚¢ãƒ³) */
     std::cout << ConsoleColorCyan << log_message << ConsoleColorReset << std::endl;
 
-    /* InformationƒƒO‚ğƒtƒ@ƒCƒ‹‚Éo—Í */
+    /* Informationãƒ­ã‚°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ› */
     this->m_FileLogger.Write(log_message);
 }
 
-/* WarningƒƒOo—Í */
+/* Warningãƒ­ã‚°å‡ºåŠ› */
 void Logger::LogWarn(const std::string& message)
 {
-    /* ƒ~ƒ…[ƒeƒbƒNƒX‚É‚æ‚é”r‘¼ˆ— */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::lock_guard<std::mutex> lock(this->m_Mutex);
 
-    /* WarningƒƒO‚ğ¶¬ */
+    /* Warningãƒ­ã‚°ã‚’ç”Ÿæˆ */
     std::string log_message = StringFormat("[WARN] %s", message);
 
-    /* WarningƒƒO‚ğ•W€o—Í‚Éo—Í(‰©F) */
+    /* Warningãƒ­ã‚°ã‚’æ¨™æº–å‡ºåŠ›ã«å‡ºåŠ›(é»„è‰²) */
     std::cerr << ConsoleColorYellow << log_message << ConsoleColorReset << std::endl;
 
-    /* WarningƒƒO‚ğƒtƒ@ƒCƒ‹‚Éo—Í */
+    /* Warningãƒ­ã‚°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ› */
     this->m_FileLogger.Write(log_message);
 }
 
-/* ErrorƒƒOo—Í */
+/* Errorãƒ­ã‚°å‡ºåŠ› */
 void Logger::LogError(const std::string& message)
 {
-    /* ƒ~ƒ…[ƒeƒbƒNƒX‚É‚æ‚é”r‘¼ˆ— */
+    /* ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹ã«ã‚ˆã‚‹æ’ä»–å‡¦ç† */
     std::lock_guard<std::mutex> lock(this->m_Mutex);
 
-    /* ErrorƒƒO‚ğ¶¬ */
+    /* Errorãƒ­ã‚°ã‚’ç”Ÿæˆ */
     std::string log_message = StringFormat("[ERROR] %s", message);
 
-    /* ErrorƒƒO‚ğ•W€o—Í‚Éo—Í(ÔF) */
+    /* Errorãƒ­ã‚°ã‚’æ¨™æº–å‡ºåŠ›ã«å‡ºåŠ›(èµ¤è‰²) */
     std::cerr << ConsoleColorRed << log_message << ConsoleColorReset << std::endl;
 
-    /* ErrorƒƒO‚ğƒtƒ@ƒCƒ‹‚Éo—Í */
+    /* Errorãƒ­ã‚°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ› */
     this->m_FileLogger.Write(log_message);
 }

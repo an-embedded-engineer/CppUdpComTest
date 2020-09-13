@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UdpMessage.h"
 
 #include <deque>
