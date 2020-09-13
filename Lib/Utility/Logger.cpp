@@ -3,14 +3,14 @@
 
 /* コンソール出力文字色制御コード */
 constexpr const char* ConsoleColorReset     = "\x1b[0m";
-constexpr const char* ConsoleColorBlack     = "\x1b[30m";
+//constexpr const char* ConsoleColorBlack     = "\x1b[30m";
 constexpr const char* ConsoleColorRed       = "\x1b[31m";
-constexpr const char* ConsoleColorGreen     = "\x1b[32m";
+//constexpr const char* ConsoleColorGreen     = "\x1b[32m";
 constexpr const char* ConsoleColorYellow    = "\x1b[33m";
-constexpr const char* ConsoleColorBlue      = "\x1b[34m";
-constexpr const char* ConsoleColorMagenta   = "\x1b[35m";
+//constexpr const char* ConsoleColorBlue      = "\x1b[34m";
+//constexpr const char* ConsoleColorMagenta   = "\x1b[35m";
 constexpr const char* ConsoleColorCyan      = "\x1b[36m";
-constexpr const char* ConsoleColorWhite     = "\x1b[37m";
+//constexpr const char* ConsoleColorWhite     = "\x1b[37m";
 
 
 /* シングルトンインスタンス取得 */
