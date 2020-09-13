@@ -50,9 +50,21 @@ bool UdpSocketReceiver::IsSocketOpened()
     return this->m_Adapter->IsSocketOpened();
 }
 
-/* パケット受信 */
-void UdpSocketReceiver::Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
+/* パケット同期受信 */
+void UdpSocketReceiver::ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size)
 {
     /* パケット受信 */
-    this->m_Adapter->Receive(buffer_ptr, buffer_size, rx_size);
+    this->m_Adapter->ReceiveSync(buffer_ptr, buffer_size, rx_size);
+}
+
+/* パケット非同期受信開始 */
+void UdpSocketReceiver::BeginReceiveAsync()
+{
+    this->m_Adapter->BeginReceiveAsync();
+}
+
+/* パケット非同期受信停止 */
+void UdpSocketReceiver::EndReceiveAsync()
+{
+    this->m_Adapter->EndReceiveAsync();
 }

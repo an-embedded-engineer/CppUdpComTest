@@ -3,6 +3,7 @@
 #include "ReceiveType.h"
 
 #include <memory>
+#include <functional>
 
 /* Socket Adapter Implクラス前方宣言 */
 class SocketAdapterImpl;
@@ -15,6 +16,8 @@ public:
     static void Initialize();
     /* Socket全体の後始末 */
     static void Finalize();
+    /* Socket全体の初期化確認 */
+    static bool IsInitialized();
     /* エラーコード取得 */
     static int GetErrorCode();
 
@@ -43,8 +46,12 @@ public:
 
     /* パケット送信 */
     void Transmit(const any_ptr data_ptr, const size_t tx_size);
-    /* パケット受信 */
-    void Receive(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
+    /* パケット同期受信 */
+    void ReceiveSync(byte_ptr& buffer_ptr, const size_t buffer_size, size_t& rx_size);
+    /* パケット非同期受信開始 */
+    void BeginReceiveAsync();
+    /* パケット非同期受信停止 */
+    void EndReceiveAsync();
 
 private:
     /* Socket Adapter Implクラスインスタンス */

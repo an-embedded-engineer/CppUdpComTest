@@ -52,7 +52,7 @@ namespace detail
         /* フォーマット失敗 */
         if (str_len < 0)
         {
-            std::runtime_error("String Formatting Error");
+            throw std::runtime_error("String Formatting Error");
         }
         else
         {

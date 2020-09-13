@@ -3,6 +3,7 @@
 #include "UdpReceiver.h"
 #include "CompileSwitch.h"
 #include "ReceiveType.h"
+#include "UdpMessageQueueMap.h"
 
 #include <iostream>
 #include <sstream>
@@ -19,12 +20,11 @@ static void UdpSocketReceiverTest();
 #elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Receiverによる通信テスト */
 static void UdpReceiverTest();
+static void AsyncUdpReceiverTest();
 #endif
 
-#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER || TEST_MODE == TEST_MODE_UDP_SINGLE
 /* 受信メッセージのデコード */
 static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size);
-#endif
 
 constexpr ReceiveType RecvType = ReceiveType::Async;
 
@@ -37,7 +37,8 @@ int main()
 #elif TEST_MODE == TEST_MODE_UDP_SINGLE
         UdpSocketReceiverTest();
 #elif TEST_MODE == TEST_MODE_UDP_MULTI
-        UdpReceiverTest();
+        //SyncUdpReceiverTest();
+        AsyncUdpReceiverTest();
 #endif
 
         return 0;
@@ -207,7 +208,7 @@ static void UdpSocketReceiverTest()
 
 #elif TEST_MODE == TEST_MODE_UDP_MULTI
 /* UDP Receiverによる通信テスト */
-static void UdpReceiverTest()
+static void SyncUdpReceiverTest()
 {
     /* Socket全体の初期化 */
     SocketAdapter::Initialize();
@@ -244,7 +245,7 @@ static void UdpReceiverTest()
         try
         {
             /* パケット受信 */
-            receiver.Receive(message_id, message);
+            receiver.ReceiveSync(message_id, message);
 
             std::cout << "UDP Message Received : [" << message_id << "]" << std::endl;
             std::cout << message << std::endl;
@@ -274,9 +275,107 @@ static void UdpReceiverTest()
 
     std::cout << "Socket Adapter Finalize Success" << std::endl;
 }
+
+/* UDP Receiverによる通信テスト */
+static void AsyncUdpReceiverTest()
+{
+    /* Socket全体の初期化 */
+    SocketAdapter::Initialize();
+
+    std::cout << "Socket Adapter Initialize Success" << std::endl;
+
+    /* UDP Receiverインスタンス生成 */
+    UdpReceiver receiver;
+
+    std::cout << "UDP Receiver Instance Creation Success" << std::endl;
+
+#if TEST_COM_MODE == TEST_COM_MODE_UNICAST
+    /* ユニキャスト用ソケットオープン */
+    receiver.OpenUniSocket(UDP_PORT, RecvType);
+
+    std::cout << "UDP Unicast Rx Socket Open Success" << std::endl;
+#elif TEST_COM_MODE == TEST_COM_MODE_MULTICAST
+    /* マルチキャスト用ソケットオープン */
+    receiver.OpenMultiSocket(MULTICAST_IP, UDP_PORT, RecvType);
+
+    std::cout << "UDP Multicast Rx Socket Open Success" << std::endl;
+#elif TEST_COM_MODE == TEST_COM_MODE_BROADCAST
+    /* ブロードキャスト用ソケットオープン */
+    receiver.OpenBroadSocket(UDP_PORT, RecvType);
+
+    std::cout << "UDP Broadcast Rx Socket Open Success" << std::endl;
 #endif
 
-#if TEST_MODE == TEST_MODE_SCOKET_ADAPTER || TEST_MODE == TEST_MODE_UDP_SINGLE
+    UdpMessageQueueMap& udp_msg_queue_map = UdpMessageQueueMap::GetInstance();
+
+    try
+    {
+        /* パケット受信 */
+        receiver.BeginReceiveAsync();
+
+        bool is_exit = false;
+
+        while (true)
+        {
+            const auto& keys = udp_msg_queue_map.GetKeys();
+            for (const auto& key : keys)
+            {
+                uint16_t message_id = key;
+                if (udp_msg_queue_map.IsEmpty(message_id) != true)
+                {
+                    UdpMessage message;
+
+                    bool result = udp_msg_queue_map.Dequeue(message_id, message);
+
+                    if (result == true)
+                    {
+                        std::string message_text  = DecodeRxMessage(message.GetDataPtr(), message.GetDataSize());
+
+                        std::cout << "UDP Message Received : ID=" << message_id << std::endl;
+                        std::cout << message_text << std::endl;
+
+                        /* 受信終了判定 */
+                        if (message_text == "exit")
+                        {
+                            is_exit = true;
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            if (is_exit == true)
+            {
+                receiver.EndReceiveAsync();
+                break;
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+
+    }
+    catch (const std::exception& ex)
+    {
+        std::cerr << "[ERROR] " << ex.what() << std::endl;
+
+        /* 受信エラーの場合は、一定時間待機して受信を再開する */
+        std::this_thread::sleep_for(std::chrono::microseconds(100));
+    }
+
+    /* ソケットクローズ */
+    receiver.CloseSocket();
+
+    std::cout << "Socket Close Success" << std::endl;
+
+    /* Socket全体の後始末 */
+    SocketAdapter::Finalize();
+
+    std::cout << "Socket Adapter Finalize Success" << std::endl;
+}
+
+#endif
+
 /* 受信メッセージのデコード */
 static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size)
 {
@@ -289,4 +388,3 @@ static std::string DecodeRxMessage(byte_ptr buffer_ptr, size_t data_size)
 
     return rx_msg;
 }
-#endif

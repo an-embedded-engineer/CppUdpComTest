@@ -48,6 +48,7 @@ union UdpPacketBuffer
     uint8_t Binary[UDP_PACKET_SIZE];
 
     UdpPacketBuffer()
+        : Packet()
     {
     }
 };

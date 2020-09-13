@@ -9,20 +9,10 @@
 class UdpPacketRxBuffer
 {
 public:
-    /* コールバック */
-    using CallbackType = std::function<void(const byte_ptr, const size_t)>;
-
-public:
     /* コンストラクタ */
     UdpPacketRxBuffer();
     /* デストラクタ */
     ~UdpPacketRxBuffer();
-
-    /* 受信コールバックの登録 */
-    void RegisterCallback(CallbackType& callback);
-
-    /* コールバック呼び出しのリクエスト */
-    void RequestCallback();
 
     /* UDP Packetの追加 */
     void Add(const UdpPacket& udp_packet);
@@ -61,7 +51,5 @@ private:
     std::vector<bool> m_RecvStatus;
     /* 受信完了状態 */
     bool m_IsCompleted;
-    /* 受信コールバック */
-    CallbackType m_Callback;
 };
 

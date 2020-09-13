@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "UdpSocketReceiver.h"
 #include "UdpPacketReceiver.h"
+#include "UdpMessageQueueMap.h"
 
 /* UDP Receiverクラス宣言 */
 class UdpReceiver
@@ -22,12 +23,23 @@ public:
     /* ソケットオープン確認 */
     bool IsSocketOpened();
 
-    /* データ受信 */
-    void Receive(uint16_t& message_id, std::string& message);
+    /* データ同期受信 */
+    void ReceiveSync(uint16_t& message_id, std::string& message);
+
+    /* データ非同期受信開始 */
+    void BeginReceiveAsync();
+
+    /* データ非同期受信停止 */
+    void EndReceiveAsync();
+
 
 private:
-    /* データ受信コールバック */
-    void ReceiveCallback(const uint16_t message_id, const byte_ptr data_ptr, const size_t data_size);
+    /* データ同期受信コールバック */
+    void SyncReceiveCallback(const uint16_t message_id, const byte_ptr data_ptr, const size_t data_size);
+
+    /* データ非同期受信コールバック */
+    void AsyncReceiveCallback(const uint16_t message_id, const byte_ptr data_ptr, const size_t data_size);
+
 
 private:
     /* UDP Socket Receiverクラスインスタンス */
@@ -35,6 +47,9 @@ private:
 
     /* UDP Packet Receiverクラスインスタンス */
     UdpPacketReceiver& m_PacketReceiver;
+
+    /* UDP Message Queue Map */
+    UdpMessageQueueMap& m_MessageQueueMap;
 
     /* 受信メッセージID */
     uint16_t m_MessageID;

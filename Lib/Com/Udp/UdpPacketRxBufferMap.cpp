@@ -12,7 +12,8 @@ UdpPacketRxBufferMap& UdpPacketRxBufferMap::GetInstance()
 
 /* コンストラクタ */
 UdpPacketRxBufferMap::UdpPacketRxBufferMap()
-    : m_Map()
+    : m_Mutex()
+    , m_Map()
     , m_Callback(nullptr)
 {
     /* Nothing to do */
@@ -39,23 +40,11 @@ void UdpPacketRxBufferMap::RegisterCallback(CallbackType& callback)
     }
 }
 
-/* メッセージIDごとの受信コールバックを登録 */
-void UdpPacketRxBufferMap::RegisterCallback(uint16_t message_id, UdpPacketRxBuffer::CallbackType& callback)
-{
-    /* UDP Packet受信バッファ未登録 */
-    if (this->m_Map.count(message_id) == 0)
-    {
-        /* UDP Packet受信バッファ登録 */
-        this->m_Map.emplace(std::piecewise_construct, std::forward_as_tuple(message_id), std::forward_as_tuple());
-    }
-
-    /* 受信コールバック登録 */
-    this->m_Map[message_id].RegisterCallback(callback);
-}
-
 /* UDP Packetの追加 */
 void UdpPacketRxBufferMap::Add(const UdpPacket& udp_packet)
 {
+    std::lock_guard<std::mutex> lock(this->m_Mutex);
+
     /* メッセージID取得 */
     uint16_t message_id = udp_packet.Header.MessageID;
 
@@ -75,9 +64,6 @@ void UdpPacketRxBufferMap::Add(const UdpPacket& udp_packet)
     /* 受信完了確認 */
     if (item.IsCompleted())
     {
-        /* 受信コールバック呼び出しをリクエスト */
-        item.RequestCallback();
-
         /* 受信データバッファを初期化 */
         byte_ptr data_ptr = nullptr;
 

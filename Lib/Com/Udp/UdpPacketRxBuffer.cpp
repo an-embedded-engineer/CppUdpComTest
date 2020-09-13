@@ -12,7 +12,6 @@ UdpPacketRxBuffer::UdpPacketRxBuffer()
     , m_ReceivedBlockNum(0)
     , m_RecvStatus()
     , m_IsCompleted(false)
-    , m_Callback(nullptr)
 {
     /* Nothing to do */
 }
@@ -21,52 +20,6 @@ UdpPacketRxBuffer::UdpPacketRxBuffer()
 UdpPacketRxBuffer::~UdpPacketRxBuffer()
 {
     /* Nothing to do */
-}
-
-/* 受信コールバックの登録 */
-void UdpPacketRxBuffer::RegisterCallback(CallbackType& callback)
-{
-    /* 受信コールバック未登録 */
-    if (this->m_Callback == nullptr)
-    {
-        /* 受信コールバックを登録 */
-        this->m_Callback = callback;
-    }
-    else
-    {
-        THROW_APP_EXCEPTION("Callback is already registered");
-    }
-}
-
-/* コールバック呼び出しのリクエスト */
-void UdpPacketRxBuffer::RequestCallback()
-{
-    /* コールバック登録確認 */
-    if (this->m_Callback != nullptr)
-    {
-        /* 受信完了確認 */
-        if (this->IsCompleted() == true)
-        {
-            /* 受信データ&サイズ確認 */
-            if (this->m_Buffer != nullptr && this->m_TotalSize > 0)
-            {
-                /* 受信コールバック呼び出し */
-                this->m_Callback(this->m_Buffer, this->m_TotalSize);
-            }
-            else
-            {
-                THROW_APP_EXCEPTION("Rx Buffer & Size are invalid");
-            }
-        }
-        else
-        {
-            THROW_APP_EXCEPTION("Rx Buffer is not completed");
-        }
-    }
-    else
-    {
-        std::cerr << "[WARN] Callback is not registered" << std::endl;
-    }
 }
 
 /* UDP Packetの追加 */
@@ -120,11 +73,15 @@ void UdpPacketRxBuffer::Release()
     /* 受信ステータスクリア */
     this->m_RecvStatus.clear();
 
-    /* 受信バッファ解放 */
-    free(this->m_Buffer);
+    /* 受信バッファ確保済み */
+    if (this->m_Buffer != nullptr)
+    {
+        /* 受信バッファ解放 */
+        free(this->m_Buffer);
 
-    /* 受信バッファアドレスクリア */
-    this->m_Buffer = nullptr;
+        /* 受信バッファアドレスクリア */
+        this->m_Buffer = nullptr;
+    }
 
     /* 受信完了状態クリア */
     this->m_IsCompleted = false;

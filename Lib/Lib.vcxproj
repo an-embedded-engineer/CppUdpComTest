@@ -19,15 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Com\Socket\SocketReceiveData.h" />
+    <ClInclude Include="Com\Socket\SocketReceiveQueue.h" />
+    <ClInclude Include="Com\Udp\UdpMessageQueue.h" />
+    <ClInclude Include="Com\Udp\UdpMessageQueueMap.h" />
+    <ClInclude Include="Com\Udp\UdpMessage.h" />
+    <ClInclude Include="Utility\AsyncTaskManager.h" />
     <ClInclude Include="Com\Common\ReceiveType.h" />
     <ClInclude Include="Com\Exception\AppException.h" />
     <ClInclude Include="Com\Exception\ExceptionBase.h" />
     <ClInclude Include="Com\Socket\SocketAdapter.h" />
-    <ClInclude Include="Com\Socket\SocketAdapterImpl_Socket.h" />
-    <ClInclude Include="Com\Socket\SocketAdapterImpl_Unknown.h" />
-    <ClInclude Include="Com\Socket\SocketAdapterImpl_WinSock.h" />
     <ClInclude Include="Com\Socket\SocketDataTypes.h" />
     <ClInclude Include="Com\Exception\SocketException.h" />
+    <ClInclude Include="Com\Socket\SocketInterface.h" />
     <ClInclude Include="Com\Udp\UdpPacketTypes.h" />
     <ClInclude Include="Config\CompileSwitch.h" />
     <ClInclude Include="Com\Udp\UdpSocketSender.h" />
@@ -39,17 +43,31 @@
     <ClInclude Include="Com\Udp\UdpPacketRxBuffer.h" />
     <ClInclude Include="Com\Udp\UdpPacketRxBufferMap.h" />
     <ClInclude Include="Com\Udp\UdpReceiver.h" />
+    <ClInclude Include="Utility\CancellableThread.h" />
+    <ClInclude Include="Utility\CancellationPoint.h" />
+    <ClInclude Include="Utility\ThreadCancelledException.h" />
     <ClInclude Include="Utility\Endian.h" />
+    <ClInclude Include="Utility\FileLogger.h" />
     <ClInclude Include="Utility\FloatIntConverter.h" />
+    <ClInclude Include="Utility\Logger.h" />
     <ClInclude Include="Utility\Singleton.h" />
     <ClInclude Include="Utility\StackTracer.h" />
     <ClInclude Include="Utility\StringFormat.h" />
+    <ClInclude Include="Utility\ThreadManager.h" />
+    <ClInclude Include="Utility\ThreadTypes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Com\Socket\SocketReceiveData.cpp" />
+    <ClCompile Include="Com\Socket\SocketReceiveQueue.cpp" />
+    <ClCompile Include="Com\Udp\UdpMessageQueue.cpp" />
+    <ClCompile Include="Com\Udp\UdpMessageQueueMap.cpp" />
+    <ClCompile Include="Com\Udp\UdpMessage.cpp" />
+    <ClCompile Include="Utility\AsyncTaskManager.cpp" />
     <ClCompile Include="Com\Exception\AppException.cpp" />
     <ClCompile Include="Com\Exception\ExceptionBase.cpp" />
     <ClCompile Include="Com\Exception\SocketException.cpp" />
     <ClCompile Include="Com\Socket\SocketAdapter.cpp" />
+    <ClCompile Include="Com\Socket\SocketInterface.cpp" />
     <ClCompile Include="Com\Udp\UdpSocketSender.cpp" />
     <ClCompile Include="Com\Udp\UdpSocketReceiver.cpp" />
     <ClCompile Include="Com\Udp\UdpPacketSender.cpp" />
@@ -59,8 +77,14 @@
     <ClCompile Include="Com\Udp\UdpPacketRxBuffer.cpp" />
     <ClCompile Include="Com\Udp\UdpPacketRxBufferMap.cpp" />
     <ClCompile Include="Com\Udp\UdpReceiver.cpp" />
+    <ClCompile Include="Utility\CancellableThread.cpp" />
+    <ClCompile Include="Utility\CancellationPoint.cpp" />
+    <ClCompile Include="Utility\ThreadCancelledException.cpp" />
+    <ClCompile Include="Utility\FileLogger.cpp" />
+    <ClCompile Include="Utility\Logger.cpp" />
     <ClCompile Include="Utility\Singleton.cpp" />
     <ClCompile Include="Utility\StackTracer.cpp" />
+    <ClCompile Include="Utility\ThreadManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
